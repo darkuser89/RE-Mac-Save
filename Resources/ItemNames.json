@@ -1,0 +1,2066 @@
+{
+  "games": {
+    "re2": {
+      "items": {
+        "1": {
+          "code": "sm70_000",
+          "name": "Erste-Hilfe-Spray"
+        },
+        "10": {
+          "code": "sm70_009",
+          "name": "Gemischte Kräuter (G+R+B)"
+        },
+        "102": {
+          "code": "sm73_123",
+          "name": "USB-Dongle"
+        },
+        "11": {
+          "code": "sm70_010",
+          "name": "Gemischte Kräuter (R+B)"
+        },
+        "112": {
+          "code": "sm73_133",
+          "name": "Ersatztaste",
+          "unexamined": "Ersatzteil"
+        },
+        "114": {
+          "code": "sm73_135",
+          "name": "Rotes Buch (Kunstobjekt)",
+          "unexamined": "Rotes Buch"
+        },
+        "115": {
+          "code": "sm73_136",
+          "name": "Linker Statuenarm"
+        },
+        "116": {
+          "code": "sm73_137",
+          "name": "Linker Arm mit Buch"
+        },
+        "118": {
+          "code": "sm73_139",
+          "name": "Löwen-Medaillon"
+        },
+        "119": {
+          "code": "sm73_140",
+          "name": "Karoschlüssel",
+          "unexamined": "Schlüssel"
+        },
+        "12": {
+          "code": "sm70_051",
+          "name": "Grünes Kraut"
+        },
+        "120": {
+          "code": "sm73_141",
+          "name": "Autoschlüssel",
+          "unexamined": "Schlüssel"
+        },
+        "124": {
+          "code": "sm73_145",
+          "name": "Mädchen-Medaillon"
+        },
+        "126": {
+          "code": "sm73_147",
+          "name": "Schaltschrankteil",
+          "unexamined": "Elektronikteil"
+        },
+        "127": {
+          "code": "sm73_148",
+          "name": "Schaltschrankteil",
+          "unexamined": "Elektronikteil"
+        },
+        "128": {
+          "code": "sm73_150",
+          "name": "Liebenden-Relief",
+          "unexamined": "Relief"
+        },
+        "129": {
+          "code": "sm73_151",
+          "name": "Kleines Zahnrad"
+        },
+        "13": {
+          "code": "sm70_052",
+          "name": "Rotes Kraut"
+        },
+        "130": {
+          "code": "sm73_152",
+          "name": "Großes Zahnrad"
+        },
+        "131": {
+          "code": "sm73_153",
+          "name": "Hofschlüssel"
+        },
+        "132": {
+          "code": "sm73_154",
+          "name": "Springer-Stecker",
+          "unexamined": "Elektronikteil"
+        },
+        "133": {
+          "code": "sm73_155",
+          "name": "Bauern-Stecker",
+          "unexamined": "Elektronikteil"
+        },
+        "134": {
+          "code": "sm73_156",
+          "name": "Dame-Stecker",
+          "unexamined": "Elektronikteil"
+        },
+        "135": {
+          "code": "sm73_157",
+          "name": "Verpacktes Elektronikteil"
+        },
+        "136": {
+          "code": "sm73_158",
+          "name": "Verpacktes Elektronikteil"
+        },
+        "14": {
+          "code": "sm70_053",
+          "name": "Blaues Kraut"
+        },
+        "15": {
+          "code": "sm70_100",
+          "name": "Pistolenmunition"
+        },
+        "159": {
+          "code": "sm73_222",
+          "name": "Waisenhausschlüssel"
+        },
+        "16": {
+          "code": "sm70_101",
+          "name": "Flintenmunition"
+        },
+        "160": {
+          "code": "sm73_300",
+          "name": "Kreuzschlüssel",
+          "unexamined": "Schlüssel"
+        },
+        "169": {
+          "code": "sm73_404",
+          "name": "Herzschlüssel",
+          "unexamined": "Schlüssel"
+        },
+        "17": {
+          "code": "sm70_102",
+          "name": "MP-Munition"
+        },
+        "170": {
+          "code": "sm73_405",
+          "name": "Digitale U.S.S.-Videokassette"
+        },
+        "176": {
+          "code": "sm73_411",
+          "name": "T-Ventilgriff",
+          "unexamined": "Werkzeug"
+        },
+        "179": {
+          "code": "sm73_414",
+          "name": "Verteilerkartusche (Leer)",
+          "unexamined": "Verteilerkartusche"
+        },
+        "18": {
+          "code": "sm70_103",
+          "name": "MAG-Munition"
+        },
+        "180": {
+          "code": "sm73_415",
+          "name": "Verteilerkartusche (Lösung)"
+        },
+        "181": {
+          "code": "sm73_416",
+          "name": "Verteilerkartusche (Unkrautvernichter)"
+        },
+        "183": {
+          "code": "sm73_418",
+          "name": "Verbindungsstecker"
+        },
+        "186": {
+          "code": "sm73_421",
+          "name": "Upgrade-Chip (Administrator)"
+        },
+        "187": {
+          "code": "sm73_422",
+          "name": "ID-Armband (Administrator)"
+        },
+        "189": {
+          "code": "sm73_424",
+          "name": "Signal-Modulator"
+        },
+        "191": {
+          "code": "sm73_426",
+          "name": "Trophäe"
+        },
+        "194": {
+          "code": "sm73_429",
+          "name": "Kanalisationsschlüssel",
+          "unexamined": "Schlüssel"
+        },
+        "195": {
+          "code": "sm73_430",
+          "name": "ID-Armband (Besucher)",
+          "unexamined": "ID-Armband"
+        },
+        "196": {
+          "code": "sm73_431",
+          "name": "ID-Armband (Mitarbeiter)"
+        },
+        "197": {
+          "code": "sm73_432",
+          "name": "ID-Armband (Führungspersonal)"
+        },
+        "198": {
+          "code": "sm73_433",
+          "name": "Upgrade-Chip (Mitarbeiter)",
+          "unexamined": "Chip"
+        },
+        "199": {
+          "code": "sm73_434",
+          "name": "Upgrade-Chip (Führungspersonal)",
+          "unexamined": "Chip"
+        },
+        "2": {
+          "code": "sm70_001",
+          "name": "Grünes Kraut"
+        },
+        "200": {
+          "code": "sm73_435",
+          "name": "ID-Armband (Besucher)",
+          "unexamined": "ID-Armband"
+        },
+        "201": {
+          "code": "sm73_436",
+          "name": "ID-Armband (Mitarbeiter)"
+        },
+        "202": {
+          "code": "sm73_437",
+          "name": "ID-Armband (Führungspersonal)"
+        },
+        "203": {
+          "code": "sm73_438",
+          "name": "Digitale Labor-Videokassette"
+        },
+        "22": {
+          "code": "sm70_107",
+          "name": "Säuregranaten"
+        },
+        "23": {
+          "code": "sm70_108",
+          "name": "Brandgranaten"
+        },
+        "230": {
+          "code": "sm73_712",
+          "name": "Aktenkoffer"
+        },
+        "24": {
+          "code": "sm70_109",
+          "name": "Nadelkartuschen"
+        },
+        "240": {
+          "code": "sm73_722",
+          "name": "Sicherung (Eingangshalle)",
+          "unexamined": "Elektroteil"
+        },
+        "241": {
+          "code": "sm73_723",
+          "name": "Sicherung (Pausenraum – Flur)",
+          "unexamined": "Elektroteil"
+        },
+        "243": {
+          "code": "sm73_725",
+          "name": "Schere"
+        },
+        "244": {
+          "code": "sm73_726",
+          "name": "Bolzenschneider",
+          "unexamined": "Schneidwerkzeug"
+        },
+        "245": {
+          "code": "sm73_727",
+          "name": "Puppe"
+        },
+        "25": {
+          "code": "sm70_110",
+          "name": "Benzin"
+        },
+        "251": {
+          "code": "sm74_100",
+          "name": "Karte der Polizeistation (1F)"
+        },
+        "252": {
+          "code": "sm74_101",
+          "name": "Karte der Polizeistation (B1)"
+        },
+        "254": {
+          "code": "sm74_103",
+          "name": "Karte der Kanalisation"
+        },
+        "257": {
+          "code": "sm74_106",
+          "name": "Karte des Labors (Nordbereich)"
+        },
+        "258": {
+          "code": "sm74_107",
+          "name": "Karte des Labors (Ostbereich)"
+        },
+        "26": {
+          "code": "sm70_111",
+          "name": "Großkalibrige Pistolenmunition"
+        },
+        "261": {
+          "code": "sm74_110",
+          "name": "Karte der Polizeistation (Obere Stockwerke)"
+        },
+        "262": {
+          "code": "sm74_200",
+          "name": "Gürteltasche"
+        },
+        "27": {
+          "code": "sm70_112",
+          "name": "Hochleistungsmunition (SLS 60)"
+        },
+        "291": {
+          "code": "sm77_002",
+          "name": "Tragbarer Tresor"
+        },
+        "293": {
+          "code": "sm77_004",
+          "name": "Blechdose",
+          "unexamined": "Dose"
+        },
+        "294": {
+          "code": "sm77_005",
+          "name": "Holzkiste"
+        },
+        "295": {
+          "code": "sm77_006",
+          "name": "Holzkiste"
+        },
+        "296": {
+          "code": "sm77_007",
+          "name": "Blechdose",
+          "unexamined": "Dose"
+        },
+        "3": {
+          "code": "sm70_002",
+          "name": "Rotes Kraut"
+        },
+        "31": {
+          "code": "sm70_200",
+          "name": "Zünder"
+        },
+        "32": {
+          "code": "sm70_201",
+          "name": "Farbband"
+        },
+        "33": {
+          "code": "sm70_202",
+          "name": "Holzbretter"
+        },
+        "34": {
+          "code": "sm70_203",
+          "name": "Zünder (ohne Batterie)",
+          "unexamined": "Elektronikgerät"
+        },
+        "35": {
+          "code": "sm70_204",
+          "name": "Batterie"
+        },
+        "36": {
+          "code": "sm70_205",
+          "name": "Schießpulver"
+        },
+        "37": {
+          "code": "sm70_206",
+          "name": "Schießpulver (groß)"
+        },
+        "38": {
+          "code": "sm70_207",
+          "name": "Hochwertiges Schießpulver (gelb)"
+        },
+        "39": {
+          "code": "sm70_208",
+          "name": "Hochwertiges Schießpulver (weiß)"
+        },
+        "4": {
+          "code": "sm70_003",
+          "name": "Blaues Kraut"
+        },
+        "48": {
+          "code": "sm71_901",
+          "name": "Erweitertes Magazin (Matilda)"
+        },
+        "49": {
+          "code": "sm71_902",
+          "name": "Mündungsbremse (Matilda)"
+        },
+        "5": {
+          "code": "sm70_004",
+          "name": "Gemischte Kräuter (G+G)"
+        },
+        "50": {
+          "code": "sm71_903",
+          "name": "Gewehrschaft (Matilda)"
+        },
+        "51": {
+          "code": "sm71_904",
+          "name": "Schnelllader (SLS 60)"
+        },
+        "52": {
+          "code": "sm71_905",
+          "name": "Laseraufsatz (JMB Hp3)"
+        },
+        "53": {
+          "code": "sm71_906",
+          "name": "Verstärkter Rahmen (SLS 60)"
+        },
+        "54": {
+          "code": "sm71_907",
+          "name": "Erweitertes Magazin (JMB Hp3)"
+        },
+        "55": {
+          "code": "sm71_908",
+          "name": "Schrotflintenschaft (W-870)"
+        },
+        "56": {
+          "code": "sm71_909",
+          "name": "Langer Lauf (W-870)"
+        },
+        "58": {
+          "code": "sm71_911",
+          "name": "Erweitertes Magazin (MQ 11)"
+        },
+        "6": {
+          "code": "sm70_005",
+          "name": "Gemischte Kräuter (G+R)"
+        },
+        "60": {
+          "code": "sm71_913",
+          "name": "Schalldämpfer (MQ 11)"
+        },
+        "61": {
+          "code": "sm71_914",
+          "name": "Visier (Lightning Hawk)"
+        },
+        "62": {
+          "code": "sm71_915",
+          "name": "Langer Lauf (Lightning Hawk)"
+        },
+        "64": {
+          "code": "sm71_917",
+          "name": "Schulterschaft (GM 79)"
+        },
+        "65": {
+          "code": "sm71_918",
+          "name": "Regulierer (Flammenwerfer)"
+        },
+        "66": {
+          "code": "sm71_919",
+          "name": "Kondensator (Elektroschockgewehr)"
+        },
+        "7": {
+          "code": "sm70_006",
+          "name": "Gemischte Kräuter (G+B)"
+        },
+        "72": {
+          "code": "sm72_200",
+          "name": "Film: \"Versteck\"",
+          "unexamined": "Film"
+        },
+        "73": {
+          "code": "sm72_201",
+          "name": "Film: \"Aufstrebende Anfängerin\"",
+          "unexamined": "Film"
+        },
+        "74": {
+          "code": "sm72_202",
+          "name": "Film: \"Erinnerung\"",
+          "unexamined": "Film"
+        },
+        "75": {
+          "code": "sm72_203",
+          "name": "Film: \"Spind in 3F\"",
+          "unexamined": "Film"
+        },
+        "76": {
+          "code": "sm72_204",
+          "name": "Film: \"Löwenstatue\"",
+          "unexamined": "Film"
+        },
+        "77": {
+          "code": "sm73_000",
+          "name": "Lagerraumschlüssel",
+          "unexamined": "Schlüssel"
+        },
+        "79": {
+          "code": "sm73_100",
+          "name": "Wagenhebergriff",
+          "unexamined": "Werkzeug"
+        },
+        "8": {
+          "code": "sm70_007",
+          "name": "Gemischte Kräuter (G+G+B)"
+        },
+        "80": {
+          "code": "sm73_101",
+          "name": "Quadratische Kurbel",
+          "unexamined": "Werkzeug"
+        },
+        "81": {
+          "code": "sm73_102",
+          "name": "Einhorn-Medaillon"
+        },
+        "82": {
+          "code": "sm73_103",
+          "name": "Pikschlüssel",
+          "unexamined": "Schlüssel"
+        },
+        "83": {
+          "code": "sm73_104",
+          "name": "Garagenschlüsselkarte"
+        },
+        "84": {
+          "code": "sm73_105",
+          "name": "Waffenschrank-Schlüsselkarte",
+          "unexamined": "Schlüsselkarte"
+        },
+        "86": {
+          "code": "sm73_107",
+          "name": "Ventilgriff",
+          "unexamined": "Runder Griff"
+        },
+        "87": {
+          "code": "sm73_108",
+          "name": "S.T.A.R.S.-Abzeichen"
+        },
+        "88": {
+          "code": "sm73_109",
+          "name": "Zepter"
+        },
+        "9": {
+          "code": "sm70_008",
+          "name": "Gemischte Kräuter (G+G+G)"
+        },
+        "90": {
+          "code": "sm73_111",
+          "name": "Rotes Juwel"
+        },
+        "91": {
+          "code": "sm73_112",
+          "name": "Juwelenbesetztes Kästchen",
+          "unexamined": "Kästchen"
+        },
+        "93": {
+          "code": "sm73_114",
+          "name": "Läufer-Stecker",
+          "unexamined": "Elektronikteil"
+        },
+        "94": {
+          "code": "sm73_115",
+          "name": "Turm-Stecker",
+          "unexamined": "Elektronikteil"
+        },
+        "95": {
+          "code": "sm73_116",
+          "name": "König-Stecker",
+          "unexamined": "Elektronikteil"
+        },
+        "98": {
+          "code": "sm73_119",
+          "name": "Bildblock",
+          "unexamined": "Block"
+        }
+      },
+      "uuid": "4C4C44ED-5555-3144-A15E-9285028AFD15",
+      "weapons": {
+        "1": {
+          "code": "WP0000",
+          "name": "Matilda"
+        },
+        "11": {
+          "code": "WP1000",
+          "name": "W-870"
+        },
+        "2": {
+          "code": "WP0100",
+          "name": "M19"
+        },
+        "21": {
+          "code": "WP2000",
+          "name": "MQ 11"
+        },
+        "222": {
+          "code": "WP8400",
+          "name": "ATM-4"
+        },
+        "23": {
+          "code": "WP2200",
+          "name": "LE 5"
+        },
+        "242": {
+          "code": "WP8600",
+          "name": "Panzerabwehrlenkwaffe"
+        },
+        "252": {
+          "code": "WP8700",
+          "name": "Minigun"
+        },
+        "3": {
+          "code": "WP0200",
+          "name": "JMB Hp3"
+        },
+        "31": {
+          "code": "WP3000",
+          "name": "Lightning Hawk"
+        },
+        "4": {
+          "code": "WP0300",
+          "name": "Quickdraw Army"
+        },
+        "41": {
+          "code": "WP4000",
+          "name": "EMF Visualizer"
+        },
+        "42": {
+          "code": "WP4100",
+          "name": "GM 79"
+        },
+        "43": {
+          "code": "WP4200",
+          "name": "Chemischer Flammenwerfer"
+        },
+        "44": {
+          "code": "WP4300",
+          "name": "Elektroschockgewehr"
+        },
+        "45": {
+          "code": "WP4400",
+          "name": "ATM-4"
+        },
+        "46": {
+          "code": "WP4500",
+          "name": "Kampfmesser"
+        },
+        "47": {
+          "code": "WP4510",
+          "name": "Kampfmesser"
+        },
+        "49": {
+          "code": "WP4600",
+          "name": "Panzerabwehrlenkwaffe"
+        },
+        "50": {
+          "code": "WP4700",
+          "name": "Minigun"
+        },
+        "51": {
+          "code": "WP4800",
+          "name": "Magische Upgrade-Knarre (Temp)"
+        },
+        "52": {
+          "code": "WP4900",
+          "name": "Bonus 1"
+        },
+        "53": {
+          "code": "WP5000",
+          "name": "Bonus 2"
+        },
+        "54": {
+          "code": "WP5100",
+          "name": "Bonus 3 (Nahkampf)"
+        },
+        "55": {
+          "code": "WP5200",
+          "name": "Bonus 4 (Fernkampf)"
+        },
+        "65": {
+          "code": "WP6200",
+          "name": "Handgranate"
+        },
+        "66": {
+          "code": "WP6300",
+          "name": "Blendgranate"
+        },
+        "7": {
+          "code": "WP0600",
+          "name": "MUP"
+        },
+        "8": {
+          "code": "WP0700",
+          "name": "Broom Hc"
+        },
+        "82": {
+          "code": "WP7000",
+          "name": "Samurai Edge (Original-Modell)"
+        },
+        "83": {
+          "code": "WP7010",
+          "name": "Samurai Edge (Chris' Modell)"
+        },
+        "84": {
+          "code": "WP7020",
+          "name": "Samurai Edge (Jills Modell)"
+        },
+        "85": {
+          "code": "WP7030",
+          "name": "Samurai Edge (Alberts Modell)"
+        },
+        "9": {
+          "code": "WP0800",
+          "name": "SLS 60"
+        }
+      }
+    },
+    "re3": {
+      "items": {
+        "1": {
+          "code": "sm70_000",
+          "name": "Erste-Hilfe-Spray"
+        },
+        "101": {
+          "code": "sm71_300",
+          "name": "Langer Lauf (MAG)"
+        },
+        "131": {
+          "code": "sm72_000",
+          "name": "Audiokassette"
+        },
+        "151": {
+          "code": "sm73_000",
+          "name": "Dietrich"
+        },
+        "152": {
+          "code": "sm73_001",
+          "name": "Bolzenschneider"
+        },
+        "161": {
+          "code": "sm73_200",
+          "name": "Batterie"
+        },
+        "162": {
+          "code": "sm73_201",
+          "name": "Schlüssel"
+        },
+        "164": {
+          "code": "sm73_203",
+          "name": "ID-Karte"
+        },
+        "165": {
+          "code": "sm73_204",
+          "name": "Elektronikgerät"
+        },
+        "166": {
+          "code": "sm73_205",
+          "name": "Zünder"
+        },
+        "181": {
+          "code": "sm73_300",
+          "name": "Löschschlauch"
+        },
+        "182": {
+          "code": "sm73_301",
+          "name": "Kendos Torschlüssel"
+        },
+        "185": {
+          "code": "sm73_304",
+          "name": "Schatulle"
+        },
+        "186": {
+          "code": "sm73_305",
+          "name": "Akku"
+        },
+        "187": {
+          "code": "sm73_306",
+          "name": "Grünes Juwel"
+        },
+        "188": {
+          "code": "sm73_307",
+          "name": "Blaues Juwel"
+        },
+        "189": {
+          "code": "sm73_308",
+          "name": "Rotes Juwel"
+        },
+        "192": {
+          "code": "sm73_311",
+          "name": "Schmuckkästchen"
+        },
+        "193": {
+          "code": "sm73_312",
+          "name": "Schmuckkästchen"
+        },
+        "194": {
+          "code": "sm73_313",
+          "name": "Schmuckkästchen"
+        },
+        "2": {
+          "code": "sm70_001",
+          "name": "Grünes Kraut"
+        },
+        "211": {
+          "code": "sm73_400",
+          "name": "Krankenhaus-ID-Karte"
+        },
+        "212": {
+          "code": "sm73_401",
+          "name": "Kassettenrekorder (mit Kassette)"
+        },
+        "213": {
+          "code": "sm73_402",
+          "name": "Audiokassette"
+        },
+        "214": {
+          "code": "sm73_403",
+          "name": "Kassettenrekorder"
+        },
+        "215": {
+          "code": "sm73_404",
+          "name": "Impfstoff-Probe"
+        },
+        "217": {
+          "code": "sm73_406",
+          "name": "Zünder"
+        },
+        "218": {
+          "code": "sm73_407",
+          "name": "Schlüssel"
+        },
+        "22": {
+          "code": "sm70_051",
+          "name": "Grünes Kraut"
+        },
+        "222": {
+          "code": "sm73_411",
+          "name": "Sicherung"
+        },
+        "223": {
+          "code": "sm73_412",
+          "name": "Sicherung"
+        },
+        "224": {
+          "code": "sm73_413",
+          "name": "Sicherung"
+        },
+        "23": {
+          "code": "sm70_052",
+          "name": "Rotes Kraut"
+        },
+        "231": {
+          "code": "sm73_500",
+          "name": "Armband"
+        },
+        "232": {
+          "code": "sm73_501",
+          "name": "USB-Stick"
+        },
+        "233": {
+          "code": "sm73_502",
+          "name": "Impfstoff"
+        },
+        "234": {
+          "code": "sm73_503",
+          "name": "Kulturen-Probe"
+        },
+        "235": {
+          "code": "sm73_504",
+          "name": "Reagenzglas mit Flüssigkeit"
+        },
+        "236": {
+          "code": "sm73_505",
+          "name": "Rohimpfstoff"
+        },
+        "246": {
+          "code": "sm74_100",
+          "name": "Karte der Polizeistation"
+        },
+        "247": {
+          "code": "sm74_101",
+          "name": "Karte der Innenstadt"
+        },
+        "248": {
+          "code": "sm74_102",
+          "name": "Karte des Unterwerks"
+        },
+        "249": {
+          "code": "sm74_103",
+          "name": "Karte der Kanalisation"
+        },
+        "250": {
+          "code": "sm74_104",
+          "name": "Karte des Krankenhauses"
+        },
+        "252": {
+          "code": "sm74_106",
+          "name": "Karte des Unterirdischen Lagers"
+        },
+        "253": {
+          "code": "sm74_107",
+          "name": "Karte des NEST 2"
+        },
+        "261": {
+          "code": "sm74_200",
+          "name": "Gürteltasche"
+        },
+        "264": {
+          "code": "sm74_203",
+          "name": "Löschschlauch"
+        },
+        "3": {
+          "code": "sm70_002",
+          "name": "Rotes Kraut"
+        },
+        "301": {
+          "code": "sm76_000",
+          "name": "Eiserne-Verteidigungs-Münze"
+        },
+        "302": {
+          "code": "sm76_001",
+          "name": "Sturm-Münze"
+        },
+        "303": {
+          "code": "sm76_002",
+          "name": "Erholungs-Münze"
+        },
+        "304": {
+          "code": "sm76_003",
+          "name": "Wiederladepresse"
+        },
+        "305": {
+          "code": "sm76_004",
+          "name": "S.T.A.R.S.-Feldhandbuch"
+        },
+        "31": {
+          "code": "sm70_100",
+          "name": "Pistolenmunition"
+        },
+        "311": {
+          "code": "sm77_000",
+          "name": "Versorgungskiste"
+        },
+        "312": {
+          "code": "sm77_001",
+          "name": "Versorgungskiste"
+        },
+        "313": {
+          "code": "sm77_002",
+          "name": "Versorgungskiste"
+        },
+        "314": {
+          "code": "sm77_003",
+          "name": "Versorgungskiste"
+        },
+        "315": {
+          "code": "sm77_004",
+          "name": "Versorgungskiste"
+        },
+        "316": {
+          "code": "sm77_005",
+          "name": "Versorgungskiste"
+        },
+        "32": {
+          "code": "sm70_101",
+          "name": "Flintenmunition"
+        },
+        "33": {
+          "code": "sm70_102",
+          "name": "Sturmgewehrmunition"
+        },
+        "34": {
+          "code": "sm70_103",
+          "name": "MAG-Munition"
+        },
+        "36": {
+          "code": "sm70_105",
+          "name": "Minengranaten"
+        },
+        "37": {
+          "code": "sm70_106",
+          "name": "Explosive Granaten"
+        },
+        "38": {
+          "code": "sm70_107",
+          "name": "Säuregranaten"
+        },
+        "39": {
+          "code": "sm70_108",
+          "name": "Brandgranaten"
+        },
+        "5": {
+          "code": "sm70_004",
+          "name": "Gemischte Kräuter (G+G)"
+        },
+        "6": {
+          "code": "sm70_005",
+          "name": "Gemischte Kräuter (G+R)"
+        },
+        "61": {
+          "code": "sm70_205",
+          "name": "Schießpulver"
+        },
+        "62": {
+          "code": "sm70_206",
+          "name": "Hochwertiges Schießpulver"
+        },
+        "63": {
+          "code": "sm70_207",
+          "name": "Sprengstoff A"
+        },
+        "64": {
+          "code": "sm70_208",
+          "name": "Sprengstoff B"
+        },
+        "76": {
+          "code": "sm71_000",
+          "name": "Schalldämpfer (Pistole)"
+        },
+        "77": {
+          "code": "sm71_001",
+          "name": "Leuchtpunktvisier (Pistole)"
+        },
+        "78": {
+          "code": "sm71_002",
+          "name": "Erweitertes Magazin (Pistole)"
+        },
+        "9": {
+          "code": "sm70_008",
+          "name": "Gemischte Kräuter (G+G+G)"
+        },
+        "91": {
+          "code": "sm71_100",
+          "name": "Halbautomatischer Lauf (Flinte)"
+        },
+        "92": {
+          "code": "sm71_101",
+          "name": "Taktischer Schaft (Flinte)"
+        },
+        "93": {
+          "code": "sm71_102",
+          "name": "Munitionshalter (Flinte)"
+        },
+        "96": {
+          "code": "sm71_200",
+          "name": "Zielfernrohr (Sturmgewehr)"
+        },
+        "97": {
+          "code": "sm71_201",
+          "name": "Doppelmagazin (Sturmgewehr)"
+        },
+        "98": {
+          "code": "sm71_202",
+          "name": "Taktischer Griff (Sturmgewehr)"
+        }
+      },
+      "uuid": "4C4C4461-5555-3144-A174-EA43301DB10B",
+      "weapons": {
+        "1": {
+          "code": "WP0000",
+          "name": "G19-Pistole"
+        },
+        "11": {
+          "code": "WP1000",
+          "name": "M3-Flinte"
+        },
+        "2": {
+          "code": "WP0100",
+          "name": "G18-Pistole (Feuerstoß-Modell)"
+        },
+        "21": {
+          "code": "WP2000",
+          "name": "CQBR-Sturmgewehr"
+        },
+        "22": {
+          "code": "WP2100",
+          "name": "Unendliches CQBR-Sturmgewehr"
+        },
+        "3": {
+          "code": "WP0200",
+          "name": "G18-Pistole"
+        },
+        "31": {
+          "code": "WP3000",
+          "name": ".44 AE Lightning Hawk"
+        },
+        "32": {
+          "code": "WP3100",
+          "name": "RAI-DEN"
+        },
+        "4": {
+          "code": "WP0300",
+          "name": "Samurai Edge"
+        },
+        "42": {
+          "code": "WP4100",
+          "name": "MGL-Granatwerfer"
+        },
+        "45": {
+          "code": "WP4400",
+          "name": "Raketenwerfer"
+        },
+        "46": {
+          "code": "WP4500",
+          "name": "Kampfmesser"
+        },
+        "47": {
+          "code": "WP4510",
+          "name": "Kampfmesser"
+        },
+        "48": {
+          "code": "WP4520",
+          "name": "HOT DOGGER"
+        },
+        "49": {
+          "code": "WP4600",
+          "name": "Unendlicher Raketenwerfer"
+        },
+        "50": {
+          "code": "WP4700",
+          "name": "Railgun"
+        },
+        "65": {
+          "code": "WP6200",
+          "name": "Handgranate"
+        },
+        "66": {
+          "code": "WP6300",
+          "name": "Blendgranate"
+        },
+        "7": {
+          "code": "WP0600",
+          "name": "Unendliche MUP-Pistole"
+        }
+      }
+    },
+    "re4": {
+      "items": {
+        "112480000": {
+          "code": "it_sm70_300_00_0",
+          "name": "Sprengpfeile"
+        },
+        "112800000": {
+          "code": "it_sm70_500_00_0",
+          "name": "Pistolenmunition"
+        },
+        "112801600": {
+          "code": "it_sm70_501_00_0",
+          "name": "Magnummunition"
+        },
+        "112803200": {
+          "code": "it_sm70_502_00_0",
+          "name": "Flintenmunition"
+        },
+        "112804800": {
+          "code": "it_sm70_503_00_0",
+          "name": "Gewehrmunition"
+        },
+        "112806400": {
+          "code": "it_sm70_504_00_0",
+          "name": "MP-Munition"
+        },
+        "112808000": {
+          "code": "it_sm70_505_00_0",
+          "name": "Bolzen"
+        },
+        "114080000": {
+          "code": "it_sm71_300_00_0",
+          "name": "Herr der Wasserstraße"
+        },
+        "114400000": {
+          "code": "it_sm71_500_00_0",
+          "name": "Grünes Kraut"
+        },
+        "114401600": {
+          "code": "it_sm71_501_00_0",
+          "name": "Rotes Kraut"
+        },
+        "114403200": {
+          "code": "it_sm71_502_00_0",
+          "name": "Gelbes Kraut"
+        },
+        "114404800": {
+          "code": "it_sm71_503_00_0",
+          "name": "Kräutermischung (Gr+Gr)"
+        },
+        "114406400": {
+          "code": "it_sm71_504_00_0",
+          "name": "Kräutermischung (Gr+Gr+Gr)"
+        },
+        "114408000": {
+          "code": "it_sm71_505_00_0",
+          "name": "Kräutermischung (Gr+R)"
+        },
+        "114409600": {
+          "code": "it_sm71_506_00_0",
+          "name": "Kräutermischung (Gr+Ge)"
+        },
+        "114411200": {
+          "code": "it_sm71_507_00_0",
+          "name": "Kräutermischung (R+Ge)"
+        },
+        "114412800": {
+          "code": "it_sm71_508_00_0",
+          "name": "Kräutermischung (Gr+R+Ge)"
+        },
+        "114414400": {
+          "code": "it_sm71_509_00_0",
+          "name": "Kräutermischung (Gr+Gr+Ge)"
+        },
+        "114416000": {
+          "code": "it_sm71_510_00_0",
+          "name": "Erste-Hilfe-Spray"
+        },
+        "114417600": {
+          "code": "it_sm71_511_00_0",
+          "name": "Forellenbarsch"
+        },
+        "114419200": {
+          "code": "it_sm71_512_00_0",
+          "name": "Riesenbarsch"
+        },
+        "114420800": {
+          "code": "it_sm71_513_00_0",
+          "name": "Forellenbarsch (L)"
+        },
+        "114422400": {
+          "code": "it_sm71_514_00_0",
+          "name": "Viper"
+        },
+        "114424000": {
+          "code": "it_sm71_515_00_0",
+          "name": "Riesenkäfer"
+        },
+        "116000000": {
+          "code": "it_sm72_500_00_0",
+          "name": "Zielfernrohr"
+        },
+        "116001600": {
+          "code": "it_sm72_501_00_0",
+          "name": "Schulterstütze (Red9)"
+        },
+        "116003200": {
+          "code": "it_sm72_502_00_0",
+          "name": "Hochleistungszielfernrohr"
+        },
+        "116004800": {
+          "code": "it_sm72_503_00_0",
+          "name": "Biosensorisches Zielfernrohr"
+        },
+        "116006400": {
+          "code": "it_sm72_504_00_0",
+          "name": "Schulterstütze (TMP)"
+        },
+        "116008000": {
+          "code": "it_sm72_505_00_0",
+          "name": "Laservisier"
+        },
+        "116009600": {
+          "code": "it_sm72_506_00_0",
+          "name": "Schulterstütze (Matilda)"
+        },
+        "117600000": {
+          "code": "it_sm73_500_00_0",
+          "name": "Schießpulver"
+        },
+        "117601600": {
+          "code": "it_sm73_501_00_0",
+          "name": "Rohstoffe (L)"
+        },
+        "117603200": {
+          "code": "it_sm73_502_00_0",
+          "name": "Minenaufsätze"
+        },
+        "117604800": {
+          "code": "it_sm73_503_00_0",
+          "name": "Kaputtes Messer"
+        },
+        "117606400": {
+          "code": "it_sm73_504_00_0",
+          "name": "Rohstoffe (S)"
+        },
+        "118888000": {
+          "code": "it_sm74_305_00_0",
+          "name": "Rote Tinte"
+        },
+        "118889600": {
+          "code": "it_sm74_306_00_0",
+          "name": "Goldene Flasche"
+        },
+        "118891200": {
+          "code": "it_sm74_307_00_0",
+          "name": "Blauer Schmetterling"
+        },
+        "118904000": {
+          "code": "it_sm74_315_00_0",
+          "name": "Raketenwerfer (Spezial)"
+        },
+        "118905600": {
+          "code": "it_sm74_316_00_0",
+          "name": "Bootsschlüssel"
+        },
+        "118907200": {
+          "code": "it_sm74_317_00_0",
+          "name": "Silberne Flasche"
+        },
+        "118912000": {
+          "code": "it_sm74_320_00_0",
+          "name": "Lithografiestein A"
+        },
+        "118913600": {
+          "code": "it_sm74_321_00_0",
+          "name": "Lithografiestein B"
+        },
+        "118915200": {
+          "code": "it_sm74_322_00_0",
+          "name": "Lithografiestein C"
+        },
+        "118916800": {
+          "code": "it_sm74_323_00_0",
+          "name": "Lithografiestein D"
+        },
+        "118920000": {
+          "code": "it_sm74_325_00_0",
+          "name": "Geheimschlüssel"
+        },
+        "118921600": {
+          "code": "it_sm74_326_00_0",
+          "name": "Mondwappen"
+        },
+        "118923200": {
+          "code": "it_sm74_327_00_0",
+          "name": "Stromversorgungseinheit"
+        },
+        "119203200": {
+          "code": "it_sm74_502_00_0",
+          "name": "Sechseckiges Wappen"
+        },
+        "119204800": {
+          "code": "it_sm74_503_00_0",
+          "name": "Insignienschlüssel"
+        },
+        "119206400": {
+          "code": "it_sm74_504_00_0",
+          "name": "Glänzendes Metallrad"
+        },
+        "119209600": {
+          "code": "it_sm74_506_00_0",
+          "name": "Karmesinrote Laterne"
+        },
+        "119211200": {
+          "code": "it_sm74_507_00_0",
+          "name": "Schlüsselkarte Stufe 1"
+        },
+        "119212800": {
+          "code": "it_sm74_508_00_0",
+          "name": "Schlüsselkarte Stufe 2"
+        },
+        "119214400": {
+          "code": "it_sm74_509_00_0",
+          "name": "Schlüsselkarte Stufe 3"
+        },
+        "119217600": {
+          "code": "it_sm74_511_00_0",
+          "name": "Kristallkugel"
+        },
+        "119219200": {
+          "code": "it_sm74_512_00_0",
+          "name": "Schraubenschlüssel"
+        },
+        "119220800": {
+          "code": "it_sm74_513_00_0",
+          "name": "Insignie der Familie Salazar"
+        },
+        "119222400": {
+          "code": "it_sm74_514_00_0",
+          "name": "Löwenkopf"
+        },
+        "119224000": {
+          "code": "it_sm74_515_00_0",
+          "name": "Ziegenkopf"
+        },
+        "119225600": {
+          "code": "it_sm74_516_00_0",
+          "name": "Schlangenkopf"
+        },
+        "119230400": {
+          "code": "it_sm74_519_00_0",
+          "name": "Kopf des Gotteslästerers"
+        },
+        "119232000": {
+          "code": "it_sm74_520_00_0",
+          "name": "Kopf des Abtrünnigen"
+        },
+        "119235200": {
+          "code": "it_sm74_522_00_0",
+          "name": "Holzzahnrad"
+        },
+        "119236800": {
+          "code": "it_sm74_523_00_0",
+          "name": "Dynamit"
+        },
+        "119238400": {
+          "code": "it_sm74_524_00_0",
+          "name": "Luis’ Schlüssel"
+        },
+        "119244800": {
+          "code": "it_sm74_528_00_0",
+          "name": "Kleiner Schlüssel"
+        },
+        "119246400": {
+          "code": "it_sm74_529_00_0",
+          "name": "Kurbel für den Kontrollpunkt"
+        },
+        "119248000": {
+          "code": "it_sm74_530_00_0",
+          "name": "Sechseckiges Teilstück A"
+        },
+        "119249600": {
+          "code": "it_sm74_531_00_0",
+          "name": "Sechseckiges Teilstück B"
+        },
+        "119251200": {
+          "code": "it_sm74_532_00_0",
+          "name": "Sechseckiges Teilstück C"
+        },
+        "119254400": {
+          "code": "it_sm74_534_00_0",
+          "name": "Verliesschlüssel"
+        },
+        "119256000": {
+          "code": "it_sm74_535_00_0",
+          "name": "Alter Wegschrein-Schlüssel"
+        },
+        "119257600": {
+          "code": "it_sm74_536_00_0",
+          "name": "Kircheninsignie"
+        },
+        "119259200": {
+          "code": "it_sm74_537_00_0",
+          "name": "Wasserscooter-Schlüssel"
+        },
+        "119260800": {
+          "code": "it_sm74_538_00_0",
+          "name": "Goldschwert"
+        },
+        "119262400": {
+          "code": "it_sm74_539_00_0",
+          "name": "Eisenschwert"
+        },
+        "119265600": {
+          "code": "it_sm74_541_00_0",
+          "name": "Lithografiestein A"
+        },
+        "119267200": {
+          "code": "it_sm74_542_00_0",
+          "name": "Lithografiestein B"
+        },
+        "119268800": {
+          "code": "it_sm74_543_00_0",
+          "name": "Lithografiestein C"
+        },
+        "119270400": {
+          "code": "it_sm74_544_00_0",
+          "name": "Lithografiestein D"
+        },
+        "119273600": {
+          "code": "it_sm74_546_00_0",
+          "name": "Bootsbenzin"
+        },
+        "119275200": {
+          "code": "it_sm74_547_00_0",
+          "name": "Schlüsselbund"
+        },
+        "119276800": {
+          "code": "it_sm74_548_00_0",
+          "name": "Seltsamer Quader"
+        },
+        "119278400": {
+          "code": "it_sm74_549_00_0",
+          "name": "Blutverschmiertes Schwert"
+        },
+        "119280000": {
+          "code": "it_sm74_550_00_0",
+          "name": "Verrostetes Schwert"
+        },
+        "119281600": {
+          "code": "it_sm74_551_00_0",
+          "name": "Schlüssel der Jagdhütte"
+        },
+        "119283200": {
+          "code": "it_sm74_552_00_0",
+          "name": "Horn eines Einhorns"
+        },
+        "119284800": {
+          "code": "it_sm74_553_00_0",
+          "name": "Blaue Scheibe"
+        },
+        "119286400": {
+          "code": "it_sm74_554_00_0",
+          "name": "Silberner Jeton"
+        },
+        "119288000": {
+          "code": "it_sm74_555_00_0",
+          "name": "Goldener Jeton"
+        },
+        "119289600": {
+          "code": "it_sm74_556_00_0",
+          "name": "Bretter"
+        },
+        "120480000": {
+          "code": "it_sm75_300_00_0",
+          "name": "Jacke"
+        },
+        "120483200": {
+          "code": "it_sm75_302_00_0",
+          "name": "Barett"
+        },
+        "120484800": {
+          "code": "it_sm75_303_00_0",
+          "name": "Haarspange der Haushalterin"
+        },
+        "120486400": {
+          "code": "it_sm75_304_00_0",
+          "name": "Brille"
+        },
+        "120800000": {
+          "code": "it_sm75_500_00_0",
+          "name": "Spinell"
+        },
+        "120801600": {
+          "code": "it_sm75_501_00_0",
+          "name": "Perlenkette"
+        },
+        "120803200": {
+          "code": "it_sm75_502_00_0",
+          "name": "Dreckige Perlenkette"
+        },
+        "120809600": {
+          "code": "it_sm75_506_00_0",
+          "name": "Taschenuhr"
+        },
+        "120812800": {
+          "code": "it_sm75_508_00_0",
+          "name": "Eleganter Haarschmuck"
+        },
+        "120814400": {
+          "code": "it_sm75_509_00_0",
+          "name": "Antike Pfeife"
+        },
+        "120816000": {
+          "code": "it_sm75_510_00_0",
+          "name": "Perlenarmreif"
+        },
+        "120817600": {
+          "code": "it_sm75_511_00_0",
+          "name": "Ring mit rotem Edelstein"
+        },
+        "120819200": {
+          "code": "it_sm75_512_00_0",
+          "name": "Goldarmreif"
+        },
+        "120820800": {
+          "code": "it_sm75_513_00_0",
+          "name": "Iluminados-Anhänger"
+        },
+        "120822400": {
+          "code": "it_sm75_514_00_0",
+          "name": "Spiegel mit Perlen und Rubinen"
+        },
+        "120824000": {
+          "code": "it_sm75_515_00_0",
+          "name": "Goldene Sanduhr"
+        },
+        "120825600": {
+          "code": "it_sm75_516_00_0",
+          "name": "Eleganter Parfumflakon"
+        },
+        "120827200": {
+          "code": "it_sm75_517_00_0",
+          "name": "Elegantes Schachbrett"
+        },
+        "120828800": {
+          "code": "it_sm75_518_00_0",
+          "name": "Zepter"
+        },
+        "120830400": {
+          "code": "it_sm75_519_00_0",
+          "name": "Rubin"
+        },
+        "120832000": {
+          "code": "it_sm75_520_00_0",
+          "name": "Smaragd"
+        },
+        "120833600": {
+          "code": "it_sm75_521_00_0",
+          "name": "Saphir"
+        },
+        "120835200": {
+          "code": "it_sm75_522_00_0",
+          "name": "Gelber Diamant"
+        },
+        "120838400": {
+          "code": "it_sm75_524_00_0",
+          "name": "Alexandrit"
+        },
+        "120840000": {
+          "code": "it_sm75_525_00_0",
+          "name": "Goldplättchen"
+        },
+        "120841600": {
+          "code": "it_sm75_526_00_0",
+          "name": "Goldplättchen (L)"
+        },
+        "120843200": {
+          "code": "it_sm75_527_00_0",
+          "name": "Goldbarren"
+        },
+        "120844800": {
+          "code": "it_sm75_528_00_0",
+          "name": "Götze"
+        },
+        "120846400": {
+          "code": "it_sm75_529_00_0",
+          "name": "Alter Kompass"
+        },
+        "120848000": {
+          "code": "it_sm75_530_00_0",
+          "name": "Justitia-Statue"
+        },
+        "120849600": {
+          "code": "it_sm75_531_00_0",
+          "name": "Rohkristall"
+        },
+        "120851200": {
+          "code": "it_sm75_532_00_0",
+          "name": "Schmuckkäfer"
+        },
+        "120852800": {
+          "code": "it_sm75_533_00_0",
+          "name": "Méndez’ falsches Auge"
+        },
+        "120854400": {
+          "code": "it_sm75_534_00_0",
+          "name": "Goldenes Monokel"
+        },
+        "120856000": {
+          "code": "it_sm75_535_00_0",
+          "name": "Lippenrouge"
+        },
+        "120857600": {
+          "code": "it_sm75_536_00_0",
+          "name": "Roter Beryll"
+        },
+        "120860800": {
+          "code": "it_sm75_538_00_0",
+          "name": "Antike Kamera"
+        },
+        "120864000": {
+          "code": "it_sm75_540_00_0",
+          "name": "Seidenkristall"
+        },
+        "120865600": {
+          "code": "it_sm75_541_00_0",
+          "name": "Zerkratzter Smaragd"
+        },
+        "120867200": {
+          "code": "it_sm75_542_00_0",
+          "name": "Spezialupgrade-Ticket"
+        },
+        "120960000": {
+          "code": "it_sm75_600_00_0",
+          "name": "Spezialupgrade-Ticket (kostenpflichtig)"
+        },
+        "122400000": {
+          "code": "it_sm76_500_00_0",
+          "name": "Elegante Maske"
+        },
+        "122401600": {
+          "code": "it_sm76_501_00_0",
+          "name": "Weinkanne"
+        },
+        "122403200": {
+          "code": "it_sm76_502_00_0",
+          "name": "Schmetterlingslampe"
+        },
+        "122404800": {
+          "code": "it_sm76_503_00_0",
+          "name": "Elegante Krone"
+        },
+        "122406400": {
+          "code": "it_sm76_504_00_0",
+          "name": "Goldluchs"
+        },
+        "122408000": {
+          "code": "it_sm76_505_00_0",
+          "name": "Extravagante Uhr"
+        },
+        "122409600": {
+          "code": "it_sm76_506_00_0",
+          "name": "Prächtiger Armreif"
+        },
+        "122411200": {
+          "code": "it_sm76_507_00_0",
+          "name": "Kelch der Buße"
+        },
+        "122412800": {
+          "code": "it_sm76_508_00_0",
+          "name": "Kunstvolle Halskette"
+        },
+        "122416000": {
+          "code": "it_sm76_510_00_0",
+          "name": "Eleganter Armreif"
+        },
+        "123684800": {
+          "code": "it_sm77_303_00_0",
+          "name": "Karbon-Aktenkoffer"
+        },
+        "123686400": {
+          "code": "it_sm77_304_00_0",
+          "name": "Vintage-Aktenkoffer"
+        },
+        "123688000": {
+          "code": "it_sm77_305_00_0",
+          "name": "Alle Schatzkarten"
+        },
+        "124000000": {
+          "code": "it_sm77_500_00_0",
+          "name": "Peseten"
+        },
+        "124001600": {
+          "code": "it_sm77_501_00_0",
+          "name": "Schutzweste"
+        },
+        "124003200": {
+          "code": "it_sm77_502_00_0",
+          "name": "Schatzkarte: Dorf"
+        },
+        "124004800": {
+          "code": "it_sm77_503_00_0",
+          "name": "Schatzkarte: Burg"
+        },
+        "124006400": {
+          "code": "it_sm77_504_00_0",
+          "name": "Schatzkarte: Insel"
+        },
+        "124160000": {
+          "code": "it_sm77_600_00_0",
+          "name": "Koffererweiterung (7x10)"
+        },
+        "124161600": {
+          "code": "it_sm77_601_00_0",
+          "name": "Koffererweiterung (7x12)"
+        },
+        "124163200": {
+          "code": "it_sm77_602_00_0",
+          "name": "Koffererweiterung (8x12)"
+        },
+        "124164800": {
+          "code": "it_sm77_603_00_0",
+          "name": "Koffererweiterung (8x13)"
+        },
+        "124166400": {
+          "code": "it_sm77_604_00_0",
+          "name": "Koffererweiterung (9x13)"
+        },
+        "124176000": {
+          "code": "it_sm77_610_00_0",
+          "name": "Silberner Aktenkoffer"
+        },
+        "124177600": {
+          "code": "it_sm77_611_00_0",
+          "name": "Schwarzer Aktenkoffer"
+        },
+        "124179200": {
+          "code": "it_sm77_612_00_0",
+          "name": "Lederner Aktenkoffer"
+        },
+        "124321600": {
+          "code": "it_sm77_701_00_0",
+          "name": "Rezeptur: Pistolenmunition"
+        },
+        "124323200": {
+          "code": "it_sm77_702_00_0",
+          "name": "Rezeptur: Flintenmunition"
+        },
+        "124324800": {
+          "code": "it_sm77_703_00_0",
+          "name": "Rezeptur: MP-Munition"
+        },
+        "124326400": {
+          "code": "it_sm77_704_00_0",
+          "name": "Rezeptur: Gewehrmunition"
+        },
+        "124328000": {
+          "code": "it_sm77_705_00_0",
+          "name": "Rezeptur: Magnummunition"
+        },
+        "124329600": {
+          "code": "it_sm77_706_00_0",
+          "name": "Rezeptur: Bolzen"
+        },
+        "124331200": {
+          "code": "it_sm77_707_00_0",
+          "name": "Rezeptur: Bolzen"
+        },
+        "124334400": {
+          "code": "it_sm77_709_00_0",
+          "name": "Rezeptur: Minenaufsätze"
+        },
+        "124336000": {
+          "code": "it_sm77_710_00_0",
+          "name": "Rezeptur: Schwere Granate"
+        },
+        "124337600": {
+          "code": "it_sm77_711_00_0",
+          "name": "Rezeptur: Blendgranate"
+        },
+        "124353600": {
+          "code": "it_sm77_721_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+Gr)"
+        },
+        "124355200": {
+          "code": "it_sm77_722_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+R)"
+        },
+        "124356800": {
+          "code": "it_sm77_723_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+Ge)"
+        },
+        "124358400": {
+          "code": "it_sm77_724_00_0",
+          "name": "Rezeptur: Kräutermischung (R+Ge)"
+        },
+        "124360000": {
+          "code": "it_sm77_725_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+Gr+Gr)"
+        },
+        "124361600": {
+          "code": "it_sm77_726_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+Gr+Ge)"
+        },
+        "124363200": {
+          "code": "it_sm77_727_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+Gr+Ge)"
+        },
+        "124364800": {
+          "code": "it_sm77_728_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+R+Ge)"
+        },
+        "124366400": {
+          "code": "it_sm77_729_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+R+Ge)"
+        },
+        "124368000": {
+          "code": "it_sm77_730_00_0",
+          "name": "Rezeptur: Kräutermischung (Gr+R+Ge)"
+        },
+        "124640000": {
+          "code": "it_sm77_900_00_0",
+          "name": "Accessoire: Haarfarbe (rot)"
+        },
+        "124641600": {
+          "code": "it_sm77_901_00_0",
+          "name": "Accessoire: Haarfarbe (blau)"
+        },
+        "124643200": {
+          "code": "it_sm77_902_00_0",
+          "name": "Accessoire: Brille (Wellington)"
+        },
+        "124644800": {
+          "code": "it_sm77_903_00_0",
+          "name": "Accessoire: Sonnenbrille (Cat-Eye)"
+        },
+        "124646400": {
+          "code": "it_sm77_904_00_0",
+          "name": "Accessoire: Stylische Maske"
+        },
+        "124648000": {
+          "code": "it_sm77_905_00_0",
+          "name": "Set silberner Jetons"
+        },
+        "126880000": {
+          "code": "it_sm79_300_00_0",
+          "name": "Talisman: Ada (Spezial)"
+        },
+        "127200000": {
+          "code": "it_sm79_500_00_0",
+          "name": "Don José"
+        },
+        "127201600": {
+          "code": "it_sm79_501_00_0",
+          "name": "Don Diego"
+        },
+        "127203200": {
+          "code": "it_sm79_502_00_0",
+          "name": "Don Esteban"
+        },
+        "127204800": {
+          "code": "it_sm79_503_00_0",
+          "name": "Don Manuel"
+        },
+        "127206400": {
+          "code": "it_sm79_504_00_0",
+          "name": "Isabel"
+        },
+        "127208000": {
+          "code": "it_sm79_505_00_0",
+          "name": "María"
+        },
+        "127209600": {
+          "code": "it_sm79_506_00_0",
+          "name": "Dr. Salvador"
+        },
+        "127211200": {
+          "code": "it_sm79_507_00_0",
+          "name": "Bella-Schwestern"
+        },
+        "127212800": {
+          "code": "it_sm79_508_00_0",
+          "name": "Don Pedro"
+        },
+        "127214400": {
+          "code": "it_sm79_509_00_0",
+          "name": "Kultist mit Sense"
+        },
+        "127216000": {
+          "code": "it_sm79_510_00_0",
+          "name": "Kultist mit Schild"
+        },
+        "127217600": {
+          "code": "it_sm79_511_00_0",
+          "name": "Kultist mit Armbrust"
+        },
+        "127219200": {
+          "code": "it_sm79_512_00_0",
+          "name": "Kultisten-Anführer"
+        },
+        "127220800": {
+          "code": "it_sm79_513_00_0",
+          "name": "Soldat mit Dynamit"
+        },
+        "127222400": {
+          "code": "it_sm79_514_00_0",
+          "name": "Soldat mit Elektrostab"
+        },
+        "127224000": {
+          "code": "it_sm79_515_00_0",
+          "name": "Soldat mit Hammer"
+        },
+        "127225600": {
+          "code": "it_sm79_516_00_0",
+          "name": "J. J."
+        },
+        "127227200": {
+          "code": "it_sm79_517_00_0",
+          "name": "Leon mit Pistole"
+        },
+        "127228800": {
+          "code": "it_sm79_518_00_0",
+          "name": "Leon mit Flinte"
+        },
+        "127230400": {
+          "code": "it_sm79_519_00_0",
+          "name": "Leon mit Raketenwerfer"
+        },
+        "127232000": {
+          "code": "it_sm79_520_00_0",
+          "name": "Händler"
+        },
+        "127233600": {
+          "code": "it_sm79_521_00_0",
+          "name": "Ashley Graham"
+        },
+        "127235200": {
+          "code": "it_sm79_522_00_0",
+          "name": "Luis Sera"
+        },
+        "127236800": {
+          "code": "it_sm79_523_00_0",
+          "name": "Ada Wong"
+        },
+        "127238400": {
+          "code": "it_sm79_524_00_0",
+          "name": "Huhn"
+        },
+        "127240000": {
+          "code": "it_sm79_525_00_0",
+          "name": "Forellenbarsch"
+        },
+        "127241600": {
+          "code": "it_sm79_526_00_0",
+          "name": "Riesenkäfer"
+        },
+        "127243200": {
+          "code": "it_sm79_527_00_0",
+          "name": "Iluminados-Wappen"
+        },
+        "127244800": {
+          "code": "it_sm79_528_00_0",
+          "name": "Striker"
+        },
+        "127246400": {
+          "code": "it_sm79_529_00_0",
+          "name": "Niedlicher Bär"
+        }
+      },
+      "uuid": "4C4C44CF-5555-3144-A161-D64EFB82E79F",
+      "weapons": {}
+    },
+    "re7": {
+      "items": {
+        "ChainCutter": {
+          "code": "ChainCutter",
+          "name": "Bolzenschneider"
+        },
+        "Chapter1Map": {
+          "code": "Chapter1Map",
+          "name": "Karte des Gästehauses"
+        },
+        "Depressant": {
+          "code": "Depressant",
+          "name": "Stabilisierer"
+        },
+        "FoundFootage000": {
+          "code": "FoundFootage000",
+          "name": "\"Verfallenes Haus\""
+        },
+        "FoundFootage030": {
+          "code": "FoundFootage030",
+          "name": "\"Mia\""
+        },
+        "FoundFootage040": {
+          "code": "FoundFootage040",
+          "name": "\"Happy Birthday\""
+        },
+        "Fuse": {
+          "code": "Fuse",
+          "name": "Sicherung"
+        },
+        "HandCutOff": {
+          "code": "HandCutOff",
+          "name": "Hand"
+        },
+        "MiaDriversLicense": {
+          "code": "MiaDriversLicense",
+          "name": "Führerschein"
+        },
+        "RemedyL": {
+          "code": "RemedyL",
+          "name": "Starke Erste-Hilfe-Arznei"
+        },
+        "RemedyM": {
+          "code": "RemedyM",
+          "name": "Erste-Hilfe-Arznei"
+        },
+        "Stimulant": {
+          "code": "Stimulant",
+          "name": "Steroide"
+        }
+      },
+      "uuid": "4C4C4466-5555-3144-A1F6-0D461A1E2960",
+      "weapons": {}
+    },
+    "re8": {
+      "items": {},
+      "uuid": "4C4C44EB-5555-3144-A1A1-B2C9A3FC8945",
+      "weapons": {}
+    }
+  },
+  "source": "Installed macOS game type database and German game message archives; only unique native IDs with valid game text.",
+  "version": 1
+}

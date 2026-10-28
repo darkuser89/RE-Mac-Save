@@ -1,0 +1,84 @@
+# Resident Evil Save Editor für macOS
+
+Eigenständige native App für die lokalen Spielstände der Mac-Versionen von Resident Evil 2, 3, 4, 7 und Village einschließlich Rose. Keine Netzwerkverbindung oder Python-Pakete erforderlich.
+
+## Bearbeitbare Werte
+
+| Spiel | Felder, soweit im gewählten Save eindeutig vorhanden |
+| --- | --- |
+| RE2 | Spieler-Gesundheit, Itembox und Heilgegenstände, vier Spieluhr-Komponenten, besiegte Gegner, Gegenangriffe, eingesteckte Treffer, Speicherungen, Rangwert, Aufnahmezähler sowie gefundene Dokumente und 15 Mr.-Raccoon-Figuren in den Systemdaten |
+| RE3 | Shop-Punkte, Itembox und Heilgegenstände, vier Spieluhr-Komponenten, besiegte Gegner, Gegenangriffe, eingesteckte Treffer, Speicherungen, Tode, Rangwert sowie Nemesis-, Ausweich-, Erbrechens- und Aufnahmezähler; gefundene Dokumente, 20 Charlie-Figuren und 20 Schloss-Flags in den Systemdaten; Gesundheit nur bei eindeutigem Spieler-Datensatz |
+| RE4 | Peseten, Bonuspunkte (CP), Speicherungen, vier Komponenten der Kampagnenuhr sowie Ranganteile für Aktionen/Gegenstände und Rang-Gegnerzähler; 16 Aufzieh-Kastellane in den Systemdaten |
+| RE7 | Spielzeit, Neustarts und Rangwert; bei eindeutiger Zuordnung außerdem Gesundheit sowie Zähler für Itembox, antike Münzen, Heilgegenstände, Stabilisatoren, Steroide und perfekte Blocks; 20 Mr.-Everywhere-Figuren einzeln in den Systemdaten schaltbar |
+| Village | Lei, Bonuspunkte (CP), Gesundheit, Tode, Rangwert, Abschlüsse, ausgegebene Lei, Herstellungen, systemweite Lei- und Abschlusszähler sowie aktive Spieluhr samt Pausenanteil |
+| Rose | Gesundheit, Tode, Kraftenergie, Rangwert, Abschlüsse und aktive Rose-Spieluhr samt Pausenanteil |
+
+## Gegenstände
+
+Bei belegten Inventarplätzen zeigt der Editor den deutschen Gegenstandsnamen, die gespeicherte ID und die Menge. Die Namen stammen aus den Typdatenbanken und deutschen Textarchiven der installierten Mac-Spiele. Für RE2, RE3 und RE4 sind 131, 84 beziehungsweise 217 Gegenstands-IDs und zusätzlich 34 beziehungsweise 19 Waffen-IDs für RE2/RE3 eindeutig benannt. RE7 hat bisher 12 eindeutig verbundene Text-IDs. Nicht zugeordnete Einträge heißen „Unbekannter Gegenstand“; ihre ursprüngliche ID bleibt sichtbar. Village verwendet Hash-IDs, für die noch keine belastbare Verbindung zu einem deutschen Spieltext bestätigt ist.
+
+Für einfache Gegenstände in RE2 und RE3 können ID und Menge geändert werden. Bei einer vorgemerkten ID-Änderung aktualisiert sich der angezeigte Name sofort, sofern die neue ID bekannt ist. Neue IDs werden auf den aus den installierten Mac-Builds bestätigten Bereich geprüft (RE2: 1–297, RE3: 1–321). Bereits vorhandene Plätze können umgewidmet werden; leere Plätze und Waffen bleiben gesperrt. Bei RE4, RE7 und Village sind eindeutig zugeordnete Stapelmengen bearbeitbar, die IDs werden angezeigt. RE7 verwendet Text-IDs; Village hält zusätzlich Kategorie und Objekt-ID vor. Ein freier ID-Wechsel dieser Einträge ist noch nicht als spielkompatibel bestätigt.
+
+RE2 erkennt die gespeicherte Schwierigkeit aus dem Spielstandkopf und zeigt „Hardcore“ für den nativen Wert `HARD = 2`. Inventar und Itembox werden getrennt angezeigt. Bereits belegte einfache Itembox-Plätze in RE2 und RE3 erlauben ID- und Mengenänderungen; leere Plätze und Waffen bleiben gesperrt. Änderungen einfacher RE2/RE3-Inventargegenstände werden in beiden gespeicherten Inventarständen gemeinsam vorgenommen.
+
+Die lesende RE2-Kostümprüfung vom 28. Oktober 2026 fand in `data00-1.bin` unter `SystemSaveDataList` vier `CostumeID`-Werte in `UserCostumeDataList` (13, 16, 13, 16) und 72 weitere Einträge in `CheckedCostumeDataList`. In `data001Slot.bin` stehen unter `GameSaveDataList` fünf `CostumeID`-Werte in `ScenarioCostumeDataList` (0, 3, 2, 1, 1) und drei `CostumeType`-Werte in `ActorContextList` (0, 2, 0). `data002Slot.bin` enthält vier beziehungsweise einen entsprechenden Wert. Der Autosave enthält nur einen `CostumeType`-Wert. Die Kennungen stammen aus dem installierten RE2-Build; welche davon die aktuell getragene Kleidung beziehungsweise die Freischaltung darstellen, ist ohne Vergleichssaves nach einem gezielten Kostümwechsel nicht eindeutig belegt. Daher bietet der Editor dafür derzeit keine Schreibschalter an. Die Diagnose steht im JSON-Bericht der Funktion „Saves dieses Spiels prüfen“ als `costumeFieldProbe`.
+
+Die RE2- und RE3-Systemdateien enthalten jeweils 90 Fundflags für Dokumente. ID 0 ist ungültig. Im installierten Spiel liegen für RE2 64 und für RE3 71 verwendbare deutsche Dokumenttitel vor; diese zeigt der Editor mit einzelnem „gefunden“-Schalter und Suchfeld. IDs mit leeren oder verworfenen Texten bleiben gesperrt. Der Editor ändert ausschließlich das jeweils ausgewählte Bool-Feld in der lokalen Systemdatei. Ein Spieltest mit bearbeiteter Originaldatei steht noch aus.
+
+RE2 speichert die zerstörten Mr.-Raccoon-Figuren ebenfalls in den spielstandübergreifenden Systemdaten. Der Editor zeigt die 15 Figuren einzeln mit ihrer internen ID 0–14 und einem Ein/Aus-Schalter. Die lokale Systemdatei vom 28. Oktober 2026 enthält vier gesetzte IDs: 2, 3, 4 und 6. Weitere fünf interne Array-Plätze werden nicht als Hauptspiel-Figuren angeboten. Ein/Aus-Änderungen werden erst beim Speichern geschrieben. Der verschlüsselte Datei-Roundtrip und temporäre Schreibtests sind geprüft; eine im Spiel geladene bearbeitete Originaldatei ist noch nicht getestet.
+
+RE3 speichert im `GimmickDialLockManager` ein Array von 20 Schloss-Flags. Die lokale Systemdatei vom 26. Oktober 2026 enthält 20 gesetzte Flags. Der Editor zeigt die internen IDs 0–19 mit Ein/Aus-Schaltern. Einzelne IDs sind noch keinem Ort oder konkreten Schloss zugeordnet. Die Änderungen werden erst beim Speichern in die lokale Systemdatei übernommen; die Ladeprüfung einer bearbeiteten Originaldatei im Spiel steht aus.
+
+RE3 speichert die Charlie-Figuren getrennt davon im `EsGimmickBobbingHeadManager` unter `BobbingHeadDataList`. Der Editor zeigt die 20 internen IDs 0–19 mit einzelnen Ein/Aus-Schaltern in den lokalen Systemdaten. Im lokalen Systemsave vom 26. Oktober 2026 sind 16 Figuren als zerstört markiert; offen sind die IDs 11, 12, 17 und 19. Alle 20 Einzelfelder bestanden den Rückschreibtest auf temporären Dateien. Eine Änderung wird erst nach dem Speichern in die lokale Systemdatei übernommen; ein Spieltest mit einer bearbeiteten Originaldatei steht noch aus.
+
+RE4 speichert die 16 Aufzieh-Kastellane im `GameStatsManager.SystemSaveData` als `_ChapterFigures` mit Kapitel-ID und `_HasBrokenFigure` je Eintrag. Im vorhandenen lokalen Systemsave sind alle 16 Statuswerte aus. Der Editor zeigt für jede Figur einen einzelnen Ein/Aus-Schalter. Jeder der 16 Werte wurde am echten Save einzeln in einer nur temporär erzeugten verschlüsselten Fassung geändert und zurückgelesen; der Original-Save blieb unverändert. Ein Spieltest mit einer bearbeiteten Originaldatei steht noch aus.
+
+RE7 führt in `app.SystemData.EasterEggSaveDataList` eine variable Liste von 16-Byte-GUIDs. Die vorhandene lokale Systemdatei enthält derzeit null Einträge. Aus den installierten RE7-Szenen wurden 20 Objekte mit `app.BlueCoin` und einem benachbarten `app.OtherObjectSave.SaveGUID` identifiziert. Die Typdaten des installierten Builds deklarieren `EasterEggSaveDataList` als `List<System.Guid>`. Ein erneuter Abgleich mit 337 lokalen Hauptspiel-Itemset-Szenen fand jede der 20 Kennungen genau einmal. Ein zusätzliches Fußballpuppen-Objekt hat keine `app.BlueCoin`-Komponente und wird ausgeschlossen. Der Editor zeigt alle 20 Figuren nach Gebiet mit Ein/Aus-Schaltern an und schreibt die gewählten GUIDs nur bei explizitem Speichern in die lokale Systemdatei. Unbekannte gespeicherte Kennungen sperren die Bearbeitung. Der strukturelle und verschlüsselte Neuaufbau wurde an der echten lokalen Systemdatei mit einer Figur und allen 20 Figuren auf kurzlebigen Testdateien geprüft; beim Ausschalten aller 20 entstand die bytegenaue ursprüngliche Nutzdatenstruktur. Das Original blieb unverändert. Ein Vorher/Nachher-Save nach Abschuss einer Figur und eine im Spiel geladene bearbeitete Originaldatei wurden noch nicht geprüft. Die Nummern 01–20 sind eine Editor-Reihenfolge nach Gebiet und keine offiziellen Figuren-Nummern.
+
+RE4, RE7 und Village speichern die Dokumente anders: RE4 führt eine variable Leseliste in den Systemdaten, RE7 eine variable Liste gefundener Text-IDs im jeweiligen Spielstand und Village eine variable Liste vorhandener Hash-IDs. Für RE4 sind 53 Titel des Hauptspiels und für RE7 110 Titel einschließlich DLC aus den installierten deutschen Spieltexten zugeordnet. Village verbindet 56 Hauptspiel-IDs und 36 Rose-IDs über die installierten Dateikataloge mit deutschen Titeln. Die zugeordneten Einträge lassen sich als Schalter vormerken; unbekannte IDs bleiben lesbar und unverändert. Bei RE4 steht ein Schalter für „gelesen“ in den Systemdaten, nicht für „gefunden“ im Spielstand. Bei Village kann ein neuer Eintrag nur hinzugefügt werden, wenn der gewählte Save einen vorhandenen Dokumenteintrag als Strukturvorlage enthält. Eine vorhandene `IsNew`-Markierung wird nicht als Fundstatus ausgegeben.
+
+Der Editor baut diese variablen Listen beim Speichern neu auf, prüft die gesamte entschlüsselte Struktur, die Ziel-IDs und alle anderen gelesenen Feldwerte und ersetzt erst danach die lokale Originaldatei. Die Schreibprüfung wurde bisher ausschließlich mit temporären Dateien ausgeführt; ein bearbeiteter Original-Save wurde noch nicht im Spiel geladen.
+
+Systemdaten, automatische Saves und manuelle Slots enthalten unterschiedliche Daten. Die Oberfläche zeigt nur tatsächlich zugeordnete Felder. Ein Save kann vollständig lesbar sein und trotzdem keine freigegebenen Editierfelder enthalten. Wiederholte Spieler-Datensätze, NPC-Werte und Freischaltungen werden nicht anhand ihrer Position oder ihres Zahlenwerts geraten. Statistik- und Rangzähler erzeugen keine Gegenstände, Upgrades oder Freischaltungen.
+
+Die Suche zeigt ausschließlich lokale `data*.bin`-Einzeldateien im `SaveData`-Ordner des jeweiligen Spielcontainers. iCloud-Orte und als iCloud-Datei gekennzeichnete Ziele, PACK-Dateien, andere Spielcontainer und symbolische Links sind als Bearbeitungsziele ausgeschlossen. Ein manuell freigegebener Ordner muss innerhalb des zugehörigen lokalen Spielcontainers liegen.
+
+## Benutzung
+
+1. Spiel vollständig beenden.
+2. Spiel links auswählen. Falls nötig, über „Lokalen Ordner freigeben …“ den lokalen `SaveData`-Ordner auswählen.
+3. Spielstand beziehungsweise Systemdaten auswählen und Werte ändern. Belegte Inventarplätze stehen unter „Gegenstände im Spielstand“. Die Vorschau zeigt alle geplanten Änderungen; „Änderungen verwerfen“ verwirft nur die Eingaben.
+4. Zum vollständigen Zurücksetzen der Spieluhr „Spielzeit auf 0 vormerken“ verwenden. Dadurch werden auch die zugeordneten Zeitanteile berücksichtigt. Die Werte werden erst beim Speichern übernommen.
+5. „Lokalen Spielstand speichern“ ersetzt direkt die ausgewählte Originaldatei. Pfad, Dateiname und Konto-Zuordnung bleiben erhalten. Es gibt keinen Save-Export und keine manuell zu importierende Kopie.
+6. Spiel starten und den bearbeiteten lokalen Spielstand laden.
+
+Ganzzahlige Zeitwerte werden ohne Verlust ihrer Mikrosekunden verarbeitet. Float- und Double-Werte behalten ihren gespeicherten Datentyp. Dezimalkomma und Dezimalpunkt sind erlaubt. Negative Werte, Überläufe und nicht endliche Zahlen werden abgelehnt. Gesamt-Spieluhr und Zeitanteile müssen zusammenpassen.
+
+Vor dem Schreiben prüft die App den lokalen Originalpfad, den Spielprozess und den seit dem Einlesen gespeicherten SHA-256-Fingerabdruck. Sie bereitet die neue Datei im selben Verzeichnis vor, prüft sie vollständig und tauscht sie atomar gegen die bestehende Datei aus. Scheitert die Rückprüfung, wird die ursprüngliche Datei zurückgetauscht, sofern inzwischen kein weiterer Schreiber eingegriffen hat. In diesem Ausnahmefall bleibt die notwendige Wiederherstellungsdatei erhalten und ihr Pfad wird angezeigt. Normalerweise wird der kurze Austauschbestand entfernt; es entstehen keine dauerhaften Sicherungskopien.
+
+„Saves dieses Spiels prüfen“ prüft die gefundenen lokalen Dateien des ausgewählten Spiels sowie deren freigegebene Feldänderungen. „Alle fünf Spiele prüfen“ führt dieselbe Prüfung für alle gefundenen Dateien aus; „Ausgewählten Save prüfen“ beschränkt sie auf die markierte Datei. Schreib- und Rücknahmetests verwenden kurzlebige Testdateien außerhalb der Spielcontainer. Original-Saves werden dabei nur gelesen. „Fundliste exportieren“ erzeugt lediglich eine JSON-Dateiliste, keinen Save-Export. Prüfberichte und Fundlisten dürfen nicht in Saveordnern abgelegt werden.
+
+Am 28. Oktober 2026 wurden alle 26 derzeit gefundenen lokalen Dateien geprüft: RE2 5/5 mit 252 Feldtests, RE3 4/4 mit zunächst 358, RE4 3/3 mit 35, RE7 8/8 mit 36 und Village 6/6 mit 32. Mit den Charlie-Schaltern wurden anschließend alle vier RE3-Dateien erneut geprüft: 378 Feldtests, davon 20 Charlie-Flags. Alle Dateien bestanden die Entschlüsselungs- und Rückschreibprüfung; die Originaldateien blieben unverändert. Dieser Test bestätigt die erkannten Felder und die temporäre Schreibtechnik, nicht die Wirkung eines bearbeiteten Saves nach dem Laden im Spiel. Die RE3-Schloss- und Charlie-Flags wurden an der echten Systemdatei einzeln zurückgelesen. Die 16 RE4-Kastellanen-Flags wurden anschließend einzeln an der echten Systemdatei temporär geändert und zurückgelesen. In der RE7-Systemdatei wurde die leere `EasterEggSaveDataList` bestätigt.
+
+Eine Ladeprüfung bearbeiteter Saves im Spiel steht noch aus. Bestätigte Prüfergebnisse liegen getrennt vom Code unter `../RESaveEditor-Pruefung`.
+
+## Build
+
+Apple Silicon, macOS 14+, Xcode Command Line Tools.
+
+```sh
+./script/build_and_run.sh
+./script/build_and_run.sh --build-only
+```
+
+Die aktuelle App und Module liegen ausschließlich unter `../RESaveEditorBuild`. Die vier spielgebundenen, aus den installierten Mac-Builds bestätigten Save-Schlüssel liegen als App-Ressource unter `Resources/VerifiedSaveKeys.json`, damit ein frischer Checkout ohne lokale Spielinstallation gebaut werden kann. Es sind keine Benutzer- oder Accountschlüssel. `Diagnostics/SaveKeyReadProbe.m` und `Diagnostics/run_read_probe.py` sind Hilfswerkzeuge für die ausdrücklich freizugebende lesende Analyse eines genauen installierten Spielbuilds. Das normale Buildskript startet keine Spiele und führt keine Bibliotheksinjektion aus.
+
+Das Skript prüft Zahlenformate, den großen RE7-Byteblock, Schlüsselzuordnung, lokale Schreibziele und bestehende lokale RE4-Saves ausschließlich lesend. Alle Schreib-, Rücknahme- und Konflikttests verwenden temporäre Dateien. Fehlen die Testdaten oder schlägt ein Test fehl, wird die vorherige App beibehalten. Die zusätzliche Prüfung in der App verwendet deren regulär freigegebene Ordnerzugriffe für alle Spiele.
+
+GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.3` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
+
+Der Codex-Run-Button verwendet dasselbe Skript. Optionale Modi: `--verify`, `--logs`, `--telemetry`, `--debug` (LLDB nur für den Editor).
+
+## Formatquelle
+
+Die DSSS- und Serializer-Implementierung basiert auf der öffentlich dokumentierten Arbeit von [Gabriele Dragotto](https://github.com/gdragotto/re4-mac-save-editor). Die MIT-Lizenz liegt unter `ThirdParty/RE4MacFormat-LICENSE` und wird in die App übernommen. Die zusätzlichen Schlüssel und Schema-Zuordnungen stammen aus der lesenden Prüfung der installierten Mac-Builds. Trainer, Originalspiele und `mactrainertemplate` werden nicht verändert.
