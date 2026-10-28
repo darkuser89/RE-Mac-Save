@@ -10,6 +10,27 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(names.entry(gameID:"re4",itemID:"112800000")?.name=="Pistolenmunition","RE4-Name aus Spieltext")
     check(names.entry(gameID:"re7",itemID:"MiaDriversLicense")?.name=="Führerschein","RE7-Name aus Spieltext")
     check(names.entry(gameID:"re8",itemID:"1179972000")==nil,"Unbekannte Village-ID bleibt ohne geratenen Namen")
+    let re2FieldNames=try RE2FieldNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FIELD_NAMES"]!))
+    check(re2FieldNames.count==268 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"],"Alle beobachteten RE2-Feldnamen aus installiertem Build")
+    check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")
+    func re2StatusFields(_ owner:String,_ name:String,_ count:Int,_ set:Set<Int>) -> [SaveScalar] {
+        let ownerHash=SaveCrypto.murmur(Data(owner.utf8)),fieldHash=SaveCrypto.murmur(Data(name.utf8))
+        return (0..<count).map {index in
+            SaveScalar(id:index,owner:ownerHash,field:fieldHash,type:2,offset:index,size:1,
+                       path:"/\(String(format:"%08x",ownerHash)).\(String(format:"%08x",fieldHash))[\(index)]",
+                       text:set.contains(index) ? "true":"false")
+        }
+    }
+    let re2Game=GameProfile.all.first{$0.id=="re2"}!
+    let re2System=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data00-1.bin"),size:0,modified:Date(),kind:"DSSS")
+    let re2Campaign=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data001Slot.bin"),size:0,modified:Date(),kind:"DSSS")
+    let re2ItemOwner="app.ropeway.gamemastering.ItemManager.SystemSaveData"
+    let re2SystemStatus=re2StatusFields(re2ItemOwner,"GetItemList",297,[15,32])+re2StatusFields(re2ItemOwner,"GetWeaponList",383,[9])
+    let systemHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2System,fields:re2SystemStatus,names:names)
+    check(systemHistory.count==2 && systemHistory[0].recorded.map(\.name)==["Pistolenmunition","Farbband"] && systemHistory[1].recorded.map(\.name)==["SLS 60"],"RE2-Systemstatus zeigt benannte Gegenstände und Waffen nach nativer ID")
+    let searchedStatus=re2StatusFields("app.ropeway.gamemastering.ItemManager.SaveData","IsSearchedItem",297,[87,102])
+    let campaignHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2Campaign,fields:searchedStatus,names:names)
+    check(campaignHistory.count==1 && campaignHistory[0].recorded.map(\.name)==["S.T.A.R.S.-Abzeichen","USB-Dongle"],"RE2-Untersuchungsstatus wird spielstandgebunden angezeigt")
     let re2Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FILE_NAMES"]!))
     check(re2Files.count==64 && re2Files[1]=="Ereignisbericht" && re2Files[89]==nil,"RE2-Dokumenttitel aus lokalen Spieltexten; interne Leer-IDs ausgeschlossen")
     let re3Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE3_FILE_NAMES"]!))

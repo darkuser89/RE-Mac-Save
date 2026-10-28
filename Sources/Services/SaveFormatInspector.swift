@@ -215,7 +215,9 @@ enum SaveFormatInspector {
         }
         return groups.keys.sorted().map {key in
             let group=groups[key]!
-            return ["signature":key,"count":group.count,"values":group.values,
+            let parts=key.split(separator:".")
+            let names=parts.count==4 ? RE2FieldNameCatalog.names(for:UInt32(parts[1],radix:16) ?? 0):[]
+            return ["signature":key,"fieldNameCandidates":names,"count":group.count,"values":group.values,
                     "valuesTruncated":group.truncated,"samplePaths":group.paths] as [String:Any]
         }
     }

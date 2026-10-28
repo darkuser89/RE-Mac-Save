@@ -1,0 +1,807 @@
+{
+  "00cc4004": [
+    "PresetEventIDList"
+  ],
+  "012dbe79": [
+    "_State"
+  ],
+  "019dd106": [
+    "JointHash"
+  ],
+  "02c14b7f": [
+    "_InventorySpendingTime"
+  ],
+  "05b7e567": [
+    "FirstSaveTicks"
+  ],
+  "06d67c96": [
+    "IsCheckedNewMark_NewGamePlus"
+  ],
+  "097daf55": [
+    "OpenItemBox"
+  ],
+  "0a877d59": [
+    "EventMode"
+  ],
+  "0b2c71ab": [
+    "State"
+  ],
+  "0b3c4ba2": [
+    "ContactCount"
+  ],
+  "0c6dbd95": [
+    "_GameElapsedTime"
+  ],
+  "0cfbd6fd": [
+    "HasUsed"
+  ],
+  "0cfef676": [
+    "DefeatEnemyCount_Training"
+  ],
+  "0d28cf86": [
+    "HasMedal"
+  ],
+  "100af1db": [
+    "isKnifeOnly"
+  ],
+  "112d69f0": [
+    "WeaponType"
+  ],
+  "155beaf4": [
+    "DamageCount"
+  ],
+  "159b9908": [
+    "IsCheckedNewMark_Costume_Pause"
+  ],
+  "160f9dd8": [
+    "AppleIdToken"
+  ],
+  "163e62db": [
+    "_isNoticeOmakeItems"
+  ],
+  "16dc613f": [
+    "isFirst"
+  ],
+  "173359de": [
+    "UseSpecialWeapon"
+  ],
+  "18d0f1b5": [
+    "IsOpenedPopup_AddScenarioD"
+  ],
+  "197e74eb": [
+    "UserAge"
+  ],
+  "1c80bbd4": [
+    "GetKeyWeaponEffect"
+  ],
+  "1cc867bd": [
+    "FirstRevivalFlag"
+  ],
+  "1e8a00fc": [
+    "FlagOld"
+  ],
+  "206a372a": [
+    "IsClearedRogueRecord"
+  ],
+  "2294e392": [
+    "IsAddRankItem"
+  ],
+  "233fcedc": [
+    "UseHealItem"
+  ],
+  "237d07e3": [
+    "Enable"
+  ],
+  "25c2d360": [
+    "GetWeaponList"
+  ],
+  "27655884": [
+    "ScenarioTypeValue"
+  ],
+  "27945a5a": [
+    "Slot"
+  ],
+  "27aa8d6d": [
+    "CurrentSlotSize"
+  ],
+  "2853ffc8": [
+    "HatDropFlag"
+  ],
+  "285ef60e": [
+    "IsOpenedPopUp_ExtraContentsNotice"
+  ],
+  "289487cf": [
+    "Map"
+  ],
+  "28afc296": [
+    "FirstSavedTimeStamp"
+  ],
+  "28dbcae5": [
+    "U32"
+  ],
+  "2a7c5f52": [
+    "Hash"
+  ],
+  "2a88b015": [
+    "SceneID"
+  ],
+  "2c0af612": [
+    "CounterAttackNumber"
+  ],
+  "2c328e25": [
+    "TotalMovingDistance"
+  ],
+  "2d1b0261": [
+    "StateGroupId"
+  ],
+  "2dd8301c": [
+    "UseAimAssist"
+  ],
+  "2df7399c": [
+    "S32"
+  ],
+  "2f8ff4e8": [
+    "_SurvivorType"
+  ],
+  "3156515d": [
+    "GameRank"
+  ],
+  "341bca35": [
+    "GameStartTicks"
+  ],
+  "375dc4ac": [
+    "F32"
+  ],
+  "3a3cf4e2": [
+    "_LastWeaponType"
+  ],
+  "3d1bdd3b": [
+    "ChangedItemText"
+  ],
+  "3d760a06": [
+    "InsertCount"
+  ],
+  "3f1ed9c7": [
+    "DopingTimer"
+  ],
+  "40c705b2": [
+    "Rot"
+  ],
+  "41a3979a": [
+    "_Hash"
+  ],
+  "42978901": [
+    "FireCount"
+  ],
+  "43e70a65": [
+    "InitialCount"
+  ],
+  "45d1e5d6": [
+    "InheritID"
+  ],
+  "45d6a506": [
+    "IsClearedTypeScenarioC"
+  ],
+  "46d36499": [
+    "Single"
+  ],
+  "473c89b8": [
+    "RogueClearTime_Normal"
+  ],
+  "48021a68": [
+    "isInit"
+  ],
+  "4960c984": [
+    "optionData"
+  ],
+  "4e15e8cc": [
+    "SleepTimer"
+  ],
+  "4feb58fb": [
+    "openedFloor"
+  ],
+  "50296859": [
+    "IsWeaponEquip"
+  ],
+  "506e330d": [
+    "PosNum"
+  ],
+  "5153b14e": [
+    "IsNewReward"
+  ],
+  "51a4e2d7": [
+    "LastReNetOnTicks"
+  ],
+  "52c60d74": [
+    "IsClearedRogueGame_Training"
+  ],
+  "548f9e9c": [
+    "KnifeList"
+  ],
+  "5507376f": [
+    "OrderID"
+  ],
+  "57272835": [
+    "IsFirstSDR"
+  ],
+  "58d3a59f": [
+    "IsInitialize"
+  ],
+  "5b46f41d": [
+    "_MapId"
+  ],
+  "5bea15fd": [
+    "CostumeType"
+  ],
+  "5c594c88": [
+    "nowTop"
+  ],
+  "5de339c1": [
+    "IsFirstPlayLeon"
+  ],
+  "5f104503": [
+    "BirthedTime"
+  ],
+  "5f8880f7": [
+    "VolumeSize"
+  ],
+  "5faed21b": [
+    "TransformData"
+  ],
+  "61c13c26": [
+    "SurvivorType"
+  ],
+  "61ca51b7": [
+    "_DemoSpendingTime"
+  ],
+  "61f0e00d": [
+    "mapDispState"
+  ],
+  "6225a625": [
+    "defaultData"
+  ],
+  "6281ff40": [
+    "RecordProgressNumber"
+  ],
+  "6394eb5d": [
+    "EnableCharacterController"
+  ],
+  "6686824e": [
+    "CostumeID"
+  ],
+  "67406290": [
+    "SurvivorTypeValue"
+  ],
+  "678ac761": [
+    "_IsBarricade"
+  ],
+  "6a31ea8b": [
+    "NumberOfRecord053"
+  ],
+  "6a65b5e2": [
+    "CeroType"
+  ],
+  "6ae87830": [
+    "IsCustomWeaponEffect"
+  ],
+  "6bde6374": [
+    "isUse"
+  ],
+  "6f7addc0": [
+    "GetFileList"
+  ],
+  "724f4e9a": [
+    "WeaponParts"
+  ],
+  "727f8e15": [
+    "GetItemList"
+  ],
+  "72d67fba": [
+    "StateName"
+  ],
+  "7312eccd": [
+    "UseWeapons"
+  ],
+  "740044e0": [
+    "LastSavedTimeTicks"
+  ],
+  "74077bc9": [
+    "_Type"
+  ],
+  "74ef00bd": [
+    "_Index"
+  ],
+  "7515fb99": [
+    "MapID"
+  ],
+  "75f57c2b": [
+    "ActionCount"
+  ],
+  "7629b39d": [
+    "WeaponId"
+  ],
+  "78c63b47": [
+    "IsSpecialClearedRogue"
+  ],
+  "78dff3cc": [
+    "_SystemElapsedTime"
+  ],
+  "79ec5683": [
+    "_isAddExItemNotice"
+  ],
+  "7aacced4": [
+    "IsOpenedPopUp_TofuCharacter"
+  ],
+  "7c4b51df": [
+    "String"
+  ],
+  "7cca78f4": [
+    "IsClearedRogueGame_Normal"
+  ],
+  "7df46d91": [
+    "ClearTime"
+  ],
+  "7fd1e77c": [
+    "LatestGameId"
+  ],
+  "818851d7": [
+    "IsCheckedTutorial_Shop"
+  ],
+  "81e2d5fd": [
+    "CurrentProgress"
+  ],
+  "828559f4": [
+    "ActivePartner"
+  ],
+  "83518674": [
+    "IsInitialSet"
+  ],
+  "83abbc97": [
+    "IsClearedGame"
+  ],
+  "85b7a38b": [
+    "Count"
+  ],
+  "8686be8a": [
+    "IsOpenedPopUp_Costume_Scenario"
+  ],
+  "87be0fd2": [
+    "Location"
+  ],
+  "8936fe38": [
+    "IsCheckedAutoUnlockTrophy"
+  ],
+  "89855b15": [
+    "_isValidOmakeItems"
+  ],
+  "8b2aba43": [
+    "BulletId"
+  ],
+  "8d6fd69e": [
+    "IsCheckedNewMark_Costume_Scenario"
+  ],
+  "8ef1c737": [
+    "mapScale"
+  ],
+  "8f12f9a1": [
+    "HasBrokenMotor"
+  ],
+  "906a726f": [
+    "IsOpenedPopUp_Weapon"
+  ],
+  "91478052": [
+    "Bool"
+  ],
+  "927192e9": [
+    "CurIndex"
+  ],
+  "929736f7": [
+    "ScenarioNo"
+  ],
+  "92e1dc0b": [
+    "RogueClearTime_Training"
+  ],
+  "93832127": [
+    "DisorderBits"
+  ],
+  "93d79121": [
+    "DebugTrace"
+  ],
+  "953b8642": [
+    "Done"
+  ],
+  "98b8134d": [
+    "Name"
+  ],
+  "98b8e674": [
+    "EjectCount"
+  ],
+  "992c5ba9": [
+    "OrderIndex"
+  ],
+  "99a3d051": [
+    "Poison"
+  ],
+  "99d5c1af": [
+    "EyeBroken"
+  ],
+  "9a229766": [
+    "isInitGear"
+  ],
+  "9bba0ccb": [
+    "Test"
+  ],
+  "9bf0c234": [
+    "AreaID"
+  ],
+  "9c4656f9": [
+    "GameId"
+  ],
+  "9d58d1c7": [
+    "id"
+  ],
+  "9f1786c5": [
+    "RogueRaccoonFigureCount"
+  ],
+  "9f595148": [
+    "MotionID"
+  ],
+  "9f77e6bc": [
+    "DeadMotionID"
+  ],
+  "9faad140": [
+    "IsSearchedItem"
+  ],
+  "9fded2a4": [
+    "IsCheckedNewMark_ScenarioD"
+  ],
+  "a2773745": [
+    "HasCleared"
+  ],
+  "a2cdb655": [
+    "U64"
+  ],
+  "a437f167": [
+    "Toggle"
+  ],
+  "a4fd8835": [
+    "_PauseSpendingTime"
+  ],
+  "a7b9d777": [
+    "isLock"
+  ],
+  "a83b9b2d": [
+    "HasMoved"
+  ],
+  "aa767e1e": [
+    "PlayerType"
+  ],
+  "aa8bc5f5": [
+    "ItemId"
+  ],
+  "aac0268c": [
+    "CurrentDifficulty"
+  ],
+  "abf8e0bc": [
+    "RoguePlayCount"
+  ],
+  "ac8a1b68": [
+    "DoneSucceed"
+  ],
+  "ad05067d": [
+    "StateId"
+  ],
+  "ad2e80db": [
+    "The4thClearPlayTime"
+  ],
+  "ad5ffa5b": [
+    "RankPoint"
+  ],
+  "ad69cc16": [
+    "HeightExpand",
+    "LastSavedTimeStamp"
+  ],
+  "ade97c6e": [
+    "IsFirstHDR"
+  ],
+  "ae3bec38": [
+    "IsNewRogueReward"
+  ],
+  "aff3895e": [
+    "IsCheckedNewMark_ClearState"
+  ],
+  "b2457bea": [
+    "_NameHash"
+  ],
+  "b3c19fe4": [
+    "IsNewClearedRecord"
+  ],
+  "b41fa365": [
+    "RegionType"
+  ],
+  "b43ddb43": [
+    "Type"
+  ],
+  "b47c1b3e": [
+    "Key"
+  ],
+  "b4b621ab": [
+    "IsClearedGameImmediately"
+  ],
+  "b4c41314": [
+    "_isToggleApply"
+  ],
+  "b51fcf56": [
+    "AssetID"
+  ],
+  "b6182d04": [
+    "Title"
+  ],
+  "b62f3e75": [
+    "EnableColliders"
+  ],
+  "b7144d50": [
+    "_isValidExItems"
+  ],
+  "b77612b4": [
+    "HitPointData"
+  ],
+  "ba76044a": [
+    "CurrentSurvivorType"
+  ],
+  "baa221e6": [
+    "IsCheckedNewMark_Extra"
+  ],
+  "bbb90598": [
+    "IsFall"
+  ],
+  "bbec42f5": [
+    "DataVersion"
+  ],
+  "bc26d20a": [
+    "RogueWeaponLevel"
+  ],
+  "bc922b61": [
+    "Detail"
+  ],
+  "bd0b57eb": [
+    "Parts"
+  ],
+  "bd3a9b4c": [
+    "TotalEnemyKillCount"
+  ],
+  "be08c578": [
+    "AdditionalItemCount"
+  ],
+  "bfb6252d": [
+    "IsDispTutorial"
+  ],
+  "c0d23383": [
+    "Status"
+  ],
+  "c2468a16": [
+    "SubTitle"
+  ],
+  "c2a3bcfb": [
+    "_Transform"
+  ],
+  "c3a6893c": [
+    "DefeatEnemyCount_Normal"
+  ],
+  "c3e42c22": [
+    "LastSaveSlotId"
+  ],
+  "c5e59740": [
+    "EventID"
+  ],
+  "c5e87639": [
+    "_isToggleEndApply"
+  ],
+  "c60510c3": [
+    "HuntedTreasureOfRecord059"
+  ],
+  "c696e93a": [
+    "_ShortcutKind"
+  ],
+  "c6b55b10": [
+    "ClearRank"
+  ],
+  "c823a3d3": [
+    "GetItemCount"
+  ],
+  "cc38e4a7": [
+    "IsEnableAnalysisLog"
+  ],
+  "ce7a79a3": [
+    "isInitPlug"
+  ],
+  "cffba7fc": [
+    "DebugBreak"
+  ],
+  "d0a19ddf": [
+    "RaccoonFigureDataList"
+  ],
+  "d0c2b177": [
+    "BrokenPartsBits"
+  ],
+  "d0c331de": [
+    "AdditionalWeaponId"
+  ],
+  "d0fb7238": [
+    "UseTemplateNo"
+  ],
+  "d3a0ffbb": [
+    "IsOpenedReward"
+  ],
+  "d3d1224f": [
+    "HasKnife"
+  ],
+  "d42df7dc": [
+    "SaveTimes"
+  ],
+  "d5178cc4": [
+    "IsOpenedPopUp_Costume_Pause"
+  ],
+  "d5f4e32e": [
+    "ExItemID"
+  ],
+  "d61a0542": [
+    "UseHandGunBulletCount_Normal"
+  ],
+  "d61c50a7": [
+    "Pedometer"
+  ],
+  "d6c79e7f": [
+    "SaveCount"
+  ],
+  "d8ac9253": [
+    "Flag"
+  ],
+  "da0a2e98": [
+    "AdditionalBulletId"
+  ],
+  "da6b1a6b": [
+    "SwitchedIndex"
+  ],
+  "dc71ddc7": [
+    "IsBreak"
+  ],
+  "dcb9a134": [
+    "UnloadedTime"
+  ],
+  "dcce0a88": [
+    "IsClearedRecord"
+  ],
+  "ddfac6f6": [
+    "DamagedNumber"
+  ],
+  "de818512": [
+    "HasOpened"
+  ],
+  "df6a1536": [
+    "AreaId"
+  ],
+  "df811dc2": [
+    "IsKeyBindData"
+  ],
+  "e0755063": [
+    "IsOpenedPopUp_NewGamePlus"
+  ],
+  "e0d64098": [
+    "Index"
+  ],
+  "e0fe888b": [
+    "_SlotNum"
+  ],
+  "e15fb3a5": [
+    "Version"
+  ],
+  "e1e6c0a9": [
+    "PanelTurn"
+  ],
+  "e231b945": [
+    "IsOverPlayGo"
+  ],
+  "e38b53ab": [
+    "ClearTrial"
+  ],
+  "e3deeecd": [
+    "AdditionalItemId"
+  ],
+  "e48bde64": [
+    "BreakPointPoolTable"
+  ],
+  "e501fcbd": [
+    "KindID"
+  ],
+  "e538b244": [
+    "StartTimeOfRecord054"
+  ],
+  "e57e893d": [
+    "TofuClearPlayTime"
+  ],
+  "e592108b": [
+    "LocationId"
+  ],
+  "e5da38c0": [
+    "EnablePressController"
+  ],
+  "e7782340": [
+    "ItemBoxSortOrder"
+  ],
+  "e8f314c2": [
+    "needsSave"
+  ],
+  "ea69290e": [
+    "ChangedItemName"
+  ],
+  "ed2aad07": [
+    "_Parts"
+  ],
+  "ed54c304": [
+    "Arrived"
+  ],
+  "ef512262": [
+    "readFileId"
+  ],
+  "ef5852a9": [
+    "_isNoticeExItems"
+  ],
+  "effcf14c": [
+    "_CurrentSlotSize"
+  ],
+  "f0aa587f": [
+    "nowPlug"
+  ],
+  "f28c57b3": [
+    "GetKeyItemEffect"
+  ],
+  "f69b3e18": [
+    "IsOpenedPopup_AnnounceTrainingMode"
+  ],
+  "f7bcaeaf": [
+    "PusBreakPoint"
+  ],
+  "f7ec3e63": [
+    "HP"
+  ],
+  "f835f828": [
+    "ExUintData"
+  ],
+  "f893d79a": [
+    "IsNewClearedRogueRecord"
+  ],
+  "f9586dfb": [
+    "IsCheckedTutorial_Rucksack"
+  ],
+  "faae4fac": [
+    "HasBroken"
+  ],
+  "fb1ff45b": [
+    "IsOpenedRogueReward"
+  ],
+  "fb96c8d6": [
+    "AdditionalWeaponParts"
+  ],
+  "fc958e6a": [
+    "Priority"
+  ],
+  "fce28fdf": [
+    "UseHandGunBulletCount_Training"
+  ],
+  "fdadf8b7": [
+    "IsOpenedPopup_AnnounceAccessory"
+  ],
+  "fde1e2c9": [
+    "PoisonAutoRecoveryTimer"
+  ],
+  "fdfe31c4": [
+    "FlagData"
+  ],
+  "ff07ea46": [
+    "nowBottom"
+  ],
+  "ff7631ff": [
+    "FakeDeadInfoBits"
+  ]
+}

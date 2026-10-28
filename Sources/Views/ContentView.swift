@@ -103,6 +103,19 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if !doc.re2ItemHistory.isEmpty {
+                        Divider()
+                        Text("RE2-Gegenstandsstatus").font(.title2.bold())
+                        Text("Aus den gespeicherten Statuslisten gelesen. Diese Angaben sind nur lesbar und ändern weder Inventar noch Spielfortschritt.").font(.caption).foregroundStyle(.secondary)
+                        ForEach(doc.re2ItemHistory) {list in
+                            DisclosureGroup("\(list.title) · \(list.recorded.count) von \(list.total) Statusplätzen markiert") {
+                                if list.recorded.isEmpty {Text("Noch kein Eintrag markiert.").foregroundStyle(.secondary)}
+                                ForEach(list.recorded) {entry in
+                                    HStack {Text(entry.name);Spacer();Text("ID \(entry.id)").font(.caption.monospaced()).foregroundStyle(.secondary)}.padding(.vertical,2)
+                                }
+                            }
+                        }
+                    }
                     if !doc.fileFlags.isEmpty {
                         Divider()
                         Text("Gefundene Dokumente").font(.title2.bold())
