@@ -21,6 +21,17 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let villageDocuments=try JSONDecoder().decode([String:[String:String]].self,from:Data(contentsOf:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE8_DOCUMENT_NAMES"]!)))
     check(villageDocuments["base"]?.count==56 && villageDocuments["rose"]?.count==36 && villageDocuments["rose"]?["746256480"]=="Das Megamyzet-Theorem","Village-Dokument-IDs aus installiertem Dateikatalog mit deutschen Titeln")
     check(SaveCrypto.murmur(Data())==0x81f16f39,"Murmur3 fixture")
+    func re2CharacterField(_ owner:String,_ name:String,_ type:Int32,_ value:String) -> SaveScalar {
+        SaveScalar(id:0,owner:SaveCrypto.murmur(Data(owner.utf8)),field:SaveCrypto.murmur(Data(name.utf8)),type:type,offset:0,size:type==15 ? value.utf16.count*2:4,path:"",text:value)
+    }
+    let re2Header="app.ropeway.gamemastering.MainFlowManager.GameHeaderSaveData"
+    let re2Player="app.ropeway.PlayerManager.GameSaveData"
+    let re2Detail="via.storage.saveService.SaveFileDetail"
+    let leonFields=[re2CharacterField(re2Header,"SurvivorTypeValue",1,"0"),re2CharacterField(re2Player,"PlayerType",1,"0"),re2CharacterField(re2Detail,"SubTitle",15,"Speicherdaten – Platz 1 Leon")]
+    let claireFields=[re2CharacterField(re2Header,"SurvivorTypeValue",1,"1"),re2CharacterField(re2Player,"PlayerType",1,"1000"),re2CharacterField(re2Detail,"SubTitle",15,"Speicherdaten – Platz 2 Claire")]
+    check(RE2Character.name(fields:leonFields)=="Leon" && RE2Character.name(fields:claireFields)=="Claire","RE2-Charakter aus unabhängigen Header- und Spielerdaten")
+    check(RE2Character.name(fields:Array(claireFields.dropLast())+[leonFields.last!])==nil,"Widersprüchlicher RE2-Savetitel wird nicht geraten")
+    check(RE2Character.name(fields:[claireFields[0],leonFields[1]])==nil,"Widersprüchliche RE2-Charaktercodes werden nicht geraten")
     var eggList=Data()
     func eggWord(_ value:UInt32) {var bytes=Data(count:4);try! bytes.put(UInt64(value),at:0,width:4);eggList+=bytes}
     eggWord(0);eggWord(1);eggWord(RE7EasterEggCatalog.owner)

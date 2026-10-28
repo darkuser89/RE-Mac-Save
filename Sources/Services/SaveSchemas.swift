@@ -31,6 +31,12 @@ enum SaveSchemas {
                      Specification(prefix+".gamemastering.MainFlowManager.GameHeaderSaveData","SaveTimes","Speicherungen in diesem Spielstand","Zähler im Spielstandkopf; löscht keine Spielstände.",maximum:999999),
                      Specification(prefix+".GameRankSystem.GameSaveData","RankPoint","Dynamischer Rangwert","Gespeicherter Rangwert dieses Spielstands.",type:11,maximum:1000000),
                      Specification(prefix+".gamemastering.InventoryManager.SaveData","GetItemCount","Aufgesammelte Gegenstände (Zähler)","Gespeicherter Aufnahmezähler; fügt dem Inventar keine Gegenstände hinzu.",maximum:999999)]
+            if game.id=="re2" {
+                list += [Specification("app.ropeway.PlayerManager.GameSaveData","Pedometer","Schritte (Statistik)","Gespeicherter Schrittzähler dieser Spielfigur.",maximum:99999999),
+                         Specification("app.ropeway.PlayerManager.GameSaveData","TotalMovingDistance","Bewegungsdistanz (Spielwert)","Gespeicherte Bewegung; die Einheit ist im Spielstand nicht angegeben.",type:11,maximum:10000000),
+                         Specification(hash:0x6f91cbfe,name:"FireCount",title:"Abgegebene Schüsse (Statistik)",detail:"Gespeicherter Schusszähler dieses Spielstands.",type:8,maximum:999999),
+                         Specification(hash:0x6f91cbfe,name:"ContactCount",title:"Schusskontakte (Statistik)",detail:"Vom Spiel registrierte Kontakte; nicht zwingend Treffer gegen Gegner.",type:8,maximum:999999)]
+            }
             if game.id=="re3" {
                 list += [Specification("offline.gamemastering.RecordManager.SystemSaveData","TotalShopPoint","Shop-Punkte","Gespeicherter Punktestand für den Shop; hebt keine Artikelsperren auf."),
                          Specification("offline.gamemastering.MainFlowManager.GameHeaderSaveData","DeadCount","Tode in diesem Spielstand","Zähler im Spielstandkopf.",maximum:999999),

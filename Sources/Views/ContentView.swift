@@ -67,6 +67,7 @@ struct EditorDetailView:View {
                 if let doc=store.document {
                     Label("Lokale Datei und Entschlüsselung geprüft",systemImage:"checkmark.shield.fill").foregroundStyle(.green)
                     VStack(alignment:.leading,spacing:6) {Text(doc.source.title).font(.headline);Text(doc.source.url.path).font(.caption).foregroundStyle(.secondary).textSelection(.enabled);Text("\(doc.parsed.objects) Datenobjekte · \(doc.parsed.fields.count) Felder · \(ByteCountFormatter.string(fromByteCount:Int64(doc.source.size),countStyle:.file))").font(.caption).foregroundStyle(.secondary)}
+                    if let character=doc.character {Label("Spielfigur: \(character)",systemImage:"person.fill").font(.headline)}
                     if let difficulty=doc.difficulty {Label("Schwierigkeit: \(difficulty)",systemImage:"shield.lefthalf.filled").font(.headline)}
                     Divider()
                     let inventoryIDs=Set(doc.items.flatMap{[$0.identity,$0.quantity].compactMap{$0?.id}})

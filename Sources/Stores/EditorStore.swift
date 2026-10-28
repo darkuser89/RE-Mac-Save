@@ -32,7 +32,14 @@ import Combine
         }
         let extra=scopes
         Task {
-            let results=await Task.detached(priority:.userInitiated){Dictionary(uniqueKeysWithValues:GameProfile.all.map{($0.id,SaveDiscovery.scan(game:$0,extra:extra[$0.id]))})}.value
+            let results=await Task.detached(priority:.userInitiated){() -> [String:ScanResult] in
+                var found=Dictionary(uniqueKeysWithValues:GameProfile.all.map{($0.id,SaveDiscovery.scan(game:$0,extra:extra[$0.id]))})
+                if let re2=GameProfile.all.first(where:{$0.id=="re2"}),var scan=found["re2"] {
+                    for index in scan.files.indices {scan.files[index].character=RE2Character.read(file:scan.files[index],game:re2)}
+                    found["re2"]=scan
+                }
+                return found
+            }.value
             guard scanID==request else {return}
             scans=results;scanning=false
             let count=results.values.reduce(0){$0+$1.files.count};message="\(count) lokale Save-Dateien gefunden."

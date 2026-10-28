@@ -7,12 +7,12 @@ struct GameProfile:Identifiable,Hashable {
     static let all=[GameProfile(id:"re2",name:"Resident Evil 2",bundle:"jp.co.capcom.RE2US"),GameProfile(id:"re3",name:"Resident Evil 3",bundle:"jp.co.capcom.RE3US"),GameProfile(id:"re4",name:"Resident Evil 4",bundle:"jp.co.capcom.RE4US"),GameProfile(id:"re7",name:"Resident Evil 7",bundle:"jp.co.capcom.RE7US"),GameProfile(id:"re8",name:"Resident Evil Village",bundle:"jp.co.capcom.VillageUS")]
 }
 struct SaveFile:Identifiable,Hashable {
-    var id:String {url.path};let url:URL;let size:Int;let modified:Date;let kind:String
+    var id:String {url.path};let url:URL;let size:Int;let modified:Date;let kind:String;var character:String?=nil
     var title:String {
         let n=url.lastPathComponent.lowercased()
         if n=="data00-1.bin" {return "Systemdaten"}
-        if n=="data000.bin" {return "Automatischer Spielstand"}
-        if n.contains("slot"),let index=Int(n.filter(\.isNumber)) {return "Spielstand \(index)"}
+        if n=="data000.bin" {return "Automatischer Spielstand"+(character.map{" · \($0)"} ?? "")}
+        if n.contains("slot"),let index=Int(n.filter(\.isNumber)) {return "Spielstand \(index)"+(character.map{" · \($0)"} ?? "")}
         return url.lastPathComponent
     }
 }
@@ -33,6 +33,7 @@ struct SaveDocument {
     let storedDocuments:[StoredDocument]
     let re7EasterEggIDs:[String]?
     let difficulty:String?
+    let character:String?
     init(file:SaveFile,game:GameProfile) throws {
         guard LocalSavePolicy.permitsFile(file.url,game:game),file.kind=="DSSS" else {throw SaveError.invalid("Nur lokale DSSS-Spielstände im SaveData-Ordner dieses Spiels sind erlaubt.")}
         let size=try file.url.resourceValues(forKeys:[.fileSizeKey]).fileSize ?? 0
@@ -42,6 +43,7 @@ struct SaveDocument {
         parsed=try ParsedSave(payload:container.payload)
         source=file;fingerprint=Data(SHA256.hash(data:data));self.game=game
         guard parsed.consumed==container.payload.count,try container.encode()==container.original else {throw SaveError.invalid("Die vollständige unveränderte Rückverschlüsselung stimmt nicht überein.")}
+        character=game.id=="re2" ? RE2Character.name(fields:parsed.fields):nil
         if game.id=="re2" {
             let owner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.MainFlowManager.GameHeaderSaveData".utf8))
             let name=SaveCrypto.murmur(Data("CurrentDifficulty".utf8))

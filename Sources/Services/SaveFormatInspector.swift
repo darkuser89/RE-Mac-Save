@@ -148,6 +148,8 @@ enum SaveFormatInspector {
                         if game.id=="re2" {
                             result["difficulty"]=doc.difficulty ?? "Nicht im gewählten Save enthalten"
                             result["costumeFieldProbe"]=re2CostumeFields(doc)
+                            result["scalarFieldInventory"]=re2ScalarInventory(doc)
+                            result["itemDiscoveryProbe"]=re2ItemDiscovery(doc)
                         }
                         for section in ["Inventar","Itembox"] {
                             result[section.lowercased()]=doc.items.filter{$0.section==section}.map {item in
@@ -189,6 +191,49 @@ enum SaveFormatInspector {
             guard let name=names[field.field] else {return nil}
             return ["name":name,"owner":String(format:"%08x",field.owner),"field":String(format:"%08x",field.field),
                     "path":field.path,"type":field.type,"size":field.size,"value":field.text] as [String:Any]
+        }
+    }
+    private static func re2ScalarInventory(_ doc:SaveDocument) -> [[String:Any]] {
+        // Read-only digest of every decoded scalar. Text can contain account
+        // tokens, so only numeric/Boolean values are included in the report.
+        struct Group {
+            var count=0
+            var values:[String]=[]
+            var paths:[String]=[]
+            var truncated=false
+        }
+        var groups:[String:Group]=[:]
+        for field in doc.parsed.fields {
+            let key=String(format:"%08x.%08x.%d.%d",field.owner,field.field,field.type,field.size)
+            var group=groups[key] ?? Group()
+            group.count+=1
+            if field.type != 15 && !group.values.contains(field.text) {
+                if group.values.count<32 {group.values.append(field.text)} else {group.truncated=true}
+            }
+            if group.paths.count<3 {group.paths.append(field.path)}
+            groups[key]=group
+        }
+        return groups.keys.sorted().map {key in
+            let group=groups[key]!
+            return ["signature":key,"count":group.count,"values":group.values,
+                    "valuesTruncated":group.truncated,"samplePaths":group.paths] as [String:Any]
+        }
+    }
+    private static func re2ItemDiscovery(_ doc:SaveDocument) -> [[String:Any]] {
+        let specs=[("app.ropeway.gamemastering.ItemManager.SystemSaveData","GetItemList"),
+                   ("app.ropeway.gamemastering.ItemManager.SystemSaveData","GetWeaponList"),
+                   ("app.ropeway.gamemastering.ItemManager.SaveData","IsSearchedItem"),
+                   ("app.ropeway.gamemastering.ItemManager.SaveData","ChangedItemName"),
+                   ("app.ropeway.gamemastering.ItemManager.SaveData","ChangedItemText")]
+        return specs.compactMap {owner,name in
+            let ownerHash=SaveCrypto.murmur(Data(owner.utf8)),nameHash=SaveCrypto.murmur(Data(name.utf8))
+            let matches=doc.parsed.fields.filter{$0.owner==ownerHash && $0.field==nameHash && $0.type==2 && $0.size==1}
+            guard !matches.isEmpty else {return nil}
+            let trueIndices=matches.compactMap {field -> Int? in
+                guard field.text=="true",let open=field.path.lastIndex(of:"["),let close=field.path.lastIndex(of:"]"),open<close else {return nil}
+                return Int(field.path[field.path.index(after:open)..<close])
+            }
+            return ["name":name,"count":matches.count,"trueIndices":trueIndices.sorted()] as [String:Any]
         }
     }
     private static func diagnostic(_ doc:SaveDocument) -> [[String:Any]] {
