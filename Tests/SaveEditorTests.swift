@@ -46,6 +46,17 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let searchedStatus=re2StatusFields("app.ropeway.gamemastering.ItemManager.SaveData","IsSearchedItem",297,[87,102])
     let campaignHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2Campaign,fields:searchedStatus,names:names)
     check(campaignHistory.count==1 && campaignHistory[0].recorded.map(\.name)==["S.T.A.R.S.-Abzeichen","USB-Dongle"],"RE2-Untersuchungsstatus wird spielstandgebunden angezeigt")
+    let useWeaponsOwner=SaveCrypto.murmur(Data("app.ropeway.PlayerManager.GameSaveData".utf8))
+    let useWeaponsHash=SaveCrypto.murmur(Data("UseWeapons".utf8))
+    let usedWeaponIDs=[1,31,8,41]
+    let usedWeaponFields=usedWeaponIDs.enumerated().map {index,weaponID in
+        SaveScalar(id:index,owner:useWeaponsOwner,field:useWeaponsHash,type:1,offset:index*4,size:4,
+                   path:String(format:"/2412050a.%08x[%d]",useWeaponsHash,index),text:String(weaponID))
+    }
+    let usedWeapons=RE2WeaponUseCatalog.entries(game:re2Game,fields:usedWeaponFields,character:"Leon",names:names)
+    check(usedWeapons.map(\.name)==["Matilda","Lightning Hawk","Broom Hc","EMF Visualizer"] && usedWeapons.map(\.weaponID)==usedWeaponIDs,"RE2-UseWeapons-Liste zeigt bestätigte Waffen-IDs mit Namen")
+    check(RE2WeaponUseCatalog.entries(game:re2Game,fields:usedWeaponFields,character:nil,names:names).isEmpty,"Ohne eindeutige Spielfigur keine Waffenliste")
+    check(RE2WeaponUseCatalog.entries(game:re2Game,fields:usedWeaponFields+[usedWeaponFields[0]],character:"Leon",names:names).isEmpty,"Doppelter Waffenlistenindex wird abgelehnt")
     let costumeIDHash=SaveCrypto.murmur(Data("CostumeID".utf8))
     let costumeFields=[
         SaveScalar(id:0,owner:0,field:costumeIDHash,type:1,offset:0,size:4,path:"/costume[0]",text:"13"),

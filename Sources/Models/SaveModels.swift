@@ -26,6 +26,7 @@ struct SaveDocument {
     let editable:[EditableField]
     let items:[SaveInventory.ItemRow]
     let re2ItemHistory:[RE2ItemHistory]
+    let re2WeaponUse:[RE2WeaponUse]
     let re2CostumeStates:[RE2CostumeState]
     let re2ProgressFlags:[RE2ProgressFlags]
     let re2ClearRecords:[RE2ClearRecord]
@@ -60,6 +61,7 @@ struct SaveDocument {
         } else {difficulty=nil}
         items=SaveInventory.rows(game:game,parsed:parsed)
         re2ItemHistory=RE2ItemHistoryCatalog.lists(game:game,source:file,fields:parsed.fields)
+        re2WeaponUse=RE2WeaponUseCatalog.entries(game:game,fields:parsed.fields,character:character)
         re2CostumeStates=RE2CostumeStateCatalog.states(game:game,fields:parsed.fields)
         re2ProgressFlags=RE2ProgressFlagCatalog.lists(game:game,source:file,fields:parsed.fields)
         re2ClearRecords=RE2ClearRecordCatalog.records(game:game,source:file,fields:parsed.fields)

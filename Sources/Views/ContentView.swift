@@ -129,6 +129,14 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if !doc.re2WeaponUse.isEmpty {
+                        Divider()
+                        Text("RE2-Waffenkennungen").font(.title2.bold())
+                        Text("Aus der gespeicherten Liste „UseWeapons“. Namen stammen aus den installierten Spieltexten; die Wirkung der Liste ist noch nicht im Spiel verglichen. Nur lesbar.").font(.caption).foregroundStyle(.secondary)
+                        ForEach(doc.re2WeaponUse) {weapon in
+                            HStack {Text(weapon.name);Spacer();Text("ID \(weapon.weaponID)").font(.caption.monospaced()).foregroundStyle(.secondary)}.padding(.vertical,2)
+                        }
+                    }
                     if !doc.re2CostumeStates.isEmpty {
                         Divider()
                         Text("RE2-Kostümdaten").font(.title2.bold())
