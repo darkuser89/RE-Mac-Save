@@ -200,6 +200,20 @@ enum SaveFormatInspector {
                                 }
                                 result["environmentProgress"]=values
                             }
+                            if !doc.re2InventoryLayouts.isEmpty {
+                                result["inventoryLayouts"]=doc.re2InventoryLayouts.map {profile in
+                                    ["profile":profile.id,"survivorCode":profile.survivorCode,
+                                     "slotSize":profile.slotSize,"storedSlotSize":profile.storedSlotSize,
+                                     "mainSlot":["index":profile.mainSlot.index,"lastWeaponCode":profile.mainSlot.lastWeaponCode],
+                                     "savedMainSlot":["index":profile.savedMainSlot.index,"lastWeaponCode":profile.savedMainSlot.lastWeaponCode],
+                                     "subWeaponCode":profile.subWeaponCode,"savedSubWeaponCode":profile.savedSubWeaponCode,
+                                     "shortcuts":profile.shortcuts.map {shortcut in
+                                         ["index":shortcut.id,"kindCode":shortcut.kindCode,
+                                          "slotIndex":shortcut.slotIndex.map {$0 as Any} ?? NSNull(),
+                                          "lastWeaponCode":shortcut.lastWeaponCode.map {$0 as Any} ?? NSNull()] as [String:Any]
+                                     }] as [String:Any]
+                                }
+                            }
                             if !doc.re2DoorProgress.isEmpty {
                                 result["doorProgress"]=doc.re2DoorProgress.map {door in
                                     ["index":door.id,"hash":String(format:"%08x",door.doorHash),

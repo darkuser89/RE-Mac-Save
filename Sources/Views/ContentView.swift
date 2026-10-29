@@ -158,6 +158,31 @@ struct EditorDetailView:View {
                             HStack {Text(weapon.name);Spacer();Text("ID \(weapon.weaponID)").font(.caption.monospaced()).foregroundStyle(.secondary)}.padding(.vertical,2)
                         }
                     }
+                    if !doc.re2InventoryLayouts.isEmpty {
+                        Divider()
+                        Text("RE2-Inventarprofile und Schnellplätze").font(.title2.bold())
+                        Text("Ein Kampagnensave kann mehrere Figurenprofile enthalten. Figurencode, Platzanzahl und Waffenbelegungen stammen direkt aus den gespeicherten Profilen. Die Hauptfeld-Codes belegen nicht sicher die aktuell ausgerüstete Waffe; nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        ForEach(doc.re2InventoryLayouts) {profile in
+                            DisclosureGroup("Profil \(profile.id+1) · Figurencode \(profile.survivorCode) · \(profile.slotSize) Plätze") {
+                                Text("Zweiter gespeicherter Platzwert: \(profile.storedSlotSize)")
+                                    .font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                                Text("Hauptfeld: Index \(profile.mainSlot.index) · \(re2WeaponName(profile.mainSlot.lastWeaponCode))")
+                                Text("Gespeichertes Hauptfeld: Index \(profile.savedMainSlot.index) · \(re2WeaponName(profile.savedMainSlot.lastWeaponCode))")
+                                Text("Nebenfeld: \(re2WeaponName(profile.subWeaponCode)) · gespeicherter Wert: \(re2WeaponName(profile.savedSubWeaponCode))")
+                                Text("Schnellplätze: \(profile.shortcuts.filter {($0.slotIndex ?? -1) >= 0 || ($0.lastWeaponCode ?? -1) >= 0}.count) von \(profile.shortcuts.count) mit gespeichertem Index oder Waffentyp")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                ForEach(profile.shortcuts) {shortcut in
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text("Platz-ID \(shortcut.id) · Artcode \(shortcut.kindCode)")
+                                        Spacer(minLength:10)
+                                        Text("Index \(shortcut.slotIndex.map {String($0)} ?? "nicht gespeichert") · \(re2WeaponName(shortcut.lastWeaponCode))")
+                                            .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    }.font(.caption).padding(.vertical,2)
+                                }
+                            }
+                        }
+                    }
                     if !doc.re2CostumeStates.isEmpty {
                         Divider()
                         Text("RE2-Kostümdaten").font(.title2.bold())
@@ -518,5 +543,13 @@ struct EditorDetailView:View {
             Text(field.description).font(.caption).foregroundStyle(.secondary)
             Text("Original: \(field.initial)").font(.caption.monospaced()).foregroundStyle(.secondary)
         }
+    }
+    private func re2WeaponName(_ code:Int?) -> String {
+        guard let code else {return "kein Waffencode gespeichert"}
+        guard code >= 0 else {return "Waffencode −1"}
+        if let name=ItemNameCatalog.bundled?.entry(gameID:"re2",itemID:"Waffe \(code)")?.name {
+            return "\(name) (Code \(code))"
+        }
+        return "Waffencode \(code)"
     }
 }

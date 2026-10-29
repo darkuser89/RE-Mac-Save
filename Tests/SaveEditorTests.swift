@@ -212,6 +212,54 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(RE2EnvironmentProgressCatalog.details(game:re2Game,source:re2Campaign,
                                                 fields:tutorialFields+Array(windowFields.dropLast()),character:"Leon")?.windows.isEmpty==true,
           "Unvollständigen Fenstereintrag ausblenden")
+    let dataOwner=SaveCrypto.murmur(Data("app.ropeway.inventory.Data".utf8))
+    let mainOwner=SaveCrypto.murmur(Data("app.ropeway.inventory.MainSlotData".utf8))
+    let subOwner=SaveCrypto.murmur(Data("app.ropeway.inventory.SubSlotData".utf8))
+    let shortcutOwner=SaveCrypto.murmur(Data("app.ropeway.inventory.ShortcutSlotData".utf8))
+    let layoutRoot="/7f9decbe.8aab887b[15]/41f30892.cbe14e81[0]"
+    func layoutField(_ owner:UInt32,_ name:String,_ type:Int32,_ text:String,_ tail:String,_ id:Int) -> SaveScalar {
+        let field=SaveCrypto.murmur(Data(name.utf8))
+        return SaveScalar(id:id,owner:owner,field:field,type:type,offset:id*4,size:4,
+                          path:layoutRoot+tail+String(format:"/%08x.%08x",owner,field),text:text)
+    }
+    var layoutFields=[layoutField(dataOwner,"_SurvivorType",1,"1","",600),
+                      layoutField(dataOwner,"CurrentSlotSize",7,"8","",601),
+                      layoutField(dataOwner,"_CurrentSlotSize",7,"8","",602)]
+    for name in ["MainData","_MainData"] {
+        let tail=String(format:"/%08x.%08x",dataOwner,SaveCrypto.murmur(Data(name.utf8)))
+        layoutFields.append(layoutField(mainOwner,"_Index",7,"0",tail,layoutFields.count+600))
+        layoutFields.append(layoutField(mainOwner,"_LastWeaponType",1,"9",tail,layoutFields.count+600))
+    }
+    for name in ["SubData","_SubData"] {
+        let tail=String(format:"/%08x.%08x",dataOwner,SaveCrypto.murmur(Data(name.utf8)))
+        layoutFields.append(layoutField(subOwner,"_LastWeaponType",1,"-1",tail,layoutFields.count+600))
+    }
+    for index in 0..<16 {
+        let tail=String(format:"/%08x.%08x[%d]",dataOwner,SaveCrypto.murmur(Data("ShortcutDataList".utf8)),index)
+        layoutFields.append(layoutField(shortcutOwner,"_ShortcutKind",1,String(index/4),tail,layoutFields.count+600))
+        layoutFields.append(layoutField(shortcutOwner,"_Index",7,index==0 ? "0":"-1",tail,layoutFields.count+600))
+        layoutFields.append(layoutField(shortcutOwner,"_LastWeaponType",1,index==0 ? "9":"-1",tail,layoutFields.count+600))
+    }
+    let layout=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,fields:layoutFields,character:"Claire")
+    check(layout.count==1 && layout[0].survivorCode==1 && layout[0].slotSize==8 &&
+          layout[0].mainSlot.lastWeaponCode==9 && layout[0].shortcuts.count==16 &&
+          layout[0].shortcuts[0].slotIndex==0 && layout[0].shortcuts[15].slotIndex == -1,
+          "RE2-Figurenprofil, Kapazität und Schnellplätze vollständig paaren")
+    check(RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2System,fields:layoutFields,character:nil).isEmpty,
+          "Inventarprofil nicht dem Systemsave zuordnen")
+    let absentWeapon=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,
+                                                         fields:Array(layoutFields.dropLast()),character:"Claire")
+    check(absentWeapon.count==1 && absentWeapon[0].shortcuts[15].lastWeaponCode==nil,
+          "Nicht gespeicherten Waffencode des Schnellplatzes als fehlend ausgeben")
+    let absentBoth=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,
+                                                       fields:Array(layoutFields.dropLast(2)),character:"Claire")
+    check(absentBoth.count==1 && absentBoth[0].shortcuts[15].slotIndex==nil &&
+          absentBoth[0].shortcuts[15].lastWeaponCode==nil,
+          "Leeren Schnellplatz ohne Index und Waffencode anzeigen")
+    let shorter=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,
+                                                    fields:Array(layoutFields.dropLast(3)),character:"Claire")
+    check(shorter.count==1 && shorter[0].shortcuts.count==15,
+          "Variable Anzahl gespeicherter Schnellplätze lesen")
     let re2ItemOwner="app.ropeway.gamemastering.ItemManager.SystemSaveData"
     let re2SystemStatus=re2StatusFields(re2ItemOwner,"GetItemList",297,[15,32])+re2StatusFields(re2ItemOwner,"GetWeaponList",383,[9])
     let systemHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2System,fields:re2SystemStatus,names:names)

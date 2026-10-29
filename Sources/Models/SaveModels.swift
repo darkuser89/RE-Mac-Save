@@ -27,6 +27,7 @@ struct SaveDocument {
     let items:[SaveInventory.ItemRow]
     let re2ItemHistory:[RE2ItemHistory]
     let re2WeaponUse:[RE2WeaponUse]
+    let re2InventoryLayouts:[RE2InventoryLayout]
     let re2CostumeStates:[RE2CostumeState]
     let re2ProgressFlags:[RE2ProgressFlags]
     let re2SystemProgress:RE2SystemProgress?
@@ -70,6 +71,7 @@ struct SaveDocument {
         items=SaveInventory.rows(game:game,parsed:parsed)
         re2ItemHistory=RE2ItemHistoryCatalog.lists(game:game,source:file,fields:parsed.fields)
         re2WeaponUse=RE2WeaponUseCatalog.entries(game:game,fields:parsed.fields,character:character)
+        re2InventoryLayouts=RE2InventoryLayoutCatalog.profiles(game:game,source:file,fields:parsed.fields,character:character)
         re2CostumeStates=RE2CostumeStateCatalog.states(game:game,fields:parsed.fields)
         re2ProgressFlags=RE2ProgressFlagCatalog.lists(game:game,source:file,fields:parsed.fields)
         re2SystemProgress=RE2SystemProgressCatalog.details(game:game,source:file,fields:parsed.fields)
