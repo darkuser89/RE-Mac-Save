@@ -229,6 +229,18 @@ enum SaveFormatInspector {
                                     "itemTriggers":re2TriggerRows(triggers.itemTriggers)
                                 ] as [String:Any]
                             }
+                            if let enemies=doc.re2EnemyState {
+                                result["enemyState"]=[
+                                    "count":enemies.records.count,
+                                    "records":enemies.records.map {row in
+                                        ["index":row.id,"sceneID":row.sceneID,"areaID":row.areaID,
+                                         "kindID":row.kindID,"inheritID":row.inheritID,"flagBits":row.flagBits,
+                                         "dataVersion":row.dataVersion,"birthedTime":row.birthedTime,
+                                         "unloadedTime":row.unloadedTime,"hitPointData":row.hitPointData,
+                                         "transformData":row.transformData] as [String:Any]
+                                    }
+                                ] as [String:Any]
+                            }
                             if let environment=doc.re2EnvironmentProgress {
                                 var values:[String:Any]=[
                                     "windows":environment.windows.map {row in

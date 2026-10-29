@@ -53,6 +53,8 @@ Die Mechanikansicht zeigt außerdem sechs `isFirst`-Flags je vollständig gespei
 
 Die RE2-Triggerlisten werden nach nativer Listen- und Eintrags-ID angezeigt. Jeder sichtbare Eintrag erfordert ein eindeutig gepaartes `Key`- und `DoneSucceed`-Feld; Gegenstands-Trigger zeigen zusätzlich vollständig indizierte `HasUsed`-Flags, wenn sie gespeichert sind. Schlüsselcodes sind nicht mit konkreten Ereignissen oder Gegenständen gleichzusetzen. Die Listen sind nur lesbar.
 
+RE2-Kampagnensaves zeigen zudem die vollständig gespeicherten `EmSaveData`-Gegnerdatensätze mit Szenen-, Bereichs- und Typcode, drei Trefferpunktwerten, zehn Transformwerten, Zeiten und Rohflags. Die Werte werden nur angezeigt, wenn alle nativen Felder und Indizes eines Datensatzes eindeutig gepaart sind. Eine Zuordnung zu sichtbaren Gegnern oder die Bedeutung einzelner Trefferpunktpositionen ist noch nicht belegt; die Liste ist nur lesbar.
+
 Unter `RecordManager.GameSaveData` liegen in den drei geprüften RE2-Kampagnendateien je ein `UseSpecialWeapon`- und `UseAimAssist`-Bool. Die App zeigt beide als gespeicherte Spielmerkmale nur lesend. Alle sechs beobachteten Werte sind derzeit `false`. Ein Vergleich im Spiel, ob und wann diese Felder Rang oder Freischaltungen beeinflussen, steht aus.
 
 Die lokale RE2-Datei `data021Slot.bin` enthält keine Leon- oder Claire-Kampagne, sondern eine interne `RogueSystemSaveData`-Liste. Der Editor zeigt die darin eindeutig benannten booleschen und numerischen Feldgruppen mit ihren gespeicherten IDs/Werten nur lesend an. Die genaue Bedeutung einzelner Zusatzmodus-IDs und die Wirkung einer Änderung wurden nicht im Spiel geprüft; diese Datei bietet deshalb keine Schreibschalter.
@@ -123,7 +125,7 @@ Die aktuelle App und Module liegen ausschließlich unter `../RESaveEditorBuild`.
 
 Das Skript prüft Zahlenformate, den großen RE7-Byteblock, Schlüsselzuordnung, lokale Schreibziele und bestehende lokale RE4-Saves ausschließlich lesend. Alle Schreib-, Rücknahme- und Konflikttests verwenden temporäre Dateien. Fehlen die Testdaten oder schlägt ein Test fehl, wird die vorherige App beibehalten. Die zusätzliche Prüfung in der App verwendet deren regulär freigegebene Ordnerzugriffe für alle Spiele.
 
-GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.31` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
+GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.32` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
 
 Der Codex-Run-Button verwendet dasselbe Skript. Optionale Modi: `--verify`, `--logs`, `--telemetry`, `--debug` (LLDB nur für den Editor).
 

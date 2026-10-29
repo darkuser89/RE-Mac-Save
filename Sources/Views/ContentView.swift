@@ -433,6 +433,9 @@ struct EditorDetailView:View {
                     if let triggers=doc.re2TriggerProgress {
                         RE2TriggerProgressView(progress:triggers)
                     }
+                    if let enemies=doc.re2EnemyState {
+                        RE2EnemyStateView(state:enemies)
+                    }
                     if let environment=doc.re2EnvironmentProgress {
                         Divider()
                         Text("RE2-Tutorials und Fenster").font(.title2.bold())
@@ -753,5 +756,43 @@ private struct RE2TriggerProgressView: View {
                 }
             }
         }
+    }
+}
+
+private struct RE2EnemyStateView: View {
+    let state: RE2EnemyState
+
+    private var kindSummary: String {
+        let kinds=Dictionary(grouping:state.records,by:\.kindID)
+        return kinds.keys.sorted().map {key in "\(key): \(kinds[key]?.count ?? 0)"}.joined(separator:" · ")
+    }
+
+    var body: some View {
+        Divider()
+        Text("RE2-Gegnerzustände").font(.title2.bold())
+        Text("Gespeicherte Rohdaten je Gegner: Szenen-, Bereichs- und Typcode, Trefferpunktliste und Transformwerte. Die Codes und HP-Positionen sind keinen sichtbaren Gegnern oder Bedeutungen zugeordnet; nur lesbar.")
+            .font(.caption).foregroundStyle(.secondary)
+        Text("\(state.records.count) Datensätze · Typcodes: \(kindSummary)")
+            .font(.caption.monospacedDigit())
+        DisclosureGroup("Gespeicherte Gegnerdaten") {
+            ForEach(state.records) {enemy in
+                RE2EnemyRecordView(enemy:enemy)
+            }
+        }
+    }
+}
+
+private struct RE2EnemyRecordView: View {
+    let enemy: RE2EnemyState.Record
+    private var hitPoints:String {enemy.hitPointData.map {String($0)}.joined(separator:", ")}
+    private var transform:String {enemy.transformData.map {String($0)}.joined(separator:", ")}
+
+    var body: some View {
+        DisclosureGroup("Eintrag \(enemy.id) · Szene \(enemy.sceneID) · Bereich \(enemy.areaID) · Typ \(enemy.kindID)") {
+            Text("HP-Daten: \(hitPoints)")
+            Text("Flagbits: \(enemy.flagBits) · InheritID: \(enemy.inheritID) · Version: \(enemy.dataVersion)")
+            Text("BirthedTime: \(enemy.birthedTime) · UnloadedTime: \(enemy.unloadedTime)")
+            Text("Transformwerte: \(transform)")
+        }.font(.caption.monospacedDigit()).padding(.vertical,2).textSelection(.enabled)
     }
 }

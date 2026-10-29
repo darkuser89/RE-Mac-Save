@@ -346,6 +346,36 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(RE2TriggerProgressCatalog.details(game:re2Game,source:re2System,
                                             fields:triggerFields+itemTriggerFields,character:nil)==nil,
           "Triggerzustände nicht dem Systemsave zuordnen")
+    let enemyName="app.ropeway.enemy.savedata.EmSaveData"
+    let enemyParent="/7f9decbe.8aab887b[29]/44ccdde9.1d563f16[0]"
+    let enemyScalars:[(String,Int32,String)]=[
+        ("SceneID",1,"347"),("AreaID",1,"0"),("KindID",1,"2"),("InheritID",7,"-1"),
+        ("FlagData",8,"8"),("DataVersion",8,"4"),("BirthedTime",11,"36.0"),
+        ("UnloadedTime",11,"108.0")]
+    var enemyFields:[SaveScalar]=[]
+    for (index,spec) in enemyScalars.enumerated() {
+        enemyFields.append(mechanism(enemyName,spec.0,spec.1,spec.2,enemyParent,500+index))
+    }
+    for index in 0..<3 {
+        enemyFields.append(mechanism(enemyName,"HitPointData",7,String(100-index),enemyParent,508+index,arrayIndex:index))
+    }
+    for index in 0..<10 {
+        enemyFields.append(mechanism(enemyName,"TransformData",11,String(Double(index)),enemyParent,511+index,arrayIndex:index))
+    }
+    let enemyState=RE2EnemyStateCatalog.details(game:re2Game,source:re2Campaign,fields:enemyFields,character:"Leon")
+    check(enemyState?.records.count==1 && enemyState?.records.first?.sceneID==347 &&
+          enemyState?.records.first?.hitPointData==[100,99,98] &&
+          enemyState?.records.first?.transformData.count==10,
+          "RE2-Gegnerzustand aus vollständig gepaarten nativen Feldern lesen")
+    check(RE2EnemyStateCatalog.details(game:re2Game,source:re2Campaign,
+                                       fields:enemyFields.filter{$0.id != 509},character:"Leon")==nil,
+          "Unvollständigen Gegner-Trefferpunktblock ausblenden")
+    check(RE2EnemyStateCatalog.details(game:re2Game,source:re2Campaign,
+                                       fields:enemyFields+[enemyFields[0]],character:"Leon")==nil,
+          "Doppelten Gegner-Szenencode ausblenden")
+    check(RE2EnemyStateCatalog.details(game:re2Game,source:re2System,
+                                       fields:enemyFields,character:nil)==nil,
+          "Gegnerzustände nicht Systemdaten zuordnen")
     let tutorialOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.TutorialManager.GameSaveData".utf8))
     let tutorialField=SaveCrypto.murmur(Data("IsDispTutorial".utf8))
     let tutorialPrefix="/7f9decbe.8aab887b[12]/91bb4685.bfb6252d["
