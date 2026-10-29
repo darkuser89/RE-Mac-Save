@@ -76,7 +76,9 @@ struct EditorDetailView:View {
                             if let subtitle=header.subtitle {Text("Gespeicherter Untertitel: \(subtitle)")}
                             Text("Szenariocode \(header.scenarioCode) · Bereichs-ID \(header.areaID) · Orts-ID \(header.locationID)").font(.subheadline.monospacedDigit())
                             if let gameID=header.gameID {Text("Interne Spiel-ID: \(gameID)").font(.caption)}
-                            Text("Kennungen aus dem Save; Szenario und Ort sind noch keinem Spielnamen sicher zugeordnet.").font(.caption).foregroundStyle(.secondary)
+                            if let step=header.sequenceStepCode {Text("Interner Fortschrittsschritt: \(step)").font(.caption.monospacedDigit())}
+                            if let rank=header.dynamicRankCode {Text("Dynamischer Rangcode: \(rank)").font(.caption.monospacedDigit())}
+                            Text("Kennungen aus dem Save; Szenario, Ort, Fortschrittsschritt und Rangcode sind noch keinem Spielnamen sicher zugeordnet.").font(.caption).foregroundStyle(.secondary)
                         }
                         .textSelection(.enabled)
                     }
@@ -153,6 +155,17 @@ struct EditorDetailView:View {
                                 if list.marked.isEmpty {Text("Kein Eintrag markiert.").foregroundStyle(.secondary)}
                                 ForEach(list.marked,id:\.self) {index in
                                     Text("Interne ID \(index)").font(.caption.monospaced()).padding(.vertical,2)
+                                }
+                            }
+                        }
+                        if !doc.re2ClearRecords.isEmpty {
+                            DisclosureGroup("Abschlussdetails · \(doc.re2ClearRecords.count) gesetzte ID") {
+                                Text("Zu jeder gesetzten Spielabschluss-ID stehen ein Zeitwert, Rangcode und Speicherzähler. Die Einheit des Zeitwerts sowie die Bedeutung von ID und Rangcode sind noch nicht belegt.").font(.caption).foregroundStyle(.secondary)
+                                ForEach(doc.re2ClearRecords) {record in
+                                    VStack(alignment:.leading,spacing:3) {
+                                        Text("Interne Abschluss-ID \(record.id)").font(.subheadline.bold())
+                                        Text("Zeitwert \(record.clearTimeRaw) · Rangcode \(record.rankCode) · Speicherzähler \(record.saveCount)").font(.caption.monospacedDigit())
+                                    }.padding(.vertical,3)
                                 }
                             }
                         }

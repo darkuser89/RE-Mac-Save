@@ -79,6 +79,20 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(progress.count==3 && progress[0].marked==[0,30,90] && progress[1].marked==[4,132] && progress[2].marked==[7],"RE2-Systemfortschritt liest drei vollständige indizierte Statuslisten")
     check(RE2ProgressFlagCatalog.lists(game:re2Game,source:re2Campaign,fields:progressFields).isEmpty,"Rekordstatus wird nur in der RE2-Systemdatei angezeigt")
     check(RE2ProgressFlagCatalog.lists(game:re2Game,source:re2System,fields:Array(progressFields.dropFirst())).count==2,"Unvollständige Rekordliste wird nicht angezeigt")
+    func resultFields(_ name:String,_ type:Int32,_ size:Int,_ value:(Int)->String) -> [SaveScalar] {
+        let hash=SaveCrypto.murmur(Data(name.utf8))
+        return (0..<21).map {index in
+            SaveScalar(id:index,owner:0x4e4210f9,field:hash,type:type,offset:index*size,size:size,
+                       path:String(format:"/4e4210f9.%08x[%d]",hash,index),text:value(index))
+        }
+    }
+    let clearFields=progressFields+resultFields("ClearTime",10,8,{$0==7 ? "169007204":"0"})
+        + resultFields("ClearRank",1,4,{$0==7 ? "1":"0"})
+        + resultFields("SaveCount",7,4,{_ in "0"})
+    let clearRecords=RE2ClearRecordCatalog.records(game:re2Game,source:re2System,fields:clearFields)
+    check(clearRecords.count==1 && clearRecords[0].id==7 && clearRecords[0].clearTimeRaw==169007204 && clearRecords[0].rankCode==1 && clearRecords[0].saveCount==0,"RE2-Abschlussdaten verbinden vier native Listen über denselben Index")
+    check(RE2ClearRecordCatalog.records(game:re2Game,source:re2Campaign,fields:clearFields).isEmpty,"Abschlussdaten nur aus RE2-Systemsave")
+    check(RE2ClearRecordCatalog.records(game:re2Game,source:re2System,fields:Array(clearFields.dropLast())).isEmpty,"Unvollständige Abschlussdaten werden nicht angezeigt")
     let re2Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FILE_NAMES"]!))
     check(re2Files.count==64 && re2Files[1]=="Ereignisbericht" && re2Files[89]==nil,"RE2-Dokumenttitel aus lokalen Spieltexten; interne Leer-IDs ausgeschlossen")
     let re3Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE3_FILE_NAMES"]!))
@@ -107,10 +121,12 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         re2CharacterField(re2Header,"ScenarioTypeValue",1,"0"),
         re2CharacterField(re2Header,"AreaId",1,"127"),
         re2CharacterField(re2Header,"LocationId",1,"3"),
-        re2CharacterField(re2Header,"GameId",8,"31")
+        re2CharacterField(re2Header,"GameId",8,"31"),
+        re2CharacterField("app.ropeway.gamemastering.ScenarioSequenceManager.GameSaveData","ScenarioNo",1,"33"),
+        re2CharacterField("app.ropeway.GameRankSystem.GameSaveData","GameRank",7,"8")
     ]
     let shownHeader=RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields,character:"Leon")
-    check(shownHeader?.title=="Speichern 1" && shownHeader?.subtitle=="Speicherdaten – Platz 1 Leon" && shownHeader?.scenarioCode==0 && shownHeader?.areaID==127 && shownHeader?.locationID==3 && shownHeader?.gameID==31,"RE2-Spielstandkopf zeigt nur exakte Felder aus dem richtigen Besitzer")
+    check(shownHeader?.title=="Speichern 1" && shownHeader?.subtitle=="Speicherdaten – Platz 1 Leon" && shownHeader?.scenarioCode==0 && shownHeader?.areaID==127 && shownHeader?.locationID==3 && shownHeader?.gameID==31 && shownHeader?.sequenceStepCode==33 && shownHeader?.dynamicRankCode==8,"RE2-Spielstandkopf zeigt nur exakte Felder aus dem richtigen Besitzer")
     check(RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields+[leonHeaderFields[5]],character:"Leon")==nil,"Mehrdeutiger RE2-Szenariocode wird nicht angezeigt")
     check(RE2SaveHeaderCatalog.details(game:GameProfile.all[1],fields:leonHeaderFields,character:"Leon")==nil,"RE2-Spielstandkopf ist spielgebunden")
     check(RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields,character:nil)==nil,"Systemsave ohne Figur hat keinen Kampagnenkopf")
