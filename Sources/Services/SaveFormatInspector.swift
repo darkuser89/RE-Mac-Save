@@ -172,6 +172,21 @@ enum SaveFormatInspector {
                                 }
                                 result["puzzleProgress"]=values
                             }
+                            if let mechanisms=doc.re2MechanismProgress {
+                                var values:[String:Any]=[
+                                    "switches":mechanisms.switches.map {row in
+                                        ["index":row.id,"toggle":row.toggled,"applied":row.applied,"finalApplied":row.finalApplied] as [String:Any]
+                                    },
+                                    "plugs":mechanisms.plugs.map {row in
+                                        ["index":row.id,"plugCode":row.plugCode,"initialized":row.initialized] as [String:Any]
+                                    }
+                                ]
+                                if let gear=mechanisms.clockGear {
+                                    values["clockGear"]=["topCode":gear.topCode,"bottomCode":gear.bottomCode,
+                                                         "initialized":gear.initialized,"firstFlags":gear.firstFlags] as [String:Any]
+                                }
+                                result["mechanismProgress"]=values
+                            }
                             if !doc.re2DoorProgress.isEmpty {
                                 result["doorProgress"]=doc.re2DoorProgress.map {door in
                                     ["index":door.id,"hash":String(format:"%08x",door.doorHash),

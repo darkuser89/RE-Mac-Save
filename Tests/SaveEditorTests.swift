@@ -139,6 +139,45 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Doppeltes Türfeld ausblenden")
     check(RE2DoorProgressCatalog.entries(game:re2Game,source:re2Campaign,fields:Array(doorFields.dropLast()),character:"Leon").isEmpty,
           "Unvollständigen Türdatensatz ausblenden")
+    func mechanism(_ ownerName:String,_ fieldName:String,_ type:Int32,_ text:String,_ parent:String,_ id:Int) -> SaveScalar {
+        let owner=SaveCrypto.murmur(Data(ownerName.utf8))
+        let field=SaveCrypto.murmur(Data(fieldName.utf8))
+        return SaveScalar(id:id,owner:owner,field:field,type:type,offset:id*4,size:type==2 ? 1:4,
+                          path:parent+String(format:"/%08x.%08x",owner,field),text:text)
+    }
+    let switchName="app.ropeway.gimmick.action.GimmickToggleSwitch.SaveData"
+    let plugName="app.ropeway.gimmick.action.GimmickPlugPlaceControl.SaveData"
+    let clockName="app.ropeway.gimmick.action.GimmickClockGearControl.SaveData"
+    let switchParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[42]/6fa91e18.1bd539fc"
+    let plugParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[91]/29a21e52.1bd539fc"
+    let clockParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[83]/a288cd46.1bd539fc"
+    let switchFields=[mechanism(switchName,"Toggle",2,"true",switchParent,300),
+                      mechanism(switchName,"_isToggleApply",2,"true",switchParent,301),
+                      mechanism(switchName,"_isToggleEndApply",2,"false",switchParent,302)]
+    let plugFields=[mechanism(plugName,"nowPlug",1,"3",plugParent,303),
+                    mechanism(plugName,"isInitPlug",2,"true",plugParent,304)]
+    let clockFields=[mechanism(clockName,"nowTop",1,"2",clockParent,305),
+                     mechanism(clockName,"nowBottom",1,"1",clockParent,306),
+                     mechanism(clockName,"isInitGear",2,"true",clockParent,307)]
+    let firstHash=SaveCrypto.murmur(Data("isFirst".utf8))
+    let clockOwner=SaveCrypto.murmur(Data(clockName.utf8))
+    let firstFields=(0..<4).map {index in
+        SaveScalar(id:308+index,owner:clockOwner,field:firstHash,type:2,offset:308+index,size:1,
+                   path:clockParent+String(format:"/%08x.%08x[%d]",clockOwner,firstHash,index),
+                   text:index==0 ? "true":"false")
+    }
+    let allMechanisms=switchFields+plugFields+clockFields+firstFields
+    let mechanisms=RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms,character:"Leon")
+    check(mechanisms?.switches.count==1 && mechanisms?.switches[0].toggled==true &&
+          mechanisms?.switches[0].finalApplied==false && mechanisms?.plugs[0].plugCode==3 &&
+          mechanisms?.clockGear?.topCode==2 && mechanisms?.clockGear?.firstFlags==[true,false,false,false],
+          "RE2-Schalter, Steckplätze und Uhrwerk aus vollständigen Objektgruppen lesen")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2System,fields:allMechanisms,character:nil)==nil,
+          "Mechanikzustände nicht dem Systemsave zuordnen")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+[switchFields[0]],character:"Leon")?.switches.isEmpty==true,
+          "Doppeltes Schalterfeld ausblenden")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:Array(plugFields.dropLast())+switchFields,character:"Leon")?.plugs.isEmpty==true,
+          "Unvollständigen Steckplatz ausblenden")
     let re2ItemOwner="app.ropeway.gamemastering.ItemManager.SystemSaveData"
     let re2SystemStatus=re2StatusFields(re2ItemOwner,"GetItemList",297,[15,32])+re2StatusFields(re2ItemOwner,"GetWeaponList",383,[9])
     let systemHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2System,fields:re2SystemStatus,names:names)

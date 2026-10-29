@@ -273,6 +273,42 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if let mechanisms=doc.re2MechanismProgress {
+                        Divider()
+                        Text("RE2-Schalter und Rätselmechanik").font(.title2.bold())
+                        Text("Rohzustände eindeutig gespeicherter Spielobjekte. Interne IDs und Codes sind noch keinen konkreten Schaltern oder Positionen im Spiel zugeordnet; nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        if !mechanisms.switches.isEmpty {
+                            DisclosureGroup("Schalterobjekte · \(mechanisms.switches.count), davon \(mechanisms.switches.filter(\.toggled).count) umgelegt") {
+                                ForEach(mechanisms.switches) {item in
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text("Objekt-ID \(item.id)")
+                                        Spacer(minLength:10)
+                                        Text("Umgelegt: \(item.toggled ? "Ja":"Nein") · Wirkung: \(item.applied ? "Ja":"Nein") · Endwirkung: \(item.finalApplied ? "Ja":"Nein")")
+                                            .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    }.font(.caption).padding(.vertical,2)
+                                }
+                            }
+                        }
+                        if !mechanisms.plugs.isEmpty {
+                            DisclosureGroup("Steckplätze · \(mechanisms.plugs.count) gespeicherte Codes") {
+                                ForEach(mechanisms.plugs) {item in
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text("Objekt-ID \(item.id)")
+                                        Spacer(minLength:10)
+                                        Text("Steckcode \(item.plugCode) · Initialisiert: \(item.initialized ? "Ja":"Nein")")
+                                            .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    }.font(.caption).padding(.vertical,2)
+                                }
+                            }
+                        }
+                        if let gear=mechanisms.clockGear {
+                            DisclosureGroup("Uhrwerk · oben \(gear.topCode), unten \(gear.bottomCode)") {
+                                Text("Initialisiert: \(gear.initialized ? "Ja":"Nein") · Erstzustands-Flags: \(gear.firstFlags.map {$0 ? "1":"0"}.joined(separator:", "))")
+                                    .font(.caption.monospacedDigit()).textSelection(.enabled)
+                            }
+                        }
+                    }
                     if !doc.re2DoorProgress.isEmpty {
                         Divider()
                         Text("RE2-Türzustände").font(.title2.bold())
