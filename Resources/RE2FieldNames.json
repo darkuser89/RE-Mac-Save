@@ -1,4 +1,10 @@
 {
+  "0031712c": [
+    "gimmickData"
+  ],
+  "00c7b7b6": [
+    "itemLockerData"
+  ],
   "00cc4004": [
     "PresetEventIDList"
   ],
@@ -11,11 +17,17 @@
   "02c14b7f": [
     "_InventorySpendingTime"
   ],
+  "02c95821": [
+    "Stocks"
+  ],
   "05b7e567": [
     "FirstSaveTicks"
   ],
   "06d67c96": [
     "IsCheckedNewMark_NewGamePlus"
+  ],
+  "086e812e": [
+    "SaveDatas"
   ],
   "097daf55": [
     "OpenItemBox"
@@ -29,6 +41,9 @@
   "0b3c4ba2": [
     "ContactCount"
   ],
+  "0c0cda67": [
+    "UserCostumeDataList"
+  ],
   "0c6dbd95": [
     "_GameElapsedTime"
   ],
@@ -41,6 +56,9 @@
   "0d28cf86": [
     "HasMedal"
   ],
+  "0fdba6b6": [
+    "ScenarioCostumeDataList"
+  ],
   "100af1db": [
     "isKnifeOnly"
   ],
@@ -49,6 +67,9 @@
   ],
   "155beaf4": [
     "DamageCount"
+  ],
+  "157db55f": [
+    "Variables"
   ],
   "159b9908": [
     "IsCheckedNewMark_Costume_Pause"
@@ -71,11 +92,17 @@
   "197e74eb": [
     "UserAge"
   ],
+  "1bd539fc": [
+    "SaveData"
+  ],
   "1c80bbd4": [
     "GetKeyWeaponEffect"
   ],
   "1cc867bd": [
     "FirstRevivalFlag"
+  ],
+  "1d563f16": [
+    "EnemySaveData"
   ],
   "1e8a00fc": [
     "FlagOld"
@@ -91,6 +118,9 @@
   ],
   "237d07e3": [
     "Enable"
+  ],
+  "24828069": [
+    "SetItemsList"
   ],
   "25c2d360": [
     "GetWeaponList"
@@ -146,8 +176,14 @@
   "3156515d": [
     "GameRank"
   ],
+  "32479bb3": [
+    "VariablesList"
+  ],
   "341bca35": [
     "GameStartTicks"
+  ],
+  "34be46bd": [
+    "GimmickBodyDataListValue"
   ],
   "375dc4ac": [
     "F32"
@@ -155,14 +191,29 @@
   "3a3cf4e2": [
     "_LastWeaponType"
   ],
+  "3ba74740": [
+    "DefaultItem"
+  ],
+  "3c9675e5": [
+    "AdditionalItem"
+  ],
   "3d1bdd3b": [
     "ChangedItemText"
+  ],
+  "3d507e04": [
+    "SupportItemParam"
   ],
   "3d760a06": [
     "InsertCount"
   ],
+  "3dcd6638": [
+    "FsmVariablesList"
+  ],
   "3f1ed9c7": [
     "DopingTimer"
+  ],
+  "3f6134b3": [
+    "Units"
   ],
   "40c705b2": [
     "Rot"
@@ -194,6 +245,9 @@
   "4960c984": [
     "optionData"
   ],
+  "4bc6bbd8": [
+    "DeadJointsPosture"
+  ],
   "4e15e8cc": [
     "SleepTimer"
   ],
@@ -212,6 +266,9 @@
   "51a4e2d7": [
     "LastReNetOnTicks"
   ],
+  "51b3dc27": [
+    "TriggerData"
+  ],
   "52c60d74": [
     "IsClearedRogueGame_Training"
   ],
@@ -227,6 +284,9 @@
   "58d3a59f": [
     "IsInitialize"
   ],
+  "59a3dafc": [
+    "GimmickBodySoloDataListValue"
+  ],
   "5b46f41d": [
     "_MapId"
   ],
@@ -235,6 +295,9 @@
   ],
   "5c594c88": [
     "nowTop"
+  ],
+  "5c7f6dad": [
+    "_SubData"
   ],
   "5de339c1": [
     "IsFirstPlayLeon"
@@ -275,6 +338,9 @@
   "678ac761": [
     "_IsBarricade"
   ],
+  "695a3627": [
+    "_Data"
+  ],
   "6a31ea8b": [
     "NumberOfRecord053"
   ],
@@ -314,11 +380,17 @@
   "7515fb99": [
     "MapID"
   ],
+  "75693af4": [
+    "DecalSaveData"
+  ],
   "75f57c2b": [
     "ActionCount"
   ],
   "7629b39d": [
     "WeaponId"
+  ],
+  "780abf72": [
+    "_MainData"
   ],
   "78c63b47": [
     "IsSpecialClearedRogue"
@@ -332,6 +404,9 @@
   "7aacced4": [
     "IsOpenedPopUp_TofuCharacter"
   ],
+  "7b312f6f": [
+    "StampSaveData"
+  ],
   "7c4b51df": [
     "String"
   ],
@@ -341,8 +416,17 @@
   "7df46d91": [
     "ClearTime"
   ],
+  "7e215e5d": [
+    "Maps"
+  ],
+  "7f4dc5e5": [
+    "UniqueParam"
+  ],
   "7fd1e77c": [
     "LatestGameId"
+  ],
+  "80e21bf4": [
+    "SaveDataList"
   ],
   "818851d7": [
     "IsCheckedTutorial_Shop"
@@ -374,6 +458,9 @@
   "89855b15": [
     "_isValidOmakeItems"
   ],
+  "8aab887b": [
+    "GameSaveDataList"
+  ],
   "8b2aba43": [
     "BulletId"
   ],
@@ -388,6 +475,9 @@
   ],
   "906a726f": [
     "IsOpenedPopUp_Weapon"
+  ],
+  "9074a186": [
+    "SystemSaveDataList"
   ],
   "91478052": [
     "Bool"
@@ -407,8 +497,14 @@
   "93d79121": [
     "DebugTrace"
   ],
+  "94106499": [
+    "ShortcutDataList"
+  ],
   "953b8642": [
     "Done"
+  ],
+  "983dbd2f": [
+    "stampData"
   ],
   "98b8134d": [
     "Name"
@@ -473,6 +569,9 @@
   "a83b9b2d": [
     "HasMoved"
   ],
+  "a9a2c119": [
+    "RogueSystemSaveDataList"
+  ],
   "aa767e1e": [
     "PlayerType"
   ],
@@ -481,6 +580,9 @@
   ],
   "aac0268c": [
     "CurrentDifficulty"
+  ],
+  "ab9b34b2": [
+    "OwnedWeapons"
   ],
   "abf8e0bc": [
     "RoguePlayCount"
@@ -509,6 +611,12 @@
   ],
   "aff3895e": [
     "IsCheckedNewMark_ClearState"
+  ],
+  "b0726c7d": [
+    "StateList"
+  ],
+  "b1039ab2": [
+    "ExData"
   ],
   "b2457bea": [
     "_NameHash"
@@ -552,6 +660,9 @@
   "baa221e6": [
     "IsCheckedNewMark_Extra"
   ],
+  "baac051f": [
+    "SubData"
+  ],
   "bbb90598": [
     "IsFall"
   ],
@@ -575,6 +686,9 @@
   ],
   "bfb6252d": [
     "IsDispTutorial"
+  ],
+  "c07d05d1": [
+    "windowData"
   ],
   "c0d23383": [
     "Status"
@@ -606,8 +720,20 @@
   "c6b55b10": [
     "ClearRank"
   ],
+  "c81a3eff": [
+    "GimmickControlDataListValue"
+  ],
   "c823a3d3": [
     "GetItemCount"
+  ],
+  "cad44d26": [
+    "OnceAddBitFlagsField"
+  ],
+  "cb78b1f4": [
+    "doorData"
+  ],
+  "cbe14e81": [
+    "DataLists"
   ],
   "cc38e4a7": [
     "IsEnableAnalysisLog"
@@ -630,6 +756,12 @@
   "d0fb7238": [
     "UseTemplateNo"
   ],
+  "d1a4c8f8": [
+    "typewriterData"
+  ],
+  "d2f39941": [
+    "templateData"
+  ],
   "d3a0ffbb": [
     "IsOpenedReward"
   ],
@@ -641,6 +773,9 @@
   ],
   "d5178cc4": [
     "IsOpenedPopUp_Costume_Pause"
+  ],
+  "d584af3a": [
+    "mapPartsChangeData"
   ],
   "d5f4e32e": [
     "ExItemID"
@@ -684,6 +819,9 @@
   "df811dc2": [
     "IsKeyBindData"
   ],
+  "dfaf3dfa": [
+    "MainData"
+  ],
   "e0755063": [
     "IsOpenedPopUp_NewGamePlus"
   ],
@@ -726,6 +864,9 @@
   "e5da38c0": [
     "EnablePressController"
   ],
+  "e691fb55": [
+    "Accuracy"
+  ],
   "e7782340": [
     "ItemBoxSortOrder"
   ],
@@ -735,11 +876,17 @@
   "ea69290e": [
     "ChangedItemName"
   ],
+  "eb990014": [
+    "ActorContextList"
+  ],
   "ed2aad07": [
     "_Parts"
   ],
   "ed54c304": [
     "Arrived"
+  ],
+  "ef5095c4": [
+    "Data"
   ],
   "ef512262": [
     "readFileId"
@@ -758,6 +905,9 @@
   ],
   "f69b3e18": [
     "IsOpenedPopup_AnnounceTrainingMode"
+  ],
+  "f6cb9523": [
+    "PlayerList"
   ],
   "f7bcaeaf": [
     "PusBreakPoint"
@@ -800,6 +950,9 @@
   ],
   "ff07ea46": [
     "nowBottom"
+  ],
+  "ff6c66a0": [
+    "Items"
   ],
   "ff7631ff": [
     "FakeDeadInfoBits"

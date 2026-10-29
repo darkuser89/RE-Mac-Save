@@ -220,7 +220,8 @@ enum SaveFormatInspector {
             let owners=parts.count==4 ? RE2OwnerNameCatalog.names(for:UInt32(parts[0],radix:16) ?? 0):[]
             return ["signature":key,"fieldNameCandidates":names,"ownerNameCandidates":owners,
                     "count":group.count,"values":group.values,
-                    "valuesTruncated":group.truncated,"samplePaths":group.paths] as [String:Any]
+                    "valuesTruncated":group.truncated,"samplePaths":group.paths,
+                    "sampleNamedPaths":group.paths.map{RE2FieldNameCatalog.labeledPath($0)}] as [String:Any]
         }
     }
     private static func re2ItemDiscovery(_ doc:SaveDocument) -> [[String:Any]] {

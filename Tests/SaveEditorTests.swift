@@ -11,16 +11,22 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(names.entry(gameID:"re7",itemID:"MiaDriversLicense")?.name=="Führerschein","RE7-Name aus Spieltext")
     check(names.entry(gameID:"re8",itemID:"1179972000")==nil,"Unbekannte Village-ID bleibt ohne geratenen Namen")
     let re2FieldNames=try RE2FieldNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FIELD_NAMES"]!))
-    check(re2FieldNames.count==268 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"],"Alle beobachteten RE2-Feldnamen aus installiertem Build")
+    check(re2FieldNames.count==319 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"] && re2FieldNames["9074a186"]==["SystemSaveDataList"],"RE2-Skalar- und Pfadfeldnamen aus installiertem Build")
     check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")
     let re2OwnerNames=try RE2OwnerNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_OWNER_NAMES"]!))
-    check(re2OwnerNames.count==81 &&
+    check(re2OwnerNames.count==105 &&
           re2OwnerNames["4e4210f9"]==["app.ropeway.gamemastering.RecordManager.SystemSaveData"] &&
           re2OwnerNames["2f11c239"]==["app.ropeway.CostumeManager.SystemSaveData"] &&
+          re2OwnerNames["2a3b1ae0"]==["app.ropeway.CostumeManager.CostumeData"] &&
+          re2OwnerNames["00215d66"]==["via.userdata.Variable"] &&
           re2OwnerNames["2675722d"]==["app.ropeway.gamemastering.InventoryManager.PrimitiveItem"] &&
           re2OwnerNames["55d1d375"]==["app.ropeway.gamemastering.InventoryManager.ItemExData"] &&
           re2OwnerNames["090ff53c"]==["app.ropeway.gamemastering.UIMapManager.SaveData"],
           "RE2-Besitzernamen aus nativen Klassen- und Namespace-Zeichenketten")
+    check(re2OwnerNames["b15a035f"]?.count==2,"Mehrdeutiger RE2-Besitzerhash behält beide Kandidaten")
+    let labeledCostumePath=RE2FieldNameCatalog.labeledPath("/9e0932a9.9074a186[6]/2f11c239.0c0cda67[0]/2a3b1ae0.6686824e",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
+    check(labeledCostumePath.contains("SystemSaveDataList[6]") && labeledCostumePath.contains("UserCostumeDataList[0]") && labeledCostumePath.hasSuffix("app.ropeway.CostumeManager.CostumeData.CostumeID"),"RE2-Pfad zeigt belegte Listen- und Typnamen")
+    check(RE2FieldNameCatalog.labeledPath("/b15a035f.695a3627[0]",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)=="/b15a035f._Data[0]","Mehrdeutiger Besitzer wird im lesbaren Pfad nicht geraten")
     func re2StatusFields(_ owner:String,_ name:String,_ count:Int,_ set:Set<Int>) -> [SaveScalar] {
         let ownerHash=SaveCrypto.murmur(Data(owner.utf8)),fieldHash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in

@@ -22,4 +22,19 @@ enum RE2FieldNameCatalog {
     static func names(for hash:UInt32) -> [String] {
         bundled[String(format:"%08x",hash)] ?? []
     }
+
+    static func labeledPath(_ path:String,
+                            fieldNames:[String:[String]]=bundled,
+                            ownerNames:[String:[String]]=RE2OwnerNameCatalog.bundled) -> String {
+        let segments=path.split(separator:"/",omittingEmptySubsequences:true).map {raw -> String in
+            let parts=raw.split(separator:".",maxSplits:1,omittingEmptySubsequences:false)
+            guard parts.count==2,parts[0].count==8,parts[1].count>=8 else {return String(raw)}
+            let ownerHash=String(parts[0]),fieldHash=String(parts[1].prefix(8))
+            let suffix=String(parts[1].dropFirst(8))
+            let owner=ownerNames[ownerHash]?.count==1 ? ownerNames[ownerHash]![0]:ownerHash
+            let field=fieldNames[fieldHash]?.count==1 ? fieldNames[fieldHash]![0]:fieldHash
+            return "\(owner).\(field)\(suffix)"
+        }
+        return "/"+segments.joined(separator:"/")
+    }
 }
