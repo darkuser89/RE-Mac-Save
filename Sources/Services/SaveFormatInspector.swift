@@ -162,6 +162,16 @@ enum SaveFormatInspector {
                                     ["id":reward.id,"opened":reward.opened,"new":reward.newMark] as [String:Any]
                                 }
                             }
+                            if let puzzle=doc.re2PuzzleProgress {
+                                var values:[String:Any]=[:]
+                                if let statue=puzzle.goddessStatue {
+                                    values["goddessStatue"]=["medallions":statue.medallions,"stateCode":statue.stateCode] as [String:Any]
+                                }
+                                if let circuit=puzzle.circuitPuzzle {
+                                    values["circuitPuzzle"]=["panelTurns":circuit.panelTurns,"actionCount":circuit.actionCount] as [String:Any]
+                                }
+                                result["puzzleProgress"]=values
+                            }
                         }
                         for section in ["Inventar","Itembox"] {
                             result[section.lowercased()]=doc.items.filter{$0.section==section}.map {item in

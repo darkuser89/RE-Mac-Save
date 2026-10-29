@@ -82,6 +82,42 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Rogue-Daten nicht einem Kampagnensave zuordnen")
     check(RE2RogueProgressCatalog.groups(game:re2Game,source:re2Rogue,fields:rogueRecords+[rogueRecords[0]],names:re2FieldNames).isEmpty,
           "Doppelte Rogue-Status-ID ausblenden")
+    let goddessOwner=SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickGoddessStatue.SaveData".utf8))
+    let circuitOwner=SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickCircuitPuzzle.SaveData".utf8))
+    let goddessParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[75]/6f42ff0a.1bd539fc"
+    let circuitParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[287]/80b16114.1bd539fc"
+    let medalHash=SaveCrypto.murmur(Data("HasMedal".utf8))
+    let stateHash=SaveCrypto.murmur(Data("State".utf8))
+    let turnHash=SaveCrypto.murmur(Data("PanelTurn".utf8))
+    let actionHash=SaveCrypto.murmur(Data("ActionCount".utf8))
+    let medalFields=(0..<3).map {index in
+        SaveScalar(id:index,owner:goddessOwner,field:medalHash,type:2,offset:index,size:1,
+                   path:goddessParent+String(format:"/%08x.%08x[%d]",goddessOwner,medalHash,index),
+                   text:index==1 ? "true":"false")
+    }
+    let goddessState=SaveScalar(id:3,owner:goddessOwner,field:stateHash,type:1,offset:3,size:4,
+                                path:goddessParent+String(format:"/%08x.%08x",goddessOwner,stateHash),text:"1")
+    let panelFields=(0..<16).map {index in
+        SaveScalar(id:index+4,owner:circuitOwner,field:turnHash,type:7,offset:index*4,size:4,
+                   path:circuitParent+String(format:"/%08x.%08x[%d]",circuitOwner,turnHash,index),
+                   text:String(index%4))
+    }
+    let circuitActions=SaveScalar(id:20,owner:circuitOwner,field:actionHash,type:7,offset:64,size:4,
+                                  path:circuitParent+String(format:"/%08x.%08x",circuitOwner,actionHash),text:"18")
+    let puzzleFields=medalFields+[goddessState]+panelFields+[circuitActions]
+    let puzzle=RE2PuzzleProgressCatalog.details(game:re2Game,source:re2Campaign,fields:puzzleFields,character:"Leon")
+    check(puzzle?.goddessStatue?.medallions==[false,true,false] && puzzle?.goddessStatue?.stateCode==1 &&
+          puzzle?.circuitPuzzle?.panelTurns.count==16 && puzzle?.circuitPuzzle?.panelTurns[3]==3 &&
+          puzzle?.circuitPuzzle?.actionCount==18,
+          "RE2-Göttinnenstatue und Schaltkreisrätsel nur aus gepaarten Spielobjekten lesen")
+    check(RE2PuzzleProgressCatalog.details(game:re2Game,source:re2System,fields:puzzleFields,character:nil)==nil,
+          "Rätselstände nicht der Systemdatei zuordnen")
+    check(RE2PuzzleProgressCatalog.details(game:re2Game,source:re2Campaign,fields:puzzleFields+[medalFields[0]],character:"Leon")?.goddessStatue==nil,
+          "Doppelte Medaillon-ID ausblenden")
+    let foreignState=SaveScalar(id:3,owner:goddessOwner,field:stateHash,type:1,offset:3,size:4,
+                                path:goddessParent.replacingOccurrences(of:"[75]",with:"[76]")+String(format:"/%08x.%08x",goddessOwner,stateHash),text:"1")
+    check(RE2PuzzleProgressCatalog.details(game:re2Game,source:re2Campaign,fields:medalFields+[foreignState],character:"Leon")==nil,
+          "Unterschiedliche Göttinnenstatuen-Objekte nicht zusammenführen")
     let re2ItemOwner="app.ropeway.gamemastering.ItemManager.SystemSaveData"
     let re2SystemStatus=re2StatusFields(re2ItemOwner,"GetItemList",297,[15,32])+re2StatusFields(re2ItemOwner,"GetWeaponList",383,[9])
     let systemHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2System,fields:re2SystemStatus,names:names)

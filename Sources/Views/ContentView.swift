@@ -241,6 +241,38 @@ struct EditorDetailView:View {
                             Text("\(group.total) gespeicherte Einträge · Code: Anzahl").font(.caption).foregroundStyle(.secondary)
                         }
                     }
+                    if let puzzle=doc.re2PuzzleProgress {
+                        Divider()
+                        Text("RE2-Rätselstände").font(.title2.bold())
+                        Text("Direkt aus eindeutig zugeordneten Spielobjekten gelesen. Die internen Indizes sind noch keinen konkreten Positionen im Spiel zugeordnet; nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        if let statue=puzzle.goddessStatue {
+                            DisclosureGroup("Göttinnenstatue · \(statue.medallions.filter {$0}.count) von 3 Medaillon-Flags gesetzt") {
+                                ForEach(0..<statue.medallions.count,id:\.self) {index in
+                                    HStack {
+                                        Text("Medaillon-ID \(index)")
+                                        Spacer()
+                                        Text(statue.medallions[index] ? "gesetzt" : "nicht gesetzt")
+                                    }.font(.caption).padding(.vertical,2)
+                                }
+                                Text("Interner Statue-Statuscode: \(statue.stateCode)").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                            }
+                        }
+                        if let circuit=puzzle.circuitPuzzle {
+                            DisclosureGroup("Schaltkreisrätsel · \(circuit.panelTurns.count) gespeicherte Panelwerte") {
+                                Text("Rohe Drehpositionscodes; die Panelpositionen und die Wirkung des Aktionszählers sind noch nicht zugeordnet.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                ForEach(0..<circuit.panelTurns.count,id:\.self) {index in
+                                    HStack {
+                                        Text("Panel-ID \(index)")
+                                        Spacer()
+                                        Text("Code \(circuit.panelTurns[index])")
+                                    }.font(.caption.monospacedDigit()).padding(.vertical,2)
+                                }
+                                Text("Interner Aktionszähler: \(circuit.actionCount)").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                            }
+                        }
+                    }
                     if !doc.re2RunFlags.isEmpty {
                         Divider()
                         Text("RE2-Gespeicherte Spielmerkmale").font(.title2.bold())
