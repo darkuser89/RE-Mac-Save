@@ -31,12 +31,29 @@ struct RE2MechanismProgress {
         let id: Int
         let currentIndex: Int
     }
+    struct BookShelf: Identifiable {
+        let id: Int
+        let initialized: Bool
+        let positions: [Int]
+        let locked: [Bool]
+    }
+    struct Movable: Identifiable {
+        let id: Int
+        let moved: Bool
+    }
+    struct Fan: Identifiable {
+        let id: Int
+        let broken: Bool
+    }
     let switches: [Switch]
     let plugs: [Plug]
     let clockGear: ClockGear?
     let autoDoors: [AutoDoor]
     let wiringNodes: [WiringNode]
     let elevators: [Elevator]
+    let bookShelves: [BookShelf]
+    let movables: [Movable]
+    let fans: [Fan]
 }
 
 enum RE2MechanismProgressCatalog {
@@ -46,8 +63,12 @@ enum RE2MechanismProgressCatalog {
     private static let autoDoorOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickAutoDoor.SaveData".utf8))
     private static let wiringOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickWiringNodeBase.SaveData".utf8))
     private static let elevatorOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickElevator.SaveData".utf8))
+    private static let bookShelfOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickMobileBookShelf.SaveData".utf8))
+    private static let movableOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickRigidBodySavable.SaveData".utf8))
+    private static let fanOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickFanForOvercurrent.SaveData".utf8))
     private static let bodyPrefix = "/7f9decbe.8aab887b[23]/8413308a.34be46bd["
     private static let controlPrefix = "/7f9decbe.8aab887b[23]/8413308a.c81a3eff["
+    private static let movablePrefix = "/7f9decbe.8aab887b[23]/8413308a.59a3dafc["
 
     static func details(game: GameProfile, source: SaveFile, fields: [SaveScalar], character: String?) -> RE2MechanismProgress? {
         guard game.id == "re2", character != nil,
@@ -83,6 +104,19 @@ enum RE2MechanismProgressCatalog {
             guard let index = integer(values[0],type:7) else {return nil}
             return .init(id:id,currentIndex:index)
         } ?? []
+        let bookShelves = shelves(fields) ?? []
+        let movables = grouped(fields, owner: movableOwner,
+                               names: ["HasMoved"],
+                               listPrefix: movablePrefix, objectTail: "/fa8abf85.1bd539fc") {id, values -> RE2MechanismProgress.Movable? in
+            guard let moved = boolean(values[0]) else {return nil}
+            return .init(id:id,moved:moved)
+        } ?? []
+        let fans = grouped(fields, owner: fanOwner,
+                           names: ["HasBroken"],
+                           listPrefix: bodyPrefix, objectTail: "/b843da90.1bd539fc") {id, values -> RE2MechanismProgress.Fan? in
+            guard let broken = boolean(values[0]) else {return nil}
+            return .init(id:id,broken:broken)
+        } ?? []
         let clockFields = fields.filter {$0.owner == clockOwner}
         var clockGear: RE2MechanismProgress.ClockGear?
         if !clockFields.isEmpty {
@@ -114,9 +148,54 @@ enum RE2MechanismProgressCatalog {
             }
         }
         guard !switches.isEmpty || !plugs.isEmpty || clockGear != nil ||
-              !autoDoors.isEmpty || !wiringNodes.isEmpty || !elevators.isEmpty else {return nil}
+              !autoDoors.isEmpty || !wiringNodes.isEmpty || !elevators.isEmpty ||
+              !bookShelves.isEmpty || !movables.isEmpty || !fans.isEmpty else {return nil}
         return .init(switches:switches,plugs:plugs,clockGear:clockGear,
-                     autoDoors:autoDoors,wiringNodes:wiringNodes,elevators:elevators)
+                     autoDoors:autoDoors,wiringNodes:wiringNodes,elevators:elevators,
+                     bookShelves:bookShelves,movables:movables,fans:fans)
+    }
+
+    private static func shelves(_ fields: [SaveScalar]) -> [RE2MechanismProgress.BookShelf]? {
+        let initHash = SaveCrypto.murmur(Data("isInit".utf8))
+        let positionHash = SaveCrypto.murmur(Data("PosNum".utf8))
+        let lockHash = SaveCrypto.murmur(Data("isLock".utf8))
+        let selected = fields.filter {$0.owner == bookShelfOwner &&
+            [initHash,positionHash,lockHash].contains($0.field)}
+        guard !selected.isEmpty, selected.count <= 9_216 else {return nil}
+        let groups = Dictionary(grouping:selected) {field -> String in
+            guard let slash = field.path.lastIndex(of:"/") else {return ""}
+            return String(field.path[..<slash])
+        }
+        guard groups.count * 9 == selected.count else {return nil}
+        var rows: [RE2MechanismProgress.BookShelf] = []
+        for (parent,siblings) in groups {
+            let tail = "/9aa81c3c.1bd539fc"
+            guard parent.hasPrefix(bodyPrefix), parent.hasSuffix(tail), siblings.count == 9 else {return nil}
+            let rest = parent.dropFirst(bodyPrefix.count)
+            guard let end = rest.firstIndex(of:"]"), String(rest[end...]) == "]"+tail,
+                  let id = Int(rest[..<end]), (0..<1_024).contains(id) else {return nil}
+            func one(_ hash: UInt32,_ index: Int? = nil) -> SaveScalar? {
+                let suffix = String(format:"/%08x.%08x",bookShelfOwner,hash) +
+                    (index.map {"[\($0)]"} ?? "")
+                let matches = siblings.filter {$0.field == hash && $0.path == parent+suffix}
+                return matches.count == 1 ? matches[0]:nil
+            }
+            guard let initField = one(initHash), let initialized = boolean(initField) else {return nil}
+            let positions = (0..<4).map {index -> Int? in
+                guard let field = one(positionHash,index) else {return nil}
+                return integer(field,type:7)
+            }
+            let locks = (0..<4).map {index -> Bool? in
+                guard let field = one(lockHash,index) else {return nil}
+                return boolean(field)
+            }
+            guard positions.allSatisfy({$0 != nil}), locks.allSatisfy({$0 != nil}) else {return nil}
+            rows.append(.init(id:id,initialized:initialized,
+                              positions:positions.compactMap {$0},locked:locks.compactMap {$0}))
+        }
+        rows.sort {$0.id < $1.id}
+        guard Set(rows.map(\.id)).count == rows.count else {return nil}
+        return rows
     }
 
     private static func grouped<Row: Identifiable>(_ fields: [SaveScalar], owner: UInt32,

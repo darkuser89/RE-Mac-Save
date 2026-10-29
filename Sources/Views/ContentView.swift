@@ -391,6 +391,43 @@ struct EditorDetailView:View {
                                 }
                             }
                         }
+                        if !mechanisms.bookShelves.isEmpty {
+                            DisclosureGroup("Bewegliche Bücherregale · \(mechanisms.bookShelves.count) gespeicherte Objekte") {
+                                ForEach(mechanisms.bookShelves) {shelf in
+                                    Text("Objekt-ID \(shelf.id) · Initialisiert: \(shelf.initialized ? "Ja":"Nein")")
+                                        .font(.caption.monospacedDigit())
+                                    ForEach(0..<shelf.positions.count,id:\.self) {index in
+                                        HStack {
+                                            Text("Platz \(index)")
+                                            Spacer()
+                                            Text("Positionscode \(shelf.positions[index]) · Gesperrt: \(shelf.locked[index] ? "Ja":"Nein")")
+                                        }.font(.caption.monospacedDigit()).padding(.vertical,2)
+                                    }
+                                }
+                            }
+                        }
+                        if !mechanisms.movables.isEmpty {
+                            DisclosureGroup("Bewegliche Objekte · \(mechanisms.movables.filter(\.moved).count) von \(mechanisms.movables.count) HasMoved-Flags gesetzt") {
+                                ForEach(mechanisms.movables) {item in
+                                    HStack {
+                                        Text("Objekt-ID \(item.id)")
+                                        Spacer()
+                                        Text(item.moved ? "HasMoved: ja" : "HasMoved: nein")
+                                    }.font(.caption.monospacedDigit()).padding(.vertical,2)
+                                }
+                            }
+                        }
+                        if !mechanisms.fans.isEmpty {
+                            DisclosureGroup("Überstrom-Lüfter · \(mechanisms.fans.filter(\.broken).count) von \(mechanisms.fans.count) HasBroken-Flags gesetzt") {
+                                ForEach(mechanisms.fans) {item in
+                                    HStack {
+                                        Text("Objekt-ID \(item.id)")
+                                        Spacer()
+                                        Text(item.broken ? "HasBroken: ja" : "HasBroken: nein")
+                                    }.font(.caption.monospacedDigit()).padding(.vertical,2)
+                                }
+                            }
+                        }
                     }
                     if let environment=doc.re2EnvironmentProgress {
                         Divider()

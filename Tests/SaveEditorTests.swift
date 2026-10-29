@@ -194,11 +194,11 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Unvollständige Kartenbauteil-Liste ausblenden")
     check(RE2MapPartCatalog.entries(game:re2Game,source:re2Campaign,fields:mapPartFields+[mapPartFields[0]],character:"Leon").isEmpty,
           "Doppelte Kartenbauteil-Werte ausblenden")
-    func mechanism(_ ownerName:String,_ fieldName:String,_ type:Int32,_ text:String,_ parent:String,_ id:Int) -> SaveScalar {
+    func mechanism(_ ownerName:String,_ fieldName:String,_ type:Int32,_ text:String,_ parent:String,_ id:Int,arrayIndex:Int?=nil) -> SaveScalar {
         let owner=SaveCrypto.murmur(Data(ownerName.utf8))
         let field=SaveCrypto.murmur(Data(fieldName.utf8))
         return SaveScalar(id:id,owner:owner,field:field,type:type,offset:id*4,size:type==2 ? 1:4,
-                          path:parent+String(format:"/%08x.%08x",owner,field),text:text)
+                          path:parent+String(format:"/%08x.%08x",owner,field)+(arrayIndex.map {"[\($0)]"} ?? ""),text:text)
     }
     let switchName="app.ropeway.gimmick.action.GimmickToggleSwitch.SaveData"
     let plugName="app.ropeway.gimmick.action.GimmickPlugPlaceControl.SaveData"
@@ -206,6 +206,9 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let autoDoorName="app.ropeway.gimmick.action.GimmickAutoDoor.SaveData"
     let wiringName="app.ropeway.gimmick.action.GimmickWiringNodeBase.SaveData"
     let elevatorName="app.ropeway.gimmick.action.GimmickElevator.SaveData"
+    let shelfName="app.ropeway.gimmick.action.GimmickMobileBookShelf.SaveData"
+    let movableName="app.ropeway.gimmick.action.GimmickRigidBodySavable.SaveData"
+    let fanName="app.ropeway.gimmick.action.GimmickFanForOvercurrent.SaveData"
     let switchParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[42]/6fa91e18.1bd539fc"
     let plugParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[91]/29a21e52.1bd539fc"
     let clockParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[83]/a288cd46.1bd539fc"
@@ -231,14 +234,27 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let wiringFields=[mechanism(wiringName,"HasBrokenMotor",2,"true",wiringParent,313),
                       mechanism(wiringName,"SwitchedIndex",7,"-1",wiringParent,314)]
     let elevatorFields=[mechanism(elevatorName,"CurIndex",7,"1",elevatorParent,315)]
-    let allMechanisms=switchFields+plugFields+clockFields+firstFields+autoDoorFields+wiringFields+elevatorFields
+    let shelfParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[105]/9aa81c3c.1bd539fc"
+    let movableParent="/7f9decbe.8aab887b[23]/8413308a.59a3dafc[2]/fa8abf85.1bd539fc"
+    let fanParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[63]/b843da90.1bd539fc"
+    let shelfFields=[mechanism(shelfName,"isInit",2,"true",shelfParent,316)] +
+        (0..<4).flatMap {index in
+            [mechanism(shelfName,"PosNum",7,String(index+1),shelfParent,317+index*2,arrayIndex:index),
+             mechanism(shelfName,"isLock",2,index==2 ? "true":"false",shelfParent,318+index*2,arrayIndex:index)]
+        }
+    let movableFields=[mechanism(movableName,"HasMoved",2,"true",movableParent,325)]
+    let fanFields=[mechanism(fanName,"HasBroken",2,"true",fanParent,326)]
+    let allMechanisms=switchFields+plugFields+clockFields+firstFields+autoDoorFields+wiringFields+elevatorFields+shelfFields+movableFields+fanFields
     let mechanisms=RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms,character:"Leon")
     check(mechanisms?.switches.count==1 && mechanisms?.switches[0].toggled==true &&
           mechanisms?.switches[0].finalApplied==false && mechanisms?.plugs[0].plugCode==3 &&
           mechanisms?.clockGear?.topCode==2 && mechanisms?.clockGear?.firstFlags==[true,false,false,false] &&
           mechanisms?.autoDoors.first?.opened==true && mechanisms?.wiringNodes.first?.switchedIndex == -1 &&
-          mechanisms?.elevators.first?.currentIndex==1,
-          "RE2-Schalter, Steckplätze, Uhrwerk, Türen, Kabel und Aufzüge aus vollständigen Objektgruppen lesen")
+          mechanisms?.elevators.first?.currentIndex==1 &&
+          mechanisms?.bookShelves.first?.positions==[1,2,3,4] &&
+          mechanisms?.bookShelves.first?.locked==[false,false,true,false] &&
+          mechanisms?.movables.first?.moved==true && mechanisms?.fans.first?.broken==true,
+          "RE2-Mechanik nur aus vollständigen und passend typisierten Objektgruppen lesen")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2System,fields:allMechanisms,character:nil)==nil,
           "Mechanikzustände nicht dem Systemsave zuordnen")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+[switchFields[0]],character:"Leon")?.switches.isEmpty==true,
@@ -249,6 +265,10 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Doppelte automatische Tür ausblenden")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms.filter {$0.id != 314},character:"Leon")?.wiringNodes.isEmpty==true,
           "Unvollständigen Verkabelungsknoten ausblenden")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms.filter {$0.id != 324},character:"Leon")?.bookShelves.isEmpty==true,
+          "Unvollständige Bücherregal-Positionen ausblenden")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+movableFields,character:"Leon")?.movables.isEmpty==true,
+          "Doppeltes Bewegungsflag ausblenden")
     let tutorialOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.TutorialManager.GameSaveData".utf8))
     let tutorialField=SaveCrypto.murmur(Data("IsDispTutorial".utf8))
     let tutorialPrefix="/7f9decbe.8aab887b[12]/91bb4685.bfb6252d["
