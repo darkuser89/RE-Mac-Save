@@ -35,6 +35,9 @@
   "13e8507e": [
     "app.ropeway.gamemastering.UIFileManager.SystemSaveData"
   ],
+  "162a6b99": [
+    "app.ropeway.gamemastering.RogueAccessoryManager.RogueSystemSaveData"
+  ],
   "17401e6c": [
     "app.ropeway.gamemastering.UIFileManager.SaveData"
   ],
@@ -249,6 +252,9 @@
   "b6953184": [
     "app.ropeway.WwiseStateManager.GameSaveData"
   ],
+  "b6f9870b": [
+    "app.ropeway.gamemastering.RogueRecordManager.RogueSystemSaveData"
+  ],
   "bc8d010b": [
     "app.ropeway.gamemastering.GlobalUserDataManager.VariableList"
   ],
@@ -257,6 +263,9 @@
   ],
   "c14fbcd7": [
     "app.ropeway.GameClock.SystemSaveData"
+  ],
+  "c5ab2ae2": [
+    "app.ropeway.rogue.GimmickRogueRaccoonFigureManager.RogueSystemSaveData"
   ],
   "c5e4b1fc": [
     "app.ropeway.GimmickBattleCraneManager.SystemSaveData"

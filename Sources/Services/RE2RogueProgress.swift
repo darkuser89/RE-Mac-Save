@@ -36,7 +36,7 @@ struct RE2RogueFieldGroup: Identifiable {
 enum RE2RogueProgressCatalog {
     private static let rootOwner = SaveCrypto.murmur(Data("app.ropeway.gamemastering.SaveDataManager.RogueSystemSaveData".utf8))
     private static let rootList = SaveCrypto.murmur(Data("RogueSystemSaveDataList".utf8))
-    private static let recordOwner: UInt32 = 0xb6f9870b
+    private static let recordOwner = SaveCrypto.murmur(Data("app.ropeway.gamemastering.RogueRecordManager.RogueSystemSaveData".utf8))
 
     static func groups(game: GameProfile, source: SaveFile, fields: [SaveScalar],
                        names: [String:[String]] = RE2FieldNameCatalog.bundled) -> [RE2RogueFieldGroup] {

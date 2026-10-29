@@ -27,7 +27,7 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(re2FieldNames.count==319 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"] && re2FieldNames["9074a186"]==["SystemSaveDataList"],"RE2-Skalar- und Pfadfeldnamen aus installiertem Build")
     check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")
     let re2OwnerNames=try RE2OwnerNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_OWNER_NAMES"]!))
-    check(re2OwnerNames.count==106 &&
+    check(re2OwnerNames.count==109 &&
           re2OwnerNames["4e4210f9"]==["app.ropeway.gamemastering.RecordManager.SystemSaveData"] &&
           re2OwnerNames["2f11c239"]==["app.ropeway.CostumeManager.SystemSaveData"] &&
           re2OwnerNames["2a3b1ae0"]==["app.ropeway.CostumeManager.CostumeData"] &&
@@ -35,7 +35,10 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           re2OwnerNames["2675722d"]==["app.ropeway.gamemastering.InventoryManager.PrimitiveItem"] &&
           re2OwnerNames["55d1d375"]==["app.ropeway.gamemastering.InventoryManager.ItemExData"] &&
           re2OwnerNames["2b1634eb"]==["via.storage.saveService.SaveFileDetail"] &&
-          re2OwnerNames["090ff53c"]==["app.ropeway.gamemastering.UIMapManager.SaveData"],
+          re2OwnerNames["090ff53c"]==["app.ropeway.gamemastering.UIMapManager.SaveData"] &&
+          re2OwnerNames["b6f9870b"]==["app.ropeway.gamemastering.RogueRecordManager.RogueSystemSaveData"] &&
+          re2OwnerNames["162a6b99"]==["app.ropeway.gamemastering.RogueAccessoryManager.RogueSystemSaveData"] &&
+          re2OwnerNames["c5ab2ae2"]==["app.ropeway.rogue.GimmickRogueRaccoonFigureManager.RogueSystemSaveData"],
           "RE2-Besitzernamen aus nativen Klassen- und Namespace-Zeichenketten")
     check(re2OwnerNames["b15a035f"]?.count==2,"Mehrdeutiger RE2-Besitzerhash behält beide Kandidaten")
     let labeledCostumePath=RE2FieldNameCatalog.labeledPath("/9e0932a9.9074a186[6]/2f11c239.0c0cda67[0]/2a3b1ae0.6686824e",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
