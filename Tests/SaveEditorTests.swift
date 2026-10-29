@@ -27,7 +27,7 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(re2FieldNames.count==319 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"] && re2FieldNames["9074a186"]==["SystemSaveDataList"],"RE2-Skalar- und Pfadfeldnamen aus installiertem Build")
     check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")
     let re2OwnerNames=try RE2OwnerNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_OWNER_NAMES"]!))
-    check(re2OwnerNames.count==109 &&
+    check(re2OwnerNames.count==110 &&
           re2OwnerNames["4e4210f9"]==["app.ropeway.gamemastering.RecordManager.SystemSaveData"] &&
           re2OwnerNames["2f11c239"]==["app.ropeway.CostumeManager.SystemSaveData"] &&
           re2OwnerNames["2a3b1ae0"]==["app.ropeway.CostumeManager.CostumeData"] &&
@@ -36,6 +36,7 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           re2OwnerNames["55d1d375"]==["app.ropeway.gamemastering.InventoryManager.ItemExData"] &&
           re2OwnerNames["2b1634eb"]==["via.storage.saveService.SaveFileDetail"] &&
           re2OwnerNames["090ff53c"]==["app.ropeway.gamemastering.UIMapManager.SaveData"] &&
+          re2OwnerNames["4683bfe1"]==["app.iCloudSaveLoadManager.SystemSaveData"] &&
           re2OwnerNames["b6f9870b"]==["app.ropeway.gamemastering.RogueRecordManager.RogueSystemSaveData"] &&
           re2OwnerNames["162a6b99"]==["app.ropeway.gamemastering.RogueAccessoryManager.RogueSystemSaveData"] &&
           re2OwnerNames["c5ab2ae2"]==["app.ropeway.rogue.GimmickRogueRaccoonFigureManager.RogueSystemSaveData"],
@@ -592,13 +593,17 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let systemMetaFields=systemMetaSpecs.enumerated().map {index,spec in
         let (owner,name,type,size,value)=spec
         let field=SaveCrypto.murmur(Data(name.utf8))
-        let rootIndex=owner==0x4683bfe1 ? 2 : (owner==SaveCrypto.murmur(Data("app.ropeway.GameClock.SystemSaveData".utf8)) ? 0 : 7)
+        let rootIndex=owner==0x4683bfe1 ? 1 : (owner==SaveCrypto.murmur(Data("app.ropeway.GameClock.SystemSaveData".utf8)) ? 0 : 7)
         return SaveScalar(id:index,owner:owner,field:field,type:type,offset:index*8,size:size,
             path:String(format:"/9e0932a9.9074a186[%d]/%08x.%08x",rootIndex,owner,field),text:value)
     }
     let systemMeta=RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:systemMetaFields)
     check(systemMeta.count==15 && systemMeta[0].value=="3" && systemMeta[3].value=="false" && systemMeta[14].value=="true",
           "RE2-Systemwerte nur aus eindeutig passenden nativen Rohfeldern lesen")
+    let olderHeader=SaveScalar(id:100,owner:systemMetaFields[0].owner,field:systemMetaFields[0].field,
+        type:7,offset:0,size:4,path:"/9e0932a9.9074a186[2]/4683bfe1.c3e42c22",text:"3")
+    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:[olderHeader]).count==1,
+          "RE2-Systemkopf bleibt bei verschobenem Systemlistenindex sichtbar")
     check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2Campaign,fields:systemMetaFields).isEmpty &&
           RE2SystemMetadataCatalog.entries(game:GameProfile.all.first{$0.id=="re3"}!,source:re2System,fields:systemMetaFields).isEmpty,
           "RE2-Systemwerte nicht in Kampagnensaves oder anderen Spielen anbieten")
@@ -608,10 +613,10 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         type:7,offset:0,size:4,path:"/other/4683bfe1.c3e42c22",text:"3")
     check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:[misplacedMeta]).isEmpty,
           "RE2-Systemwerte nur aus der bestätigten Systemliste lesen")
-    let wrongIndexMeta=SaveScalar(id:100,owner:systemMetaFields[0].owner,field:systemMetaFields[0].field,
-        type:7,offset:0,size:4,path:"/9e0932a9.9074a186[5]/4683bfe1.c3e42c22",text:"3")
-    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:[wrongIndexMeta]).isEmpty,
-          "RE2-Systemwerte nur am bestätigten Systemeintragsindex lesen")
+    let nestedMeta=SaveScalar(id:101,owner:systemMetaFields[0].owner,field:systemMetaFields[0].field,
+        type:7,offset:0,size:4,path:"/9e0932a9.9074a186[1]/nested/4683bfe1.c3e42c22",text:"3")
+    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:[nestedMeta]).isEmpty,
+          "RE2-Systemwerte nur unmittelbar in der bestätigten Systemliste lesen")
     func re2SystemArray(_ ownerName:String,_ name:String,_ count:Int,_ type:Int32,_ size:Int,
                         _ listIndex:Int,_ value:(Int)->String) -> [SaveScalar] {
         let owner=SaveCrypto.murmur(Data(ownerName.utf8))

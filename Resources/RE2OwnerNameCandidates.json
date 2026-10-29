@@ -107,6 +107,9 @@
   "44ccdde9": [
     "app.ropeway.EnemyManager.GameSaveData"
   ],
+  "4683bfe1": [
+    "app.iCloudSaveLoadManager.SystemSaveData"
+  ],
   "4a2ba8d5": [
     "app.ropeway.gamemastering.RecordManager.GameSaveData"
   ],
