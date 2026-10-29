@@ -27,7 +27,7 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(re2FieldNames.count==319 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"] && re2FieldNames["9074a186"]==["SystemSaveDataList"],"RE2-Skalar- und Pfadfeldnamen aus installiertem Build")
     check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")
     let re2OwnerNames=try RE2OwnerNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_OWNER_NAMES"]!))
-    check(re2OwnerNames.count==110 &&
+    check(re2OwnerNames.count==111 &&
           re2OwnerNames["4e4210f9"]==["app.ropeway.gamemastering.RecordManager.SystemSaveData"] &&
           re2OwnerNames["2f11c239"]==["app.ropeway.CostumeManager.SystemSaveData"] &&
           re2OwnerNames["2a3b1ae0"]==["app.ropeway.CostumeManager.CostumeData"] &&
@@ -39,7 +39,8 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           re2OwnerNames["4683bfe1"]==["app.iCloudSaveLoadManager.SystemSaveData"] &&
           re2OwnerNames["b6f9870b"]==["app.ropeway.gamemastering.RogueRecordManager.RogueSystemSaveData"] &&
           re2OwnerNames["162a6b99"]==["app.ropeway.gamemastering.RogueAccessoryManager.RogueSystemSaveData"] &&
-          re2OwnerNames["c5ab2ae2"]==["app.ropeway.rogue.GimmickRogueRaccoonFigureManager.RogueSystemSaveData"],
+          re2OwnerNames["c5ab2ae2"]==["app.ropeway.rogue.GimmickRogueRaccoonFigureManager.RogueSystemSaveData"] &&
+          re2OwnerNames["fdc4b517"]==["app.ropeway.gimmick.action.SetItem.SetItemSaveData"],
           "RE2-Besitzernamen aus nativen Klassen- und Namespace-Zeichenketten")
     check(re2OwnerNames["b15a035f"]?.count==2,"Mehrdeutiger RE2-Besitzerhash behält beide Kandidaten")
     let labeledCostumePath=RE2FieldNameCatalog.labeledPath("/9e0932a9.9074a186[6]/2f11c239.0c0cda67[0]/2a3b1ae0.6686824e",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
@@ -83,6 +84,25 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           !RE2CampaignSavePolicy.matches(game:re2Game,source:re2ThirdSlot,character:nil) &&
           !RE2CampaignSavePolicy.matches(game:re2Game,source:re2Rogue,character:"Leon"),
           "Alle bestätigten RE2-Kampagnenslots zuordnen, Zusatzmodus und unklare Figur ausschließen")
+    let placementRoot="/7f9decbe.8aab887b[14]/d2653fac.24828069[3]/d93aca3a.ff6c66a0[0]/fdc4b517"
+    let placementSpecs:[(String,Int32,Int,String)]=[
+        ("Type",1,4,"262"),("WeaponType",1,4,"65"),("Count",7,4,"2"),
+        ("Map",1,4,"127"),("Location",1,4,"16"),("Enable",2,1,"true")
+    ]
+    let placementFields=placementSpecs.enumerated().map {index,spec in
+        let hash=SaveCrypto.murmur(Data(spec.0.utf8))
+        return SaveScalar(id:index,owner:0xfdc4b517,field:hash,type:spec.1,offset:index*4,size:spec.2,
+                          path:String(format:"%@.%08x",placementRoot,hash),text:spec.3)
+    }
+    let placement=RE2PlacedItemCatalog.entries(game:re2Game,source:re2Campaign,character:"Leon",fields:placementFields,names:names)
+    check(placement.count==1 && placement[0].itemName=="Gürteltasche" &&
+          placement[0].weaponName=="Handgranate" && placement[0].count==2 &&
+          placement[0].mapCode==127 && placement[0].locationCode==16,
+          "RE2-Weltgegenstand nur aus vollständig gepaarten nativen Feldern anzeigen")
+    check(RE2PlacedItemCatalog.entries(game:re2Game,source:re2Campaign,character:"Leon",fields:Array(placementFields.dropLast()),names:names).isEmpty &&
+          RE2PlacedItemCatalog.entries(game:re2Game,source:re2Campaign,character:nil,fields:placementFields,names:names).isEmpty &&
+          RE2PlacedItemCatalog.entries(game:re2Game,source:re2Rogue,character:"Leon",fields:placementFields,names:names).isEmpty,
+          "Unvollständige Weltgegenstände und unklare Kampagnensaves ausschließen")
     func re2SystemFields(_ name:String,_ count:Int,_ type:Int32,_ values:[Int:String]) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in

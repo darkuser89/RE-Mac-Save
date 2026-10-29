@@ -174,6 +174,15 @@ enum SaveFormatInspector {
                                 }
                             }
                             result["scalarFieldInventory"]=re2ScalarInventory(doc)
+                            if !doc.re2PlacedItems.isEmpty {
+                                result["placedWorldItems"]=doc.re2PlacedItems.map {entry in
+                                    ["setIndex":entry.setIndex,"entryIndex":entry.entryIndex,
+                                     "itemCode":entry.itemCode,"weaponCode":entry.weaponCode,
+                                     "count":entry.count,"mapCode":entry.mapCode,
+                                     "locationCode":entry.locationCode,"enabled":entry.enabled,
+                                     "itemName":entry.itemName ?? "","weaponName":entry.weaponName ?? ""] as [String:Any]
+                                }
+                            }
                             result["itemDiscoveryProbe"]=re2ItemDiscovery(doc)
                             result["rogueFieldGroups"]=doc.re2RogueFields.map {group in
                                 ["name":group.name,"count":group.entries.count,

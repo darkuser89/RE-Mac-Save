@@ -190,6 +190,24 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if !doc.re2PlacedItems.isEmpty {
+                        Divider()
+                        Text("RE2-Platzierte Weltgegenstände").font(.title2.bold())
+                        Text("Gespeicherte Platzierungsdatensätze mit Gegenstands- und Waffencode, Menge, Karten- und Ortscode. Ein gespeicherter Datensatz belegt nicht, dass der Gegenstand noch aufhebbar ist. Nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        DisclosureGroup("\(doc.re2PlacedItems.count) gespeicherte Einträge") {
+                            ForEach(doc.re2PlacedItems) {entry in
+                                VStack(alignment:.leading,spacing:2) {
+                                    Text("Liste \(entry.setIndex) · Eintrag \(entry.entryIndex) · \(entry.itemName ?? entry.weaponName ?? "Unbenannter Eintrag")")
+                                        .font(.caption.bold())
+                                    Text("Gegenstandscode \(entry.itemCode)\(entry.itemName.map {" (\($0))"} ?? "") · Waffencode \(entry.weaponCode)\(entry.weaponName.map {" (\($0))"} ?? "") · Menge \(entry.count)")
+                                        .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    Text("Karte \(entry.mapCode) · Ort \(entry.locationCode) · Enable \(entry.enabled ? "true":"false")")
+                                        .font(.caption2.monospacedDigit()).foregroundStyle(.secondary)
+                                }.padding(.vertical,3)
+                            }
+                        }
+                    }
                     if !doc.re2WeaponUse.isEmpty {
                         Divider()
                         Text("RE2-Waffenkennungen").font(.title2.bold())

@@ -329,5 +329,8 @@
   ],
   "fad63ec1": [
     "app.ropeway.gamemastering.GlobalUserDataManager.GameSaveData"
+  ],
+  "fdc4b517": [
+    "app.ropeway.gimmick.action.SetItem.SetItemSaveData"
   ]
 }
