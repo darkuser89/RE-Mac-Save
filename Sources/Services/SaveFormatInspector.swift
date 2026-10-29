@@ -2,8 +2,18 @@ import Foundation
 import CryptoKit
 
 enum SaveFormatInspector {
+    private struct RE2Snapshot {
+        let resultIndex: Int
+        let name: String
+        let character: String
+        let modified: Date
+        let fields: [String: SaveScalar]
+        let ambiguousPaths: Int
+    }
+
     static func inspect(_ scans:[String:ScanResult]) -> [[String:Any]] {
         var results:[[String:Any]]=[]
+        var re2Snapshots:[RE2Snapshot]=[]
         let scratch=FileManager.default.temporaryDirectory.appendingPathComponent("RESaveValidation-"+UUID().uuidString)
         do {try FileManager.default.createDirectory(at:scratch,withIntermediateDirectories:true)} catch {return [["error":error.localizedDescription]]}
         defer {try? FileManager.default.removeItem(at:scratch)}
@@ -303,8 +313,48 @@ enum SaveFormatInspector {
                     }
                     guard Data(SHA256.hash(data:try Data(contentsOf:file.url)))==doc.fingerprint else {throw SaveError.invalid("Quelle wurde während der Prüfung geändert.")}
                     result["originalUnchanged"]=true
+                    if game.id=="re2",let character=doc.character,
+                       file.url.lastPathComponent.contains("Slot") {
+                        var values:[String:SaveScalar]=[:]
+                        var duplicates=Set<String>()
+                        for field in doc.parsed.fields where field.type != 15 && field.size <= 8 {
+                            if values[field.path] != nil {duplicates.insert(field.path)}
+                            else {values[field.path]=field}
+                        }
+                        for path in duplicates {values.removeValue(forKey:path)}
+                        re2Snapshots.append(RE2Snapshot(resultIndex:results.count,
+                            name:file.url.lastPathComponent,character:character,
+                            modified:file.modified,fields:values,ambiguousPaths:duplicates.count))
+                    }
                 } catch {result["error"]=error.localizedDescription;result["roundTrip"]=false}
                 results.append(result)
+            }
+        }
+        for character in Set(re2Snapshots.map(\.character)) {
+            let group=re2Snapshots.filter{$0.character==character}.sorted {
+                $0.modified==$1.modified ? $0.name<$1.name : $0.modified<$1.modified
+            }
+            guard group.count>1 else {continue}
+            for index in 1..<group.count {
+                let before=group[index-1],after=group[index]
+                let common=Set(before.fields.keys).intersection(after.fields.keys)
+                let changed=common.filter {before.fields[$0]!.text != after.fields[$0]!.text}.sorted()
+                let rows=changed.prefix(2000).map {path -> [String:Any] in
+                    let old=before.fields[path]!,new=after.fields[path]!
+                    return ["path":path,"namedPath":RE2FieldNameCatalog.labeledPath(path),
+                            "ownerNameCandidates":RE2OwnerNameCatalog.names(for:new.owner),
+                            "fieldNameCandidates":RE2FieldNameCatalog.names(for:new.field),
+                            "type":new.type,"size":new.size,"before":old.text,"after":new.text]
+                }
+                results[after.resultIndex]["re2PreviousSlotComparison"]=[
+                    "character":character,"beforeFile":before.name,"afterFile":after.name,
+                    "commonFields":common.count,"changedFields":changed.count,
+                    "shownFields":rows.count,"truncated":changed.count>rows.count,
+                    "onlyInBefore":before.fields.count-common.count,
+                    "onlyInAfter":after.fields.count-common.count,
+                    "ambiguousPathsBefore":before.ambiguousPaths,
+                    "ambiguousPathsAfter":after.ambiguousPaths,
+                    "changes":rows] as [String:Any]
             }
         }
         return results

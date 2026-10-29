@@ -15,6 +15,18 @@ struct RE2CostumeState: Identifiable {
 }
 
 enum RE2CostumeStateCatalog {
+    static func observedUserOutfit(typeCode: Int?, value: String) -> String? {
+        guard let typeCode else {return nil}
+        if value == "16",(0...3).contains(typeCode) {return "Normale Outfits (beobachtet)"}
+        if value == "8",typeCode == 0 || typeCode == 1 {
+            return "Leon: Klassischer Polizist (verletzt) (beobachtet)"
+        }
+        if value == "17",typeCode == 2 || typeCode == 3 {
+            return "Claire: Klassisches Top (beobachtet)"
+        }
+        return nil
+    }
+
     private static let sources: [(String, String)] = [
         ("UserCostumeDataList", "Benutzer-Kostümdaten"),
         ("CheckedCostumeDataList", "Geprüfte Kostümdaten"),
