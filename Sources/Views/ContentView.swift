@@ -44,9 +44,10 @@ struct ContentView:View {
             ToolbarItem {Button(action:store.inspectFormats){Label("Saves dieses Spiels prüfen",systemImage:"checkmark.shield")}.disabled(store.busy || store.scans.isEmpty)}
             ToolbarItem {Button(action:store.inspectAllFormats){Label("Alle fünf Spiele prüfen",systemImage:"checkmark.shield.lefthalf.filled")}.disabled(store.busy || store.scans.isEmpty)}
             ToolbarItem {Button(action:store.exportInventory){Label("Fundliste exportieren",systemImage:"list.bullet.rectangle")}.disabled(store.busy || store.scans.isEmpty)}
+            ToolbarItem {Button(action:store.updateSearchIndex){Label("Schnellindex aktualisieren",systemImage:"magnifyingglass.circle")}.disabled(store.busy || store.scans.isEmpty)}
             ToolbarItem {Button(action:store.refresh){Label("Neu suchen",systemImage:"arrow.clockwise")}.disabled(store.busy)}
         }
-        .disabled(store.isSaving || store.isInspecting)
+        .disabled(store.isSaving || store.isInspecting || store.isIndexing)
         Divider()
         HStack(spacing:8){if store.busy {ProgressView().controlSize(.small)};Text(store.message).font(.caption).foregroundStyle(.secondary);Spacer();Text("Nur lokale Spielstände").font(.caption).foregroundStyle(.secondary)}.padding(10).background(.bar)
         }

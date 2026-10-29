@@ -17,7 +17,7 @@ trap cleanup EXIT
 CANDIDATE="$STAGE/Resident Evil Save Editor.app"
 mkdir -p "$CANDIDATE/Contents/MacOS" "$CANDIDATE/Contents/Resources"
 SOURCES=();while IFS= read -r file;do SOURCES+=("$file");done < <(find "$ROOT/Sources" -type f -name '*.swift' | sort)
-xcrun swiftc -swift-version 5 -O -target arm64-apple-macos14.0 -module-cache-path "$BUILD/ModuleCache" "${SOURCES[@]}" -o "$CANDIDATE/Contents/MacOS/RESaveEditor"
+xcrun swiftc -swift-version 5 -O -target arm64-apple-macos14.0 -module-cache-path "$BUILD/ModuleCache" "${SOURCES[@]}" -lsqlite3 -o "$CANDIDATE/Contents/MacOS/RESaveEditor"
 CORE=("$ROOT/Sources/Services/SaveCrypto.swift" "$ROOT/Sources/Services/SaveParser.swift" "$ROOT/Sources/Services/SaveRebuilder.swift" "$ROOT/Sources/Services/DocumentListEditor.swift" "$ROOT/Sources/Services/RE7EasterEggCatalog.swift" "$ROOT/Sources/Services/LocalSavePolicy.swift" "$ROOT/Sources/Models/SaveModels.swift" "$ROOT/Sources/Services/SaveDiscovery.swift" "$ROOT/Sources/Services/LocalSaveWriter.swift" "$ROOT/Sources/Services/SaveKeys.swift" "$ROOT/Sources/Services/RE2Character.swift" "$ROOT/Sources/Services/RE2SaveHeader.swift" "$ROOT/Sources/Services/RE2FieldNameCatalog.swift" "$ROOT/Sources/Services/RE2OwnerNameCatalog.swift" "$ROOT/Sources/Services/RE2ItemHistory.swift" "$ROOT/Sources/Services/RE2WeaponUse.swift" "$ROOT/Sources/Services/RE2InventoryLayout.swift" "$ROOT/Sources/Services/RE2CostumeState.swift" "$ROOT/Sources/Services/RE2ProgressFlags.swift" "$ROOT/Sources/Services/RE2SystemProgress.swift" "$ROOT/Sources/Services/RE2ClearRecords.swift" "$ROOT/Sources/Services/RE2MapProgress.swift" "$ROOT/Sources/Services/RE2MapMarkers.swift" "$ROOT/Sources/Services/RE2MapParts.swift" "$ROOT/Sources/Services/RE2PuzzleProgress.swift" "$ROOT/Sources/Services/RE2DoorProgress.swift" "$ROOT/Sources/Services/RE2MechanismProgress.swift" "$ROOT/Sources/Services/RE2EnvironmentProgress.swift" "$ROOT/Sources/Services/RE2RunFlags.swift" "$ROOT/Sources/Services/RE2RogueProgress.swift" "$ROOT/Sources/Services/SaveSchemas.swift" "$ROOT/Sources/Services/SaveInventory.swift" "$ROOT/Sources/Services/ItemNameCatalog.swift" "$ROOT/Sources/Services/DocumentFlagCatalog.swift" "$ROOT/Sources/Services/StoredDocumentCatalog.swift" "$ROOT/Sources/Models/EditableField.swift")
 CORE+=("$ROOT/Sources/Services/RE2TriggerProgress.swift")
 CORE+=("$ROOT/Sources/Services/RE2EnemyState.swift")
@@ -60,7 +60,7 @@ python3 -B - "$CANDIDATE" <<'PY'
 from pathlib import Path
 import plistlib,sys
 p=Path(sys.argv[1])/'Contents/Info.plist'
-p.write_bytes(plistlib.dumps({'CFBundleIdentifier':'local.residentevil.saveeditor','CFBundleExecutable':'RESaveEditor','CFBundleName':'Resident Evil Save Editor','CFBundlePackageType':'APPL','CFBundleShortVersionString':'0.8.50','CFBundleVersion':'74','CFBundleIconFile':'AppIcon','LSMinimumSystemVersion':'14.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication'}))
+p.write_bytes(plistlib.dumps({'CFBundleIdentifier':'local.residentevil.saveeditor','CFBundleExecutable':'RESaveEditor','CFBundleName':'Resident Evil Save Editor','CFBundlePackageType':'APPL','CFBundleShortVersionString':'0.8.51','CFBundleVersion':'75','CFBundleIconFile':'AppIcon','LSMinimumSystemVersion':'14.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication'}))
 PY
 codesign --force --sign - --options runtime --timestamp=none "$CANDIDATE"
 codesign --verify --deep --strict "$CANDIDATE"

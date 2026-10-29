@@ -15,8 +15,9 @@ import Combine
     @Published private var loading=false
     @Published private(set) var isSaving=false
     @Published private(set) var isInspecting=false
+    @Published private(set) var isIndexing=false
     @Published var error:String?
-    var busy:Bool {scanning || loading || isSaving || isInspecting}
+    var busy:Bool {scanning || loading || isSaving || isInspecting || isIndexing}
     var game:GameProfile {GameProfile.all.first{$0.id==gameID}!}
     var files:[SaveFile] {scans[gameID]?.files ?? []}
     private var scopes:[String:URL]=[:]
@@ -128,6 +129,20 @@ import Combine
     func inspectFormats() {inspectFormats(selectedOnly:false)}
     func inspectSelectedFormat() {inspectFormats(selectedOnly:true)}
     func inspectAllFormats() {inspectFormats(selectedOnly:false,allGames:true)}
+    func updateSearchIndex() {
+        guard !busy else {return}
+        let snapshot=scans
+        isIndexing=true;error=nil;message="Lokale Saves werden für die Suche indexiert …"
+        Task {
+            let result=await Task.detached(priority:.userInitiated){Result{try SaveSearchIndex.build(snapshot)}}.value
+            isIndexing=false
+            switch result {
+            case .success(let summary):
+                message="Suchindex: \(summary.files) Saves, \(summary.fields) Felder, \(summary.errors) Fehler · \(summary.location.path)"
+            case .failure(let failure):error=failure.localizedDescription;message="Vorheriger Suchindex bleibt erhalten."
+            }
+        }
+    }
     private func inspectFormats(selectedOnly:Bool,allGames:Bool=false) {
         let snapshot=scans
         let selected=gameID

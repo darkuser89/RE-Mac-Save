@@ -108,6 +108,22 @@ Systemdaten, automatische Saves und manuelle Slots enthalten unterschiedliche Da
 
 Die Suche zeigt ausschließlich lokale `data*.bin`-Einzeldateien im `SaveData`-Ordner des jeweiligen Spielcontainers. iCloud-Orte und als iCloud-Datei gekennzeichnete Ziele, PACK-Dateien, andere Spielcontainer und symbolische Links sind als Bearbeitungsziele ausgeschlossen. Ein manuell freigegebener Ordner muss innerhalb des zugehörigen lokalen Spielcontainers liegen.
 
+## Schnellsuche für Save-Analyse
+
+„Schnellindex aktualisieren“ liest alle aktuell gefundenen lokalen Saves mit den bereits freigegebenen Ordnerzugriffen der App und legt einen SQLite-Suchindex unter `/private/tmp/ResidentEvil-Save-Suche.sqlite` an. Er enthält Dateinamen, Hashes, Typen, Längen, Feldpfade und Zahlen-/Bool-Werte. Gespeicherte Textinhalte werden weder indexiert noch angezeigt. Für RE2 kommen bestätigte Hash-Namenskandidaten hinzu. Die App schreibt keine Save-Datei; ein bestehender Suchindex wird erst nach vollständiger Erstellung atomar ersetzt. Der Index ist ein zeitgebundener Schnappschuss und muss nach neuen Spielständen erneut aktualisiert werden. Er liegt getrennt von Code, Audit und Save-Ordnern und kann bei Bedarf gelöscht werden.
+
+Das mitgelieferte Kommandozeilenwerkzeug liest ausschließlich diesen Index:
+
+```sh
+python3 script/save_search.py files
+python3 script/save_search.py find --field-name ClearTime --game re2 --json
+python3 script/save_search.py find --owner c0d6d676 --game re2 --limit 20
+python3 script/save_search.py diff re2 data001Slot.bin data003Slot.bin --common-only --limit 30
+python3 script/save_search.py owners --game re2 --unknown --limit 20
+```
+
+`find` unterstützt auch `--file`, `--field`, `--owner`, `--field-name`, `--owner-name`, `--type` und `--limit`. Exakte RE2-Namen und Hashes nutzen die Indexspalten; eine freie Teilstringsuche durchsucht mehr Zeilen. Der Vergleich paart gleiche Rohpfade und deren Wiederholungsindex; `--common-only` blendet hinzugekommene und weggefallene Positionen aus. Verschobene Listen können auch bei gleicher Spielbedeutung verschiedene Rohpfade haben. Der Vergleich behauptet keine Spielwirkung. Falls eine Datei beim Indexieren scheitert, erscheint sie unter `files` als Fehler und wird für Suchen ausgelassen.
+
 ## RE2-Kampagnenslots
 
 Die lesenden Detailansichten für Inventarprofile, Kartenobjekte, Türen, Rätsel, Gegner, Trigger und Umgebung akzeptieren nach geprüfter Leon-/Claire-Erkennung nun auch neuere manuelle Slots wie `data003Slot.bin`. Die frühere Dateinamensliste endete bei Slot 2 und blendete diese Informationen in Slot 3 aus. `data021Slot.bin` bleibt als bestätigte Zusatzmodusdatei ausgeschlossen. Keine Save-Datei wird durch diese Anzeige geändert.
@@ -154,7 +170,7 @@ Die aktuelle App und Module liegen ausschließlich unter `../RESaveEditorBuild`.
 
 Das Skript prüft Zahlenformate, den großen RE7-Byteblock, Schlüsselzuordnung, lokale Schreibziele und bestehende lokale RE4-Saves ausschließlich lesend. Alle Schreib-, Rücknahme- und Konflikttests verwenden temporäre Dateien. Fehlen die Testdaten oder schlägt ein Test fehl, wird die vorherige App beibehalten. Die zusätzliche Prüfung in der App verwendet deren regulär freigegebene Ordnerzugriffe für alle Spiele.
 
-GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.50` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
+GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.51` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
 
 Der Codex-Run-Button verwendet dasselbe Skript. Optionale Modi: `--verify`, `--logs`, `--telemetry`, `--debug` (LLDB nur für den Editor).
 
