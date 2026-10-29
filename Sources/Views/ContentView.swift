@@ -57,6 +57,7 @@ struct ContentView:View {
 }
 struct EditorDetailView:View {
     @ObservedObject var store:EditorStore
+    @State private var re2FieldSearch=""
     var body:some View {
         ScrollView {
             VStack(alignment:.leading,spacing:22) {
@@ -100,6 +101,32 @@ struct EditorDetailView:View {
                                         }.padding(.vertical,2)
                                     }
                                 }
+                            }
+                        }
+                    }
+                    if doc.game.id=="re2" {
+                        Divider()
+                        Text("RE2-Feldsuche").font(.title2.bold())
+                        Text("Durchsucht alle \(RE2RawFieldCatalog.numericCount(doc.parsed.fields)) dekodierten Zahlen- und Bool-Felder dieser Datei. Namen sind Hash-Treffer aus dem installierten Spiel, keine bestätigte Spielwirkung. Textfelder und undurchsichtige Datenblöcke werden nicht angezeigt. Nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        TextField("Feldname, Besitzer, Wert oder Pfad suchen",text:$re2FieldSearch)
+                            .textFieldStyle(.roundedBorder)
+                        if !re2FieldSearch.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty {
+                            let found=RE2RawFieldCatalog.search(doc.parsed.fields,query:re2FieldSearch)
+                            Text("\(found.matches) Treffer · \(found.rows.count) angezeigt")
+                                .font(.caption).foregroundStyle(.secondary)
+                            ForEach(found.rows) {row in
+                                VStack(alignment:.leading,spacing:3) {
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text(row.fieldLabel).font(.subheadline.bold())
+                                        Spacer(minLength:8)
+                                        Text(row.value).font(.subheadline.monospacedDigit())
+                                    }
+                                    Text(row.ownerLabel).font(.caption).foregroundStyle(.secondary)
+                                    Text(row.namedPath).font(.caption2.monospaced()).textSelection(.enabled)
+                                    Text("Rohpfad \(row.rawPath) · Typ \(row.type) · \(row.size) Byte")
+                                        .font(.caption2.monospaced()).foregroundStyle(.secondary).textSelection(.enabled)
+                                }.padding(8).background(.quaternary.opacity(0.35),in:RoundedRectangle(cornerRadius:6))
                             }
                         }
                     }

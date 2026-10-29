@@ -41,6 +41,20 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let labeledCostumePath=RE2FieldNameCatalog.labeledPath("/9e0932a9.9074a186[6]/2f11c239.0c0cda67[0]/2a3b1ae0.6686824e",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
     check(labeledCostumePath.contains("SystemSaveDataList[6]") && labeledCostumePath.contains("UserCostumeDataList[0]") && labeledCostumePath.hasSuffix("app.ropeway.CostumeManager.CostumeData.CostumeID"),"RE2-Pfad zeigt belegte Listen- und Typnamen")
     check(RE2FieldNameCatalog.labeledPath("/b15a035f.695a3627[0]",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)=="/b15a035f._Data[0]","Mehrdeutiger Besitzer wird im lesbaren Pfad nicht geraten")
+    let numericProbe=SaveScalar(id:0,owner:0x4e4210f9,field:0xf7ec3e63,type:7,offset:0,size:4,
+                                path:"/9e0932a9.9074a186[7]/4e4210f9.f7ec3e63",text:"42")
+    let privateTextProbe=SaveScalar(id:1,owner:0x4e4210f9,field:0xf7ec3e63,type:15,offset:4,size:16,
+                                    path:"/9e0932a9.9074a186[7]/4e4210f9.f7ec3e63[1]",text:"account-data")
+    let rawFields=[numericProbe,privateTextProbe]
+    check(RE2RawFieldCatalog.numericCount(rawFields)==1,"RE2-Feldsuche zählt ausschließlich Zahlen- und Bool-Felder")
+    let rawMatch=RE2RawFieldCatalog.search(rawFields,query:"HP",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
+    check(rawMatch.matches==1 && rawMatch.rows.first?.fieldLabel=="HP" && rawMatch.rows.first?.value=="42" &&
+          rawMatch.rows.first?.namedPath.contains("SystemSaveDataList[7]")==true,
+          "RE2-Feldsuche zeigt native Namens- und Pfadtreffer")
+    check(RE2RawFieldCatalog.search(rawFields,query:"account-data",fieldNames:re2FieldNames,ownerNames:re2OwnerNames).matches==0,
+          "RE2-Feldsuche gibt Textfelder mit möglichen Kontodaten nicht aus")
+    let bounded=RE2RawFieldCatalog.search(rawFields,query:"42",limit:0,fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
+    check(bounded.matches==1 && bounded.rows.isEmpty,"RE2-Feldsuche begrenzt Anzeige ohne Trefferverlust")
     func re2StatusFields(_ owner:String,_ name:String,_ count:Int,_ set:Set<Int>) -> [SaveScalar] {
         let ownerHash=SaveCrypto.murmur(Data(owner.utf8)),fieldHash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in
