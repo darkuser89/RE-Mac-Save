@@ -154,6 +154,14 @@ enum SaveFormatInspector {
                                 ["name":group.name,"count":group.entries.count,
                                  "values":group.entries.map {["index":$0.index ?? -1,"value":$0.value] as [String:Any]}] as [String:Any]
                             }
+                            if let progress=doc.re2SystemProgress {
+                                result["recordDetails"]=progress.records.map {record in
+                                    ["id":record.id,"cleared":record.cleared,"new":record.newMark,"progress":record.progress] as [String:Any]
+                                }
+                                result["rewardDetails"]=progress.rewards.map {reward in
+                                    ["id":reward.id,"opened":reward.opened,"new":reward.newMark] as [String:Any]
+                                }
+                            }
                         }
                         for section in ["Inventar","Itembox"] {
                             result[section.lowercased()]=doc.items.filter{$0.section==section}.map {item in

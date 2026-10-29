@@ -188,6 +188,32 @@ struct EditorDetailView:View {
                                 }
                             }
                         }
+                        if let progress=doc.re2SystemProgress {
+                            DisclosureGroup("Rekorddetails · \(progress.records.filter(\.cleared).count) von 91 abgeschlossen") {
+                                Text("Gespeicherter Abschluss, Neu-Markierung und roher Fortschrittswert je interner ID. Rekordtitel und die Einheit des Fortschrittswerts sind noch nicht zugeordnet.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                ForEach(progress.records) {record in
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text("ID \(record.id)").font(.caption.monospacedDigit())
+                                        Spacer(minLength:10)
+                                        Text("\(record.cleared ? "abgeschlossen" : "nicht abgeschlossen") · \(record.newMark ? "als neu markiert" : "nicht als neu markiert") · Wert \(record.progress)")
+                                            .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    }.padding(.vertical,2)
+                                }
+                            }
+                            DisclosureGroup("Belohnungsdetails · \(progress.rewards.filter(\.opened).count) von 133 geöffnet") {
+                                Text("Gespeicherter Öffnungs- und Neu-Status je interner ID. Welche Belohnung eine ID bezeichnet, ist noch nicht zugeordnet.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                ForEach(progress.rewards) {reward in
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text("ID \(reward.id)").font(.caption.monospacedDigit())
+                                        Spacer(minLength:10)
+                                        Text("\(reward.opened ? "geöffnet" : "nicht geöffnet") · \(reward.newMark ? "als neu markiert" : "nicht als neu markiert")")
+                                            .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    }.padding(.vertical,2)
+                                }
+                            }
+                        }
                         if !doc.re2ClearRecords.isEmpty {
                             DisclosureGroup("Abschlussdetails · \(doc.re2ClearRecords.count) gesetzte ID") {
                                 Text("Zu jeder gesetzten Spielabschluss-ID stehen ein Zeitwert, Rangcode und Speicherzähler. Die Einheit des Zeitwerts sowie die Bedeutung von ID und Rangcode sind noch nicht belegt.").font(.caption).foregroundStyle(.secondary)

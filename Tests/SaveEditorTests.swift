@@ -40,6 +40,31 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let re2System=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data00-1.bin"),size:0,modified:Date(),kind:"DSSS")
     let re2Campaign=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data001Slot.bin"),size:0,modified:Date(),kind:"DSSS")
     let re2Rogue=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data021Slot.bin"),size:0,modified:Date(),kind:"DSSS")
+    func re2SystemFields(_ name:String,_ count:Int,_ type:Int32,_ values:[Int:String]) -> [SaveScalar] {
+        let hash=SaveCrypto.murmur(Data(name.utf8))
+        return (0..<count).map {index in
+            SaveScalar(id:index,owner:0x4e4210f9,field:hash,type:type,offset:index*(type==2 ? 1:4),size:type==2 ? 1:4,
+                       path:String(format:"/9e0932a9.9074a186[7]/4e4210f9.%08x[%d]",hash,index),
+                       text:values[index] ?? (type==2 ? "false":"0"))
+        }
+    }
+    let recordFields=re2SystemFields("IsClearedRecord",91,2,[3:"true"])
+        + re2SystemFields("IsNewClearedRecord",91,2,[3:"true"])
+        + re2SystemFields("RecordProgressNumber",91,7,[3:"12"])
+        + re2SystemFields("IsOpenedReward",133,2,[8:"true"])
+        + re2SystemFields("IsNewReward",133,2,[8:"true"])
+    let recordDetails=RE2SystemProgressCatalog.details(game:re2Game,source:re2System,fields:recordFields)
+    check(recordDetails?.records.count==91 && recordDetails?.rewards.count==133 &&
+          recordDetails?.records[3].cleared==true && recordDetails?.records[3].newMark==true &&
+          recordDetails?.records[3].progress==12 && recordDetails?.rewards[8].opened==true &&
+          recordDetails?.rewards[8].newMark==true,
+          "RE2-Rekord- und Belohnungsstatus nach gespeicherter ID lesen")
+    check(RE2SystemProgressCatalog.details(game:re2Game,source:re2Campaign,fields:recordFields)==nil,
+          "Rekorddetails nicht einem Kampagnensave zuordnen")
+    check(RE2SystemProgressCatalog.details(game:re2Game,source:re2System,fields:recordFields+[recordFields[0]])==nil,
+          "Doppelte RE2-Rekord-ID ausblenden")
+    check(RE2SystemProgressCatalog.details(game:re2Game,source:re2System,fields:Array(recordFields.dropFirst()))==nil,
+          "Unvollständige RE2-Rekordliste ausblenden")
     let roguePrefix="/3f25bafa.a9a2c119[0]/b6f9870b."
     let rogueRecordHash=SaveCrypto.murmur(Data("IsClearedRogueRecord".utf8))
     let rogueRecords=(0..<15).map {index in
