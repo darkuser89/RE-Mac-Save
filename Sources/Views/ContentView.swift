@@ -194,6 +194,19 @@ struct EditorDetailView:View {
                             Text("\(group.total) gespeicherte Einträge · Code: Anzahl").font(.caption).foregroundStyle(.secondary)
                         }
                     }
+                    if !doc.re2RunFlags.isEmpty {
+                        Divider()
+                        Text("RE2-Gespeicherte Spielmerkmale").font(.title2.bold())
+                        Text("Werte aus den RE2-Rekorddaten. Die genaue Wirkung auf Rang und Freischaltungen wurde nicht im Spiel verglichen; nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        ForEach(doc.re2RunFlags) { flag in
+                            HStack {
+                                Text(flag.title)
+                                Spacer()
+                                Text(flag.isSet ? "Ja" : "Nein").font(.caption.monospaced())
+                            }
+                        }
+                    }
                     if !doc.fileFlags.isEmpty {
                         Divider()
                         Text("Gefundene Dokumente").font(.title2.bold())

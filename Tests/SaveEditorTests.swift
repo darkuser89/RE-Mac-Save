@@ -118,6 +118,15 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(mapSummary.count==5 && mapSummary[0].total==33 && mapSummary[0].distribution.last?.count==2 && mapSummary[1].distribution.last?.code==2,"RE2-Kartenlisten lesen vollständige Codes und Statuszahlen")
     check(RE2MapProgressCatalog.summaries(game:re2Game,fields:sampleMap,character:nil).isEmpty,"Kartenstatus nur für eindeutige RE2-Kampagnendatei")
     check(RE2MapProgressCatalog.summaries(game:re2Game,fields:Array(sampleMap.dropFirst()),character:"Leon").count==4,"Unvollständige feste Kartenliste wird ausgelassen")
+    let recordOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.GameSaveData".utf8))
+    let runFields=[
+        SaveScalar(id:0,owner:recordOwner,field:SaveCrypto.murmur(Data("UseSpecialWeapon".utf8)),type:2,offset:0,size:1,path:"/record.special",text:"true"),
+        SaveScalar(id:1,owner:recordOwner,field:SaveCrypto.murmur(Data("UseAimAssist".utf8)),type:2,offset:1,size:1,path:"/record.aim",text:"false")
+    ]
+    let runFlags=RE2RunFlagCatalog.flags(game:re2Game,fields:runFields,character:"Leon")
+    check(runFlags.count==2 && runFlags[0].isSet && !runFlags[1].isSet,"RE2-Spielmerkmale nur aus eindeutigen Bool-Feldern lesen")
+    check(RE2RunFlagCatalog.flags(game:re2Game,fields:runFields+[runFields[0]],character:"Leon").count==1,"Mehrdeutiges RE2-Spielmerkmal ausblenden")
+    check(RE2RunFlagCatalog.flags(game:re2Game,fields:runFields,character:nil).isEmpty,"Spielmerkmale ohne eindeutige RE2-Figur ausblenden")
     func resultFields(_ name:String,_ type:Int32,_ size:Int,_ value:(Int)->String) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<21).map {index in
