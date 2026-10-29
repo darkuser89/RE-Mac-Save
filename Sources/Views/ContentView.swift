@@ -179,6 +179,21 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if !doc.re2MapProgress.isEmpty {
+                        Divider()
+                        Text("RE2-Kartenstatus").font(.title2.bold())
+                        Text("Gespeicherte interne Kartenmarkierungen dieses Spielstands. Die Codes sind noch keinen Ortsnamen oder Farben im Spiel zugeordnet; nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        ForEach(doc.re2MapProgress) { group in
+                            HStack(alignment:.firstTextBaseline) {
+                                Text(group.title)
+                                Spacer()
+                                Text(group.distribution.map {"\($0.code): \($0.count)"}.joined(separator:" · "))
+                                    .font(.caption.monospacedDigit()).textSelection(.enabled)
+                            }
+                            Text("\(group.total) gespeicherte Einträge · Code: Anzahl").font(.caption).foregroundStyle(.secondary)
+                        }
+                    }
                     if !doc.fileFlags.isEmpty {
                         Divider()
                         Text("Gefundene Dokumente").font(.title2.bold())

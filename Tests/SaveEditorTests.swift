@@ -101,6 +101,23 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(progress.count==3 && progress[0].marked==[0,30,90] && progress[1].marked==[4,132] && progress[2].marked==[7],"RE2-Systemfortschritt liest drei vollständige indizierte Statuslisten")
     check(RE2ProgressFlagCatalog.lists(game:re2Game,source:re2Campaign,fields:progressFields).isEmpty,"Rekordstatus wird nur in der RE2-Systemdatei angezeigt")
     check(RE2ProgressFlagCatalog.lists(game:re2Game,source:re2System,fields:Array(progressFields.dropFirst())).count==2,"Unvollständige Rekordliste wird nicht angezeigt")
+    func mapFields(_ ownerName:String,_ fieldName:String,_ count:Int,_ marked:Set<Int>,_ numeric:Bool=false) -> [SaveScalar] {
+        let owner=SaveCrypto.murmur(Data(ownerName.utf8)),field=SaveCrypto.murmur(Data(fieldName.utf8))
+        return (0..<count).map {index in
+            SaveScalar(id:index,owner:owner,field:field,type:numeric ? 1:2,offset:index*4,size:numeric ? 4:1,
+                       path:String(format:"/%08x.%08x[%d]",owner,field,index),
+                       text:numeric ? (marked.contains(index) ? "2":"0"):(marked.contains(index) ? "true":"false"))
+        }
+    }
+    let sampleMap=mapFields("app.ropeway.gamemastering.UIMapManager.SaveData","openedFloor",33,[1,2])
+        + mapFields("app.ropeway.gamemastering.UIMapManager.SaveData","mapDispState",563,[4],true)
+        + mapFields("app.ropeway.gui.MapClearingResultManager.MapData","Arrived",3,[0])
+        + mapFields("app.ropeway.gui.MapClearingResultManager.UnitData","HasCleared",4,[0,2])
+        + mapFields("app.ropeway.gamemastering.UIMapManager.MapPartsChangeInfo","Done",64,[3])
+    let mapSummary=RE2MapProgressCatalog.summaries(game:re2Game,fields:sampleMap,character:"Leon")
+    check(mapSummary.count==5 && mapSummary[0].total==33 && mapSummary[0].distribution.last?.count==2 && mapSummary[1].distribution.last?.code==2,"RE2-Kartenlisten lesen vollständige Codes und Statuszahlen")
+    check(RE2MapProgressCatalog.summaries(game:re2Game,fields:sampleMap,character:nil).isEmpty,"Kartenstatus nur für eindeutige RE2-Kampagnendatei")
+    check(RE2MapProgressCatalog.summaries(game:re2Game,fields:Array(sampleMap.dropFirst()),character:"Leon").count==4,"Unvollständige feste Kartenliste wird ausgelassen")
     func resultFields(_ name:String,_ type:Int32,_ size:Int,_ value:(Int)->String) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<21).map {index in

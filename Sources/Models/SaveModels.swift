@@ -30,6 +30,7 @@ struct SaveDocument {
     let re2CostumeStates:[RE2CostumeState]
     let re2ProgressFlags:[RE2ProgressFlags]
     let re2ClearRecords:[RE2ClearRecord]
+    let re2MapProgress:[RE2MapProgress]
     let fileFlags:[DocumentFlag]
     let raccoonFlags:[RaccoonFlag]
     let castellanFlags:[CastellanFlag]
@@ -65,6 +66,7 @@ struct SaveDocument {
         re2CostumeStates=RE2CostumeStateCatalog.states(game:game,fields:parsed.fields)
         re2ProgressFlags=RE2ProgressFlagCatalog.lists(game:game,source:file,fields:parsed.fields)
         re2ClearRecords=RE2ClearRecordCatalog.records(game:game,source:file,fields:parsed.fields)
+        re2MapProgress=RE2MapProgressCatalog.summaries(game:game,fields:parsed.fields,character:character)
         fileFlags=DocumentFlagCatalog.flags(game:game,source:file,parsed:parsed)
         raccoonFlags=RaccoonFlagCatalog.flags(game:game,source:file,parsed:parsed)
         castellanFlags=CastellanFlagCatalog.flags(game:game,source:file,parsed:parsed)
