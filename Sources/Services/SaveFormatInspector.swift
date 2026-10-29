@@ -190,6 +190,16 @@ enum SaveFormatInspector {
                                     return row
                                 }
                             }
+                            if !doc.re2ClearRecords.isEmpty {
+                                result["clearRecords"]=doc.re2ClearRecords.map {record in
+                                    var row:[String:Any]=["id":record.id,"timeRaw":record.clearTimeRaw,
+                                                          "timeDisplay":record.displayTime,"rankCode":record.rankCode,
+                                                          "saveCount":record.saveCount]
+                                    if let scenario=record.observedScenario {row["observedScenario"]=scenario}
+                                    if let rank=record.observedRank {row["observedRank"]=rank}
+                                    return row
+                                }
+                            }
                             if let puzzle=doc.re2PuzzleProgress {
                                 var values:[String:Any]=[:]
                                 if let statue=puzzle.goddessStatue {

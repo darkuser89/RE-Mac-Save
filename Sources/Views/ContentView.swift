@@ -261,11 +261,12 @@ struct EditorDetailView:View {
                         }
                         if !doc.re2ClearRecords.isEmpty {
                             DisclosureGroup("Abschlussdetails · \(doc.re2ClearRecords.count) gesetzte ID") {
-                                Text("Zu jeder gesetzten Spielabschluss-ID stehen ein Zeitwert, Rangcode und Speicherzähler. Die Einheit des Zeitwerts sowie die Bedeutung von ID und Rangcode sind noch nicht belegt.").font(.caption).foregroundStyle(.secondary)
+                                Text("Zeitwerte sind in Mikrosekunden gespeichert. Leon/Veteran und Rang S+ sind für ID 2 mit dem Ergebnisbildschirm abgeglichen; andere IDs bleiben intern, bis sie im Spiel verglichen sind.").font(.caption).foregroundStyle(.secondary)
                                 ForEach(doc.re2ClearRecords) {record in
                                     VStack(alignment:.leading,spacing:3) {
-                                        Text("Interne Abschluss-ID \(record.id)").font(.subheadline.bold())
-                                        Text("Zeitwert \(record.clearTimeRaw) · Rangcode \(record.rankCode) · Speicherzähler \(record.saveCount)").font(.caption.monospacedDigit())
+                                        Text("Interne Abschluss-ID \(record.id)\(record.observedScenario.map {" · \($0)"} ?? "")").font(.subheadline.bold())
+                                        Text("Zeit \(record.displayTime) · \(record.observedRank ?? "Rangcode \(record.rankCode)") · \(record.saveCount) Speicherungen").font(.caption.monospacedDigit())
+                                        Text("Rohzeitwert \(record.clearTimeRaw)").font(.caption2).foregroundStyle(.secondary)
                                     }.padding(.vertical,3)
                                 }
                             }

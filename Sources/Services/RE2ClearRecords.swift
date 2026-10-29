@@ -5,6 +5,18 @@ struct RE2ClearRecord: Identifiable {
     let clearTimeRaw:UInt64
     let rankCode:Int
     let saveCount:Int
+
+    // The observed Leon/Veteran result pairs 169007204 with 00:02:49.
+    // Other IDs retain their native IDs until a corresponding game result is observed.
+    var observedScenario:String? {id==2 ? "Leon · Veteran":nil}
+    var observedRank:String? {id==2 && rankCode==1 ? "S+":nil}
+    var displayTime:String {
+        let seconds=clearTimeRaw/1_000_000
+        let hours=seconds/3_600
+        let minutes=(seconds/60)%60
+        let remainder=seconds%60
+        return String(format:"%02llu:%02llu:%02llu",hours,minutes,remainder)
+    }
 }
 
 enum RE2ClearRecordCatalog {

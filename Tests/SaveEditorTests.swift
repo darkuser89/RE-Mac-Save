@@ -78,7 +78,7 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Doppelte RE2-Rekord-ID ausblenden")
     check(RE2SystemProgressCatalog.details(game:re2Game,source:re2System,fields:Array(recordFields.dropFirst()))==nil,
           "Unvollständige RE2-Rekordliste ausblenden")
-    let roguePrefix="/3f25bafa.a9a2c119[0]/b6f9870b."
+    let roguePrefix="/3f25bafa.a9a2c119[1]/b6f9870b."
     let rogueRecordHash=SaveCrypto.murmur(Data("IsClearedRogueRecord".utf8))
     let rogueRecords=(0..<15).map {index in
         SaveScalar(id:index,owner:0xb6f9870b,field:rogueRecordHash,type:2,offset:index,size:1,
@@ -95,6 +95,12 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Rogue-Daten nicht einem Kampagnensave zuordnen")
     check(RE2RogueProgressCatalog.groups(game:re2Game,source:re2Rogue,fields:rogueRecords+[rogueRecords[0]],names:re2FieldNames).isEmpty,
           "Doppelte Rogue-Status-ID ausblenden")
+    let wrongRogueIndex=rogueRecords.map {scalar in
+        SaveScalar(id:scalar.id,owner:scalar.owner,field:scalar.field,type:scalar.type,offset:scalar.offset,
+                   size:scalar.size,path:scalar.path.replacingOccurrences(of:"a9a2c119[1]",with:"a9a2c119[0]"),text:scalar.text)
+    }
+    check(RE2RogueProgressCatalog.groups(game:re2Game,source:re2Rogue,fields:wrongRogueIndex,names:re2FieldNames).isEmpty,
+          "Falschen Zusatzmodus-Listenindex nicht als gespeicherte Werte anzeigen")
     let goddessOwner=SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickGoddessStatue.SaveData".utf8))
     let circuitOwner=SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickCircuitPuzzle.SaveData".utf8))
     let goddessParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[75]/6f42ff0a.1bd539fc"
@@ -628,6 +634,11 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         + resultFields("SaveCount",7,4,{_ in "0"})
     let clearRecords=RE2ClearRecordCatalog.records(game:re2Game,source:re2System,fields:clearFields)
     check(clearRecords.count==1 && clearRecords[0].id==7 && clearRecords[0].clearTimeRaw==169007204 && clearRecords[0].rankCode==1 && clearRecords[0].saveCount==0,"RE2-Abschlussdaten verbinden vier native Listen über denselben Index")
+    check(clearRecords[0].displayTime=="00:02:49" && clearRecords[0].observedScenario==nil && clearRecords[0].observedRank==nil,
+          "Unbelegte Abschluss-IDs bleiben unbenannt; Zeitwert wird als Mikrosekunden angezeigt")
+    let observedLeonResult=RE2ClearRecord(id:2,clearTimeRaw:169007204,rankCode:1,saveCount:0)
+    check(observedLeonResult.displayTime=="00:02:49" && observedLeonResult.observedScenario=="Leon · Veteran" &&
+          observedLeonResult.observedRank=="S+","Beobachteten Leon-Abschluss mit Screenshot-Zeit und Rang abgleichen")
     check(RE2ClearRecordCatalog.records(game:re2Game,source:re2Campaign,fields:clearFields).isEmpty,"Abschlussdaten nur aus RE2-Systemsave")
     check(RE2ClearRecordCatalog.records(game:re2Game,source:re2System,fields:Array(clearFields.dropLast())).isEmpty,"Unvollständige Abschlussdaten werden nicht angezeigt")
     let re2Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FILE_NAMES"]!))

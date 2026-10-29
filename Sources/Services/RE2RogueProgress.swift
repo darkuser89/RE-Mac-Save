@@ -41,7 +41,7 @@ enum RE2RogueProgressCatalog {
     static func groups(game: GameProfile, source: SaveFile, fields: [SaveScalar],
                        names: [String:[String]] = RE2FieldNameCatalog.bundled) -> [RE2RogueFieldGroup] {
         guard game.id == "re2", source.url.lastPathComponent == "data021Slot.bin" else {return []}
-        let prefix = String(format: "/%08x.%08x[0]/%08x.", rootOwner, rootList, recordOwner)
+        let prefix = String(format: "/%08x.%08x[1]/%08x.", rootOwner, rootList, recordOwner)
         let candidates = fields.filter {$0.owner == recordOwner}
         guard !candidates.isEmpty, candidates.count <= 256,
               candidates.allSatisfy({$0.path.hasPrefix(prefix)}) else {return []}
