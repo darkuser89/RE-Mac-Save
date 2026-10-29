@@ -181,7 +181,13 @@ enum SaveFormatInspector {
                                     return row
                                 }
                                 result["rewardDetails"]=progress.rewards.map {reward in
-                                    ["id":reward.id,"opened":reward.opened,"new":reward.newMark] as [String:Any]
+                                    var row:[String:Any]=["id":reward.id,"opened":reward.opened,
+                                                          "new":reward.newMark]
+                                    if let entry=RE2RewardTextCatalog.entry(for:reward.id) {
+                                        row["nameFromMacCatalog"]=entry.name
+                                        row["kindFromMacCatalog"]=entry.kind
+                                    }
+                                    return row
                                 }
                             }
                             if let puzzle=doc.re2PuzzleProgress {

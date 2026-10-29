@@ -79,7 +79,11 @@ def archive_bytes(app: Path, path: str) -> bytes:
     return matches[0]
 
 
-def german_messages(data: bytes) -> dict[str, tuple[bytes, str]]:
+def german_messages(
+    data: bytes,
+    pattern: str = r"Mes_Sys_Bouns_Record\d{2}(Guide)?",
+    expected_count: int = 178,
+) -> dict[str, tuple[bytes, str]]:
     version, magic = struct.unpack_from("<I4s", data)
     if (version, magic) != (23, b"GMSG"):
         raise ValueError("Unexpected RE2 message version")
@@ -124,15 +128,15 @@ def german_messages(data: bytes) -> dict[str, tuple[bytes, str]]:
             raise ValueError("Invalid message row")
         name_offset = struct.unpack_from("<Q", data, offset + 24)[0]
         name = string_at(name_offset)
-        if not re.fullmatch(r"Mes_Sys_Bouns_Record\d{2}(Guide)?", name):
+        if not re.fullmatch(pattern, name):
             continue
         text_offset = struct.unpack_from(f"<{languages}Q", data, offset + 40)[german_index]
         value = re.sub(r"\s+", " ", string_at(text_offset)).strip()
         if not value or name in names:
             raise ValueError("Invalid or duplicate record message")
         names[name] = (data[offset:offset + 16], value)
-    if len(names) != 178:
-        raise ValueError("Unexpected RE2 record message coverage")
+    if len(names) != expected_count:
+        raise ValueError("Unexpected RE2 message coverage")
     return names
 
 

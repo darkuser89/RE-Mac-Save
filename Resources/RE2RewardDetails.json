@@ -1,0 +1,394 @@
+{
+  "25": {
+    "name": "Raccoon City B",
+    "kind": "Konzeptgrafik"
+  },
+  "26": {
+    "name": "Raccoon City C",
+    "kind": "Konzeptgrafik"
+  },
+  "27": {
+    "name": "Raccoon City D",
+    "kind": "Konzeptgrafik"
+  },
+  "28": {
+    "name": "Polizeistation A",
+    "kind": "Konzeptgrafik"
+  },
+  "29": {
+    "name": "Polizeistation B",
+    "kind": "Konzeptgrafik"
+  },
+  "30": {
+    "name": "Polizeistation C",
+    "kind": "Konzeptgrafik"
+  },
+  "31": {
+    "name": "Waffenladen \"Kendo\"",
+    "kind": "Konzeptgrafik"
+  },
+  "32": {
+    "name": "Kanalisation",
+    "kind": "Konzeptgrafik"
+  },
+  "33": {
+    "name": "Labor A",
+    "kind": "Konzeptgrafik"
+  },
+  "34": {
+    "name": "Labor B",
+    "kind": "Konzeptgrafik"
+  },
+  "35": {
+    "name": "Frühe Konzeptzeichnung",
+    "kind": "Konzeptgrafik"
+  },
+  "36": {
+    "name": "Zombie",
+    "kind": "Konzeptgrafik"
+  },
+  "37": {
+    "name": "Raccoon City A",
+    "kind": "Konzeptgrafik"
+  },
+  "38": {
+    "name": "Licker",
+    "kind": "Konzeptgrafik"
+  },
+  "39": {
+    "name": "Alligator",
+    "kind": "Konzeptgrafik"
+  },
+  "40": {
+    "name": "Designskizze C",
+    "kind": "Konzeptgrafik"
+  },
+  "41": {
+    "name": "Polizeistation D",
+    "kind": "Konzeptgrafik"
+  },
+  "42": {
+    "name": "Ivy",
+    "kind": "Konzeptgrafik"
+  },
+  "43": {
+    "name": "G (Phase 5)",
+    "kind": "Konzeptgrafik"
+  },
+  "44": {
+    "name": "Tyrant",
+    "kind": "Konzeptgrafik"
+  },
+  "45": {
+    "name": "G (Phase 1)",
+    "kind": "Konzeptgrafik"
+  },
+  "46": {
+    "name": "G (Phase 2)",
+    "kind": "Konzeptgrafik"
+  },
+  "47": {
+    "name": "G (Phase 3)",
+    "kind": "Konzeptgrafik"
+  },
+  "48": {
+    "name": "G (Phase 4)",
+    "kind": "Konzeptgrafik"
+  },
+  "49": {
+    "name": "Waffen und Objekte",
+    "kind": "Konzeptgrafik"
+  },
+  "50": {
+    "name": "Storyboards",
+    "kind": "Konzeptgrafik"
+  },
+  "51": {
+    "name": "Designskizze A",
+    "kind": "Konzeptgrafik"
+  },
+  "52": {
+    "name": "Logos und Symbole",
+    "kind": "Konzeptgrafik"
+  },
+  "53": {
+    "name": "Waisenhaus",
+    "kind": "Konzeptgrafik"
+  },
+  "54": {
+    "name": "Designskizze B",
+    "kind": "Konzeptgrafik"
+  },
+  "55": {
+    "name": "Leon (Freizeit)",
+    "kind": "Figur"
+  },
+  "56": {
+    "name": "Leon (Polizist)",
+    "kind": "Figur"
+  },
+  "57": {
+    "name": "Leon (Klassischer Polizist)",
+    "kind": "Figur"
+  },
+  "58": {
+    "name": "Claire (Top)",
+    "kind": "Figur"
+  },
+  "59": {
+    "name": "Claire (Klassische Jacke)",
+    "kind": "Figur"
+  },
+  "60": {
+    "name": "Claire (Klassisches Top)",
+    "kind": "Figur"
+  },
+  "62": {
+    "name": "Sherry (Schuluniform)",
+    "kind": "Figur"
+  },
+  "63": {
+    "name": "Sherry (Schuluniform - infizierte Version)",
+    "kind": "Figur"
+  },
+  "64": {
+    "name": "Sherry (Jacke)",
+    "kind": "Figur"
+  },
+  "65": {
+    "name": "Sherry (Klassische Schuluniform)",
+    "kind": "Figur"
+  },
+  "66": {
+    "name": "Sherry (Klassische Jacke)",
+    "kind": "Figur"
+  },
+  "67": {
+    "name": "Marvin Branagh",
+    "kind": "Figur"
+  },
+  "68": {
+    "name": "Brian Irons",
+    "kind": "Figur"
+  },
+  "69": {
+    "name": "Licker",
+    "kind": "Figur"
+  },
+  "70": {
+    "name": "Zombiehund",
+    "kind": "Figur"
+  },
+  "71": {
+    "name": "Ausgewachsener G",
+    "kind": "Figur"
+  },
+  "72": {
+    "name": "G-Junges",
+    "kind": "Figur"
+  },
+  "73": {
+    "name": "Ivy",
+    "kind": "Figur"
+  },
+  "74": {
+    "name": "Tyrant",
+    "kind": "Figur"
+  },
+  "75": {
+    "name": "Super Tyrant",
+    "kind": "Figur"
+  },
+  "76": {
+    "name": "G (Phase 1)",
+    "kind": "Figur"
+  },
+  "77": {
+    "name": "Riesenkakerlake",
+    "kind": "Figur"
+  },
+  "78": {
+    "name": "G (Phase 2)",
+    "kind": "Figur"
+  },
+  "79": {
+    "name": "G (Phase 3)",
+    "kind": "Figur"
+  },
+  "80": {
+    "name": "G (Phase 4)",
+    "kind": "Figur"
+  },
+  "81": {
+    "name": "G (Phase 5)",
+    "kind": "Figur"
+  },
+  "83": {
+    "name": "Kampfmesser",
+    "kind": "Figur"
+  },
+  "84": {
+    "name": "Kampfmesser",
+    "kind": "Figur"
+  },
+  "85": {
+    "name": "Blendgranate",
+    "kind": "Figur"
+  },
+  "86": {
+    "name": "Granate",
+    "kind": "Figur"
+  },
+  "87": {
+    "name": "EMF Visualizer",
+    "kind": "Figur"
+  },
+  "88": {
+    "name": "Matilda",
+    "kind": "Figur"
+  },
+  "89": {
+    "name": "SLS 60",
+    "kind": "Figur"
+  },
+  "90": {
+    "name": "JMB Hp3",
+    "kind": "Figur"
+  },
+  "91": {
+    "name": "Broom Hc",
+    "kind": "Figur"
+  },
+  "92": {
+    "name": "Überlebende",
+    "kind": "Figur"
+  },
+  "93": {
+    "name": "Quickdraw Army",
+    "kind": "Figur"
+  },
+  "94": {
+    "name": "M19",
+    "kind": "Figur"
+  },
+  "95": {
+    "name": "Samurai Edge (Originalmodell)",
+    "kind": "Figur"
+  },
+  "99": {
+    "name": "W-870",
+    "kind": "Figur"
+  },
+  "100": {
+    "name": "Ben Bertolucci",
+    "kind": "Figur"
+  },
+  "101": {
+    "name": "LE 5",
+    "kind": "Figur"
+  },
+  "102": {
+    "name": "MQ 11",
+    "kind": "Figur"
+  },
+  "103": {
+    "name": "Elektroschockgewehr",
+    "kind": "Figur"
+  },
+  "104": {
+    "name": "Panzerabwehrlenkwaffe",
+    "kind": "Figur"
+  },
+  "105": {
+    "name": "Minigun",
+    "kind": "Figur"
+  },
+  "106": {
+    "name": "Katherine Warren",
+    "kind": "Figur"
+  },
+  "107": {
+    "name": "Hunk",
+    "kind": "Figur"
+  },
+  "108": {
+    "name": "Tofu",
+    "kind": "Figur"
+  },
+  "109": {
+    "name": "Uiro-Mochi",
+    "kind": "Figur"
+  },
+  "110": {
+    "name": "Annin Tofu",
+    "kind": "Figur"
+  },
+  "111": {
+    "name": "GM 79",
+    "kind": "Figur"
+  },
+  "112": {
+    "name": "Flan",
+    "kind": "Figur"
+  },
+  "113": {
+    "name": "Konjak",
+    "kind": "Figur"
+  },
+  "114": {
+    "name": "Robert und Emma Kendo",
+    "kind": "Figur"
+  },
+  "115": {
+    "name": "Alligator",
+    "kind": "Figur"
+  },
+  "116": {
+    "name": "MUP",
+    "kind": "Figur"
+  },
+  "117": {
+    "name": "Annette Birkin",
+    "kind": "Figur"
+  },
+  "118": {
+    "name": "William Birkin",
+    "kind": "Figur"
+  },
+  "119": {
+    "name": "Zombie (männlich)",
+    "kind": "Figur"
+  },
+  "121": {
+    "name": "Mr. Raccoon",
+    "kind": "Figur"
+  },
+  "122": {
+    "name": "Zombie (weiblich)",
+    "kind": "Figur"
+  },
+  "123": {
+    "name": "Claire (Jacke)",
+    "kind": "Figur"
+  },
+  "125": {
+    "name": "Ada (Cocktailkleid)",
+    "kind": "Figur"
+  },
+  "126": {
+    "name": "Ada (Trenchcoat)",
+    "kind": "Figur"
+  },
+  "128": {
+    "name": "Chemischer Flammenwerfer",
+    "kind": "Figur"
+  },
+  "129": {
+    "name": "Lightning Hawk",
+    "kind": "Figur"
+  },
+  "130": {
+    "name": "ATM-4",
+    "kind": "Figur"
+  }
+}

@@ -17,6 +17,12 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           re2RecordDetails[75]?.catalogValue==14000 &&
           [86,87,89,90].allSatisfy{re2RecordDetails[$0]==nil},
           "RE2-Rekorde über Katalog-GUIDs zugeordnet; unbelegte IDs bleiben namenlos")
+    let re2RewardDetails=try RE2RewardTextCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_REWARD_DETAILS"]!))
+    check(re2RewardDetails.count==98 && re2RewardDetails[37]?.name=="Raccoon City A" &&
+          re2RewardDetails[55]?.name=="Leon (Freizeit)" &&
+          re2RewardDetails[114]?.name=="Robert und Emma Kendo" &&
+          re2RewardDetails[0]==nil && re2RewardDetails[132]==nil,
+          "RE2-Figuren und Konzeptgrafiken über native Belohnungs-IDs zugeordnet")
     let re2FieldNames=try RE2FieldNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FIELD_NAMES"]!))
     check(re2FieldNames.count==319 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"] && re2FieldNames["9074a186"]==["SystemSaveDataList"],"RE2-Skalar- und Pfadfeldnamen aus installiertem Build")
     check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")

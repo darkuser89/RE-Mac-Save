@@ -243,11 +243,15 @@ struct EditorDetailView:View {
                                 }
                             }
                             DisclosureGroup("Belohnungsdetails · \(progress.rewards.filter(\.opened).count) von 133 geöffnet") {
-                                Text("Gespeicherter Öffnungs- und Neu-Status je interner ID. Welche Belohnung eine ID bezeichnet, ist noch nicht zugeordnet.")
+                                Text("Gespeicherter Öffnungs- und Neu-Status je interner ID. Figuren- und Konzeptgrafiknamen stammen aus den Mac-Spieltabellen; andere Belohnungen bleiben ohne belegten Namen.")
                                     .font(.caption).foregroundStyle(.secondary)
                                 ForEach(progress.rewards) {reward in
                                     HStack(alignment:.firstTextBaseline) {
-                                        Text("ID \(reward.id)").font(.caption.monospacedDigit())
+                                        if let entry=RE2RewardTextCatalog.entry(for:reward.id) {
+                                            Text("ID \(reward.id) · \(entry.kind): \(entry.name)").font(.caption)
+                                        } else {
+                                            Text("ID \(reward.id) · Kein belegter Name").font(.caption.monospacedDigit())
+                                        }
                                         Spacer(minLength:10)
                                         Text("\(reward.opened ? "geöffnet" : "nicht geöffnet") · \(reward.newMark ? "als neu markiert" : "nicht als neu markiert")")
                                             .font(.caption.monospacedDigit()).textSelection(.enabled)
