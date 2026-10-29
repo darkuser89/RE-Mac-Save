@@ -237,23 +237,29 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let shelfParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[105]/9aa81c3c.1bd539fc"
     let movableParent="/7f9decbe.8aab887b[23]/8413308a.59a3dafc[2]/fa8abf85.1bd539fc"
     let fanParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[63]/b843da90.1bd539fc"
-    let shelfFields=[mechanism(shelfName,"isInit",2,"true",shelfParent,316)] +
-        (0..<4).flatMap {index in
-            [mechanism(shelfName,"PosNum",7,String(index+1),shelfParent,317+index*2,arrayIndex:index),
-             mechanism(shelfName,"isLock",2,index==2 ? "true":"false",shelfParent,318+index*2,arrayIndex:index)]
-        }
+    var shelfFields: [SaveScalar] = [mechanism(shelfName,"isInit",2,"true",shelfParent,316)]
+    for index in 0..<4 {
+        let position = mechanism(shelfName,"PosNum",7,String(index+1),shelfParent,317+index*2,arrayIndex:index)
+        let locked = mechanism(shelfName,"isLock",2,index==2 ? "true":"false",shelfParent,318+index*2,arrayIndex:index)
+        shelfFields.append(position)
+        shelfFields.append(locked)
+    }
     let movableFields=[mechanism(movableName,"HasMoved",2,"true",movableParent,325)]
     let fanFields=[mechanism(fanName,"HasBroken",2,"true",fanParent,326)]
-    let allMechanisms=switchFields+plugFields+clockFields+firstFields+autoDoorFields+wiringFields+elevatorFields+shelfFields+movableFields+fanFields
+    var allMechanisms: [SaveScalar] = []
+    for group in [switchFields,plugFields,clockFields,firstFields,autoDoorFields,wiringFields,elevatorFields,shelfFields,movableFields,fanFields] {
+        allMechanisms.append(contentsOf:group)
+    }
     let mechanisms=RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms,character:"Leon")
-    check(mechanisms?.switches.count==1 && mechanisms?.switches[0].toggled==true &&
-          mechanisms?.switches[0].finalApplied==false && mechanisms?.plugs[0].plugCode==3 &&
-          mechanisms?.clockGear?.topCode==2 && mechanisms?.clockGear?.firstFlags==[true,false,false,false] &&
-          mechanisms?.autoDoors.first?.opened==true && mechanisms?.wiringNodes.first?.switchedIndex == -1 &&
-          mechanisms?.elevators.first?.currentIndex==1 &&
-          mechanisms?.bookShelves.first?.positions==[1,2,3,4] &&
-          mechanisms?.bookShelves.first?.locked==[false,false,true,false] &&
-          mechanisms?.movables.first?.moved==true && mechanisms?.fans.first?.broken==true,
+    let baseMechanismsValid = mechanisms?.switches.count==1 && mechanisms?.switches[0].toggled==true &&
+        mechanisms?.switches[0].finalApplied==false && mechanisms?.plugs[0].plugCode==3 &&
+        mechanisms?.clockGear?.topCode==2 && mechanisms?.clockGear?.firstFlags==[true,false,false,false]
+    let worldMechanismsValid = mechanisms?.autoDoors.first?.opened==true &&
+        mechanisms?.wiringNodes.first?.switchedIndex == -1 && mechanisms?.elevators.first?.currentIndex==1
+    let newMechanismsValid = mechanisms?.bookShelves.first?.positions==[1,2,3,4] &&
+        mechanisms?.bookShelves.first?.locked==[false,false,true,false] &&
+        mechanisms?.movables.first?.moved==true && mechanisms?.fans.first?.broken==true
+    check(baseMechanismsValid && worldMechanismsValid && newMechanismsValid,
           "RE2-Mechanik nur aus vollständigen und passend typisierten Objektgruppen lesen")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2System,fields:allMechanisms,character:nil)==nil,
           "Mechanikzustände nicht dem Systemsave zuordnen")

@@ -47,7 +47,7 @@ python3 -B - "$CANDIDATE" <<'PY'
 from pathlib import Path
 import plistlib,sys
 p=Path(sys.argv[1])/'Contents/Info.plist'
-p.write_bytes(plistlib.dumps({'CFBundleIdentifier':'local.residentevil.saveeditor','CFBundleExecutable':'RESaveEditor','CFBundleName':'Resident Evil Save Editor','CFBundlePackageType':'APPL','CFBundleShortVersionString':'0.8.28','CFBundleVersion':'52','CFBundleIconFile':'AppIcon','LSMinimumSystemVersion':'14.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication'}))
+p.write_bytes(plistlib.dumps({'CFBundleIdentifier':'local.residentevil.saveeditor','CFBundleExecutable':'RESaveEditor','CFBundleName':'Resident Evil Save Editor','CFBundlePackageType':'APPL','CFBundleShortVersionString':'0.8.29','CFBundleVersion':'53','CFBundleIconFile':'AppIcon','LSMinimumSystemVersion':'14.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication'}))
 PY
 codesign --force --sign - --options runtime --timestamp=none "$CANDIDATE"
 codesign --verify --deep --strict "$CANDIDATE"
