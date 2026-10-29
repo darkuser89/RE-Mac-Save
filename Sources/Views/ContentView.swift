@@ -309,6 +309,36 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if let environment=doc.re2EnvironmentProgress {
+                        Divider()
+                        Text("RE2-Tutorials und Fenster").font(.title2.bold())
+                        Text("Gespeicherte Anzeigeflags und Kartendaten. Interne IDs sind noch keinen sichtbaren Tutorialtiteln oder Fenstern zugeordnet; nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        if let tutorials=environment.displayedTutorials {
+                            DisclosureGroup("Tutorial-Anzeigeflags · \(tutorials.filter {$0}.count) von \(tutorials.count) gesetzt") {
+                                ForEach(tutorials.indices,id:\.self) {index in
+                                    HStack {
+                                        Text("Tutorial-ID \(index)")
+                                        Spacer()
+                                        Text(tutorials[index] ? "Anzeigeflag gesetzt" : "Anzeigeflag aus")
+                                            .font(.caption.monospacedDigit())
+                                    }.font(.caption).padding(.vertical,2)
+                                }
+                            }
+                        }
+                        if !environment.windows.isEmpty {
+                            DisclosureGroup("Fensterdaten · \(environment.windows.filter(\.barricaded).count) von \(environment.windows.count) mit Barrikadenflag") {
+                                ForEach(environment.windows) {window in
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text("Fenster-ID \(window.id)")
+                                        Spacer(minLength:10)
+                                        Text(String(format:"Hash %08x · Karte %d · Barrikadenflag %@",window.objectHash,window.mapID,window.barricaded ? "Ja":"Nein"))
+                                            .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    }.font(.caption).padding(.vertical,2)
+                                }
+                            }
+                        }
+                    }
                     if !doc.re2DoorProgress.isEmpty {
                         Divider()
                         Text("RE2-Türzustände").font(.title2.bold())

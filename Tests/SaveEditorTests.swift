@@ -178,6 +178,40 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Doppeltes Schalterfeld ausblenden")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:Array(plugFields.dropLast())+switchFields,character:"Leon")?.plugs.isEmpty==true,
           "Unvollständigen Steckplatz ausblenden")
+    let tutorialOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.TutorialManager.GameSaveData".utf8))
+    let tutorialField=SaveCrypto.murmur(Data("IsDispTutorial".utf8))
+    let tutorialPrefix="/7f9decbe.8aab887b[12]/91bb4685.bfb6252d["
+    let tutorialFields=(0..<63).map {index in
+        SaveScalar(id:400+index,owner:tutorialOwner,field:tutorialField,type:2,offset:400+index,size:1,
+                   path:tutorialPrefix+"\(index)]",text:[2,7,32].contains(index) ? "true":"false")
+    }
+    let windowOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.UIMapManager.WindowInfo".utf8))
+    let windowPrefix="/7f9decbe.8aab887b[8]/090ff53c.c07d05d1/934e2e6b.695a3627["
+    let windowFields=(0..<2).flatMap {index in
+        [("_Hash",Int32(8),String(20000+index)),("_MapId",Int32(1),"226"),
+         ("_IsBarricade",Int32(2),index==0 ? "true":"false")].enumerated().map {offset,spec in
+            let hash=SaveCrypto.murmur(Data(spec.0.utf8))
+            return SaveScalar(id:500+index*3+offset,owner:windowOwner,field:hash,type:spec.1,
+                              offset:500+index*12+offset*4,size:spec.1==2 ? 1:4,
+                              path:windowPrefix+"\(index)]"+String(format:"/%08x.%08x",windowOwner,hash),text:spec.2)
+        }
+    }
+    let environment=RE2EnvironmentProgressCatalog.details(game:re2Game,source:re2Campaign,
+                                                           fields:tutorialFields+windowFields,character:"Leon")
+    check(environment?.displayedTutorials?.count==63 && environment?.displayedTutorials?[7]==true &&
+          environment?.displayedTutorials?.filter({$0}).count==3 &&
+          environment?.windows.count==2 && environment?.windows[0].barricaded==true &&
+          environment?.windows[1].barricaded==false,
+          "RE2-Tutorial-Flags und gepaarte Fensterdatensätze lesen")
+    check(RE2EnvironmentProgressCatalog.details(game:re2Game,source:re2System,
+                                                fields:tutorialFields+windowFields,character:nil)==nil,
+          "Tutorials und Fenster nicht dem Systemsave zuordnen")
+    check(RE2EnvironmentProgressCatalog.details(game:re2Game,source:re2Campaign,
+                                                fields:tutorialFields+[tutorialFields[0]]+windowFields,character:"Leon")?.displayedTutorials==nil,
+          "Doppelte Tutorial-ID ausblenden")
+    check(RE2EnvironmentProgressCatalog.details(game:re2Game,source:re2Campaign,
+                                                fields:tutorialFields+Array(windowFields.dropLast()),character:"Leon")?.windows.isEmpty==true,
+          "Unvollständigen Fenstereintrag ausblenden")
     let re2ItemOwner="app.ropeway.gamemastering.ItemManager.SystemSaveData"
     let re2SystemStatus=re2StatusFields(re2ItemOwner,"GetItemList",297,[15,32])+re2StatusFields(re2ItemOwner,"GetWeaponList",383,[9])
     let systemHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2System,fields:re2SystemStatus,names:names)

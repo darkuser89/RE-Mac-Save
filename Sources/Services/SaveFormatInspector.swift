@@ -187,6 +187,19 @@ enum SaveFormatInspector {
                                 }
                                 result["mechanismProgress"]=values
                             }
+                            if let environment=doc.re2EnvironmentProgress {
+                                var values:[String:Any]=[
+                                    "windows":environment.windows.map {row in
+                                        ["index":row.id,"hash":String(format:"%08x",row.objectHash),
+                                         "mapID":row.mapID,"barricaded":row.barricaded] as [String:Any]
+                                    }
+                                ]
+                                if let tutorials=environment.displayedTutorials {
+                                    values["displayedTutorialIDs"]=tutorials.indices.filter {tutorials[$0]}
+                                    values["tutorialCount"]=tutorials.count
+                                }
+                                result["environmentProgress"]=values
+                            }
                             if !doc.re2DoorProgress.isEmpty {
                                 result["doorProgress"]=doc.re2DoorProgress.map {door in
                                     ["index":door.id,"hash":String(format:"%08x",door.doorHash),
