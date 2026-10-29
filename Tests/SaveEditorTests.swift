@@ -75,6 +75,17 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     ]
     let groupedCostumes=RE2CostumeStateCatalog.states(game:re2Game,fields:separatedCostumes)
     check(groupedCostumes.count==2 && groupedCostumes[0].title.contains("Benutzer-Kostümdaten") && groupedCostumes[0].entries.map(\.value)==["16"] && groupedCostumes[1].title.contains("Geprüfte Kostümdaten") && groupedCostumes[1].entries.map(\.value)==["3"],"RE2-Kostüm-IDs nach tatsächlicher Quellliste getrennt")
+    let costumeOwner=SaveCrypto.murmur(Data("app.ropeway.CostumeManager.CostumeData".utf8))
+    let survivorTypeHash=SaveCrypto.murmur(Data("SurvivorType".utf8))
+    let costumeParent=String(format:"/a.%08x[0]/%08x",userCostumeHash,costumeOwner)
+    let pairedCostumes=[
+        SaveScalar(id:0,owner:costumeOwner,field:costumeIDHash,type:1,offset:0,size:4,path:String(format:"%@.%08x",costumeParent,costumeIDHash),text:"16"),
+        SaveScalar(id:1,owner:costumeOwner,field:survivorTypeHash,type:1,offset:4,size:4,path:String(format:"%@.%08x",costumeParent,survivorTypeHash),text:"0"),
+        SaveScalar(id:2,owner:costumeOwner,field:survivorTypeHash,type:1,offset:8,size:4,path:String(format:"/a.%08x[1]/%08x.%08x",userCostumeHash,costumeOwner,survivorTypeHash),text:"1")
+    ]
+    let pairedStates=RE2CostumeStateCatalog.states(game:re2Game,fields:pairedCostumes)
+    check(pairedStates.count==1 && pairedStates[0].entries.count==1 && pairedStates[0].entries[0].survivorTypeCode==0,"RE2-Kostüm-ID nur mit Figurentyp aus demselben Eintrag verbinden")
+    check(RE2CostumeStateCatalog.states(game:re2Game,fields:[pairedCostumes[0],pairedCostumes[2]])[0].entries[0].survivorTypeCode==nil,"RE2-Kostümtyp aus anderem Eintrag nicht zuordnen")
     func re2ProgressFields(_ name:String,_ count:Int,_ marked:Set<Int>) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in

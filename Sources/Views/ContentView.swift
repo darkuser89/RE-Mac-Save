@@ -140,7 +140,7 @@ struct EditorDetailView:View {
                     if !doc.re2CostumeStates.isEmpty {
                         Divider()
                         Text("RE2-Kostümdaten").font(.title2.bold())
-                        Text("Die Werte stammen direkt aus diesem Save. Eine Kostüm-ID ist noch keinem sichtbaren Outfit zugeordnet; diese Angaben sind deshalb nur lesbar.").font(.caption).foregroundStyle(.secondary)
+                        Text("Kostüm-ID und Figurentyp-Code stehen jeweils im selben gespeicherten Kostümeintrag. Der Typcode beschreibt nicht zwingend die aktuelle Spielfigur. Sichtbare Outfits sind noch nicht zugeordnet; nur lesbar.").font(.caption).foregroundStyle(.secondary)
                         ForEach(doc.re2CostumeStates) {state in
                             DisclosureGroup("\(state.title) · \(state.entries.count) Werte") {
                                 Text("Unterschiedliche gespeicherte Werte: \(state.distinctValues.joined(separator:", "))").font(.caption).foregroundStyle(.secondary)
@@ -148,7 +148,8 @@ struct EditorDetailView:View {
                                     HStack(alignment:.firstTextBaseline) {
                                         Text("Eintrag \(entry.id + 1)").font(.caption)
                                         Spacer(minLength:10)
-                                        Text(entry.value).font(.caption.monospaced()).textSelection(.enabled)
+                                        Text(entry.survivorTypeCode.map {"Typcode \($0) · Kostüm-ID \(entry.value)"} ?? entry.value)
+                                            .font(.caption.monospaced()).textSelection(.enabled)
                                     }.help("Interner Save-Pfad: \(entry.path)").padding(.vertical,2)
                                 }
                             }
