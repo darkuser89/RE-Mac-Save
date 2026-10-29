@@ -105,6 +105,10 @@ Die lesenden Detailansichten für Inventarprofile, Kartenobjekte, Türen, Rätse
 
 Die durchsuchbare Rohansicht zeigt nach Eingabe eines Suchbegriffs dekodierte Zahlen- und Bool-Felder mit Wert, nativem Namenskandidaten, Besitzer, Typ und ursprünglichem Save-Pfad. Textfelder sind anhand ihrer Struktur ebenfalls suchbar: `#text` zeigt ihre Namen, Besitzer, Typen, Längen und Pfade, während gespeicherte Textinhalte verborgen bleiben und nicht durchsucht werden. Die Ansicht begrenzt die sichtbaren Treffer auf 80 und nennt die Gesamtzahl. Undurchsichtige Datenblöcke bleiben ausgeschlossen. Die Ansicht ist nur lesbar; ein passender Hash belegt keine Spielwirkung.
 
+## RE2-Systemoptionen und Tofu-Zeitwerte
+
+Die lokale RE2-Systemdatei enthält indexgleiche Listen `optionData` und `defaultData` mit je 134 Rohwerten. Der Editor zeigt jeden gespeicherten Wert neben seinem Standardwert und zählt die Abweichungen. Welche konkrete Spieloption eine ID bezeichnet, ist noch nicht belegt. Die fünf `TofuClearPlayTime`-Einträge werden ebenfalls als rohe Zeitwerte ohne unbestätigte Figuren- oder Zeiteinheit angezeigt. Beide Ansichten sind nur lesbar.
+
 ## Benutzung
 
 1. Spiel vollständig beenden.
@@ -139,7 +143,7 @@ Die aktuelle App und Module liegen ausschließlich unter `../RESaveEditorBuild`.
 
 Das Skript prüft Zahlenformate, den großen RE7-Byteblock, Schlüsselzuordnung, lokale Schreibziele und bestehende lokale RE4-Saves ausschließlich lesend. Alle Schreib-, Rücknahme- und Konflikttests verwenden temporäre Dateien. Fehlen die Testdaten oder schlägt ein Test fehl, wird die vorherige App beibehalten. Die zusätzliche Prüfung in der App verwendet deren regulär freigegebene Ordnerzugriffe für alle Spiele.
 
-GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.42` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
+GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.43` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
 
 Der Codex-Run-Button verwendet dasselbe Skript. Optionale Modi: `--verify`, `--logs`, `--telemetry`, `--debug` (LLDB nur für den Editor).
 

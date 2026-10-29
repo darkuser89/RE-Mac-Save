@@ -243,6 +243,33 @@ struct EditorDetailView:View {
                                 }
                             }
                         }
+                        if !doc.re2SystemOptions.isEmpty {
+                            DisclosureGroup("Gespeicherte Optionen · \(doc.re2SystemOptions.filter(\.differs).count) von \(doc.re2SystemOptions.count) vom Standardwert verschieden") {
+                                Text("Indexgleiche Rohwerte aus optionData und defaultData der lokalen Systemdatei. Welche Spieloption jeder Index bezeichnet, ist noch nicht zugeordnet; nur lesbar.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                ForEach(doc.re2SystemOptions) {entry in
+                                    HStack {
+                                        Text("Optionsindex \(entry.id)")
+                                        Spacer()
+                                        Text("Gespeichert \(entry.stored) · Standard \(entry.defaultValue)")
+                                            .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    }.font(.caption).padding(.vertical,2)
+                                }
+                            }
+                        }
+                        if !doc.re2TofuTimes.isEmpty {
+                            DisclosureGroup("Tofu-Abschlusszeitwerte · \(doc.re2TofuTimes.count) Plätze") {
+                                Text("Native TofuClearPlayTime-Liste. Figuren und Zeiteinheit der fünf Plätze sind nicht im Spiel abgeglichen; nur lesbar.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                ForEach(doc.re2TofuTimes) {entry in
+                                    HStack {
+                                        Text("Interne Tofu-ID \(entry.id)")
+                                        Spacer()
+                                        Text("Rohwert \(entry.rawValue)").font(.caption.monospacedDigit())
+                                    }.font(.caption).padding(.vertical,2)
+                                }
+                            }
+                        }
                         ForEach(doc.re2ProgressFlags) {list in
                             DisclosureGroup("\(list.title) · \(list.marked.count) von \(list.total)") {
                                 if list.marked.isEmpty {Text("Kein Eintrag markiert.").foregroundStyle(.secondary)}

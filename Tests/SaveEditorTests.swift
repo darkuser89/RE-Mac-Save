@@ -609,6 +609,34 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         type:7,offset:0,size:4,path:"/9e0932a9.9074a186[5]/4683bfe1.c3e42c22",text:"3")
     check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:[wrongIndexMeta]).isEmpty,
           "RE2-Systemwerte nur am bestätigten Systemeintragsindex lesen")
+    func re2SystemArray(_ ownerName:String,_ name:String,_ count:Int,_ type:Int32,_ size:Int,
+                        _ listIndex:Int,_ value:(Int)->String) -> [SaveScalar] {
+        let owner=SaveCrypto.murmur(Data(ownerName.utf8))
+        let field=SaveCrypto.murmur(Data(name.utf8))
+        return (0..<count).map {index in
+            SaveScalar(id:index,owner:owner,field:field,type:type,offset:index*size,size:size,
+                       path:String(format:"/9e0932a9.9074a186[%d]/%08x.%08x[%d]",listIndex,owner,field,index),
+                       text:value(index))
+        }
+    }
+    let optionOwner="app.ropeway.OptionManager.SystemSaveData"
+    let storedOptions=re2SystemArray(optionOwner,"optionData",134,8,4,8) {index in index==13 ? "7":"0"}
+    let defaultOptions=re2SystemArray(optionOwner,"defaultData",134,8,4,8) {_ in "0"}
+    let optionRows=RE2SystemArrayCatalog.options(game:re2Game,source:re2System,fields:storedOptions+defaultOptions)
+    check(optionRows.count==134 && optionRows.filter(\.differs).map(\.id)==[13] &&
+          optionRows[13].stored==7 && optionRows[13].defaultValue==0,
+          "RE2-Systemoptionen indexgleich aus beiden nativen Listen lesen")
+    check(RE2SystemArrayCatalog.options(game:re2Game,source:re2System,fields:storedOptions+defaultOptions+[storedOptions[0]]).isEmpty &&
+          RE2SystemArrayCatalog.options(game:re2Game,source:re2Campaign,fields:storedOptions+defaultOptions).isEmpty &&
+          RE2SystemArrayCatalog.options(game:re2Game,source:re2System,
+             fields:storedOptions+re2SystemArray(optionOwner,"defaultData",134,8,4,9) {_ in "0"}).isEmpty,
+          "RE2-Optionsvergleich bei doppelten, falschen oder unpassenden Listen ausblenden")
+    let tofuFields=re2SystemArray("app.ropeway.gamemastering.RecordManager.SystemSaveData",
+                                  "TofuClearPlayTime",5,10,8,7) {index in String(index*100)}
+    let tofuRows=RE2SystemArrayCatalog.tofuTimes(game:re2Game,source:re2System,fields:tofuFields)
+    check(tofuRows.count==5 && tofuRows[4].rawValue==400 &&
+          RE2SystemArrayCatalog.tofuTimes(game:re2Game,source:re2System,fields:Array(tofuFields.dropLast())).isEmpty,
+          "RE2-Tofu-Zeitplätze nur aus vollständiger nativer Liste lesen")
     func re2ProgressFields(_ name:String,_ count:Int,_ marked:Set<Int>) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in

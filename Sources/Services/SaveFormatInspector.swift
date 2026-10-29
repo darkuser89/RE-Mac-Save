@@ -163,6 +163,16 @@ enum SaveFormatInspector {
                                     ["name":$0.id,"value":$0.value,"path":$0.path]
                                 }
                             }
+                            if !doc.re2SystemOptions.isEmpty {
+                                result["systemOptions"]=doc.re2SystemOptions.map {
+                                    ["index":$0.id,"stored":$0.stored,"default":$0.defaultValue,"differs":$0.differs] as [String:Any]
+                                }
+                            }
+                            if !doc.re2TofuTimes.isEmpty {
+                                result["tofuClearPlayTimes"]=doc.re2TofuTimes.map {
+                                    ["index":$0.id,"rawValue":$0.rawValue]
+                                }
+                            }
                             result["scalarFieldInventory"]=re2ScalarInventory(doc)
                             result["itemDiscoveryProbe"]=re2ItemDiscovery(doc)
                             result["rogueFieldGroups"]=doc.re2RogueFields.map {group in
