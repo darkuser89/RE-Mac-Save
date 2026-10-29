@@ -31,6 +31,16 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let searchedStatus=re2StatusFields("app.ropeway.gamemastering.ItemManager.SaveData","IsSearchedItem",297,[87,102])
     let campaignHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2Campaign,fields:searchedStatus,names:names)
     check(campaignHistory.count==1 && campaignHistory[0].recorded.map(\.name)==["S.T.A.R.S.-Abzeichen","USB-Dongle"],"RE2-Untersuchungsstatus wird spielstandgebunden angezeigt")
+    let costumeIDHash=SaveCrypto.murmur(Data("CostumeID".utf8))
+    let costumeFields=[
+        SaveScalar(id:0,owner:0,field:costumeIDHash,type:1,offset:0,size:4,path:"/costume[0]",text:"13"),
+        SaveScalar(id:1,owner:0,field:costumeIDHash,type:1,offset:4,size:4,path:"/costume[1]",text:"16"),
+        SaveScalar(id:2,owner:0,field:costumeIDHash,type:15,offset:8,size:4,path:"/text",text:"private"),
+        SaveScalar(id:3,owner:0,field:0,type:1,offset:12,size:4,path:"/other",text:"42")
+    ]
+    let costumes=RE2CostumeStateCatalog.states(game:re2Game,fields:costumeFields)
+    check(costumes.count==1 && costumes[0].entries.map(\.value)==["13","16"] && costumes[0].distinctValues==["13","16"],"RE2-Kostümwerte nur lesend und ohne Textfelder")
+    check(RE2CostumeStateCatalog.states(game:GameProfile.all.first{$0.id=="re3"}!,fields:costumeFields).isEmpty,"RE2-Kostümwerte nur für RE2")
     let re2Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FILE_NAMES"]!))
     check(re2Files.count==64 && re2Files[1]=="Ereignisbericht" && re2Files[89]==nil,"RE2-Dokumenttitel aus lokalen Spieltexten; interne Leer-IDs ausgeschlossen")
     let re3Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE3_FILE_NAMES"]!))

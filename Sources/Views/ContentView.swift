@@ -116,6 +116,23 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if !doc.re2CostumeStates.isEmpty {
+                        Divider()
+                        Text("RE2-Kostümdaten").font(.title2.bold())
+                        Text("Die Werte stammen direkt aus diesem Save. Eine Kostüm-ID ist noch keinem sichtbaren Outfit zugeordnet; diese Angaben sind deshalb nur lesbar.").font(.caption).foregroundStyle(.secondary)
+                        ForEach(doc.re2CostumeStates) {state in
+                            DisclosureGroup("\(state.title) · \(state.entries.count) Werte") {
+                                Text("Unterschiedliche gespeicherte Werte: \(state.distinctValues.joined(separator:", "))").font(.caption).foregroundStyle(.secondary)
+                                ForEach(state.entries) {entry in
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text("Eintrag \(entry.id + 1)").font(.caption)
+                                        Spacer(minLength:10)
+                                        Text(entry.value).font(.caption.monospaced()).textSelection(.enabled)
+                                    }.help("Interner Save-Pfad: \(entry.path)").padding(.vertical,2)
+                                }
+                            }
+                        }
+                    }
                     if !doc.fileFlags.isEmpty {
                         Divider()
                         Text("Gefundene Dokumente").font(.title2.bold())
