@@ -150,6 +150,10 @@ enum SaveFormatInspector {
                             result["costumeFieldProbe"]=re2CostumeFields(doc)
                             result["scalarFieldInventory"]=re2ScalarInventory(doc)
                             result["itemDiscoveryProbe"]=re2ItemDiscovery(doc)
+                            result["rogueFieldGroups"]=doc.re2RogueFields.map {group in
+                                ["name":group.name,"count":group.entries.count,
+                                 "values":group.entries.map {["index":$0.index ?? -1,"value":$0.value] as [String:Any]}] as [String:Any]
+                            }
                         }
                         for section in ["Inventar","Itembox"] {
                             result[section.lowercased()]=doc.items.filter{$0.section==section}.map {item in

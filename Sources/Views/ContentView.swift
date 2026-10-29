@@ -82,6 +82,27 @@ struct EditorDetailView:View {
                         }
                         .textSelection(.enabled)
                     }
+                    if !doc.re2RogueFields.isEmpty {
+                        VStack(alignment:.leading,spacing:7) {
+                            Text("RE2-Zusatzmodusdaten").font(.title2.bold())
+                            Text("Diese Datei enthält interne Rogue-Systemdaten, keinen Leon- oder Claire-Kampagnenspielstand. Feldnamen und Werte sind gespeichert; die genaue Bedeutung der IDs und ihre Wirkung im Spiel sind noch nicht geprüft. Nur lesbar.")
+                                .font(.caption).foregroundStyle(.secondary)
+                            Text("\(doc.re2RogueFields.count) benannte Feldgruppen · \(doc.re2RogueFields.reduce(0) {$0 + $1.entries.count}) gespeicherte Werte")
+                                .font(.subheadline)
+                            ForEach(doc.re2RogueFields) {group in
+                                DisclosureGroup("\(group.title) · \(group.isBoolean ? "\(group.markedCount) von \(group.entries.count) gesetzt" : group.entries.count == 1 ? "1 Wert" : "\(group.entries.count) Werte")") {
+                                    if group.title != group.name {Text("Internes Feld: \(group.name)").font(.caption.monospaced()).foregroundStyle(.secondary)}
+                                    ForEach(group.entries) {entry in
+                                        HStack {
+                                            Text(entry.index.map {"ID \($0)"} ?? "Wert")
+                                            Spacer()
+                                            Text(entry.value).font(.caption.monospaced()).textSelection(.enabled)
+                                        }.padding(.vertical,2)
+                                    }
+                                }
+                            }
+                        }
+                    }
                     Divider()
                     let inventoryIDs=Set(doc.items.flatMap{[$0.identity,$0.quantity].compactMap{$0?.id}})
                     let fileFlagIDs=Set(doc.fileFlags.map{$0.field.id})
@@ -310,7 +331,7 @@ struct EditorDetailView:View {
                     }
                     ForEach(doc.editable.filter{!inventoryIDs.contains($0.id) && !fileFlagIDs.contains($0.id) && !raccoonFlagIDs.contains($0.id) && !castellanFlagIDs.contains($0.id) && !charlieFlagIDs.contains($0.id) && !dialLockFlagIDs.contains($0.id)}) {field in fieldEditor(field)}
                     if !doc.timeFields.isEmpty {Button("Spielzeit auf 0 vormerken",systemImage:"clock.arrow.circlepath",action:store.prepareZeroTime)}
-                    if doc.editable.isEmpty && doc.re7EasterEggIDs == nil {Text("Diese Datei ist vollständig lesbar, enthält aber keine eindeutig zugeordneten bearbeitbaren Werte. Wähle einen anderen Spielstand.").foregroundStyle(.secondary)}
+                    if doc.editable.isEmpty && doc.re7EasterEggIDs == nil && doc.re2RogueFields.isEmpty {Text("Diese Datei ist vollständig lesbar, enthält aber keine eindeutig zugeordneten bearbeitbaren Werte. Wähle einen anderen Spielstand.").foregroundStyle(.secondary)}
                     if !store.pending.isEmpty || !store.pendingDocuments.isEmpty || !store.pendingFigures.isEmpty {
                         GroupBox("Vorgemerkte Änderungen") {
                             VStack(alignment:.leading,spacing:6) {

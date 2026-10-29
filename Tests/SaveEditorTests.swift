@@ -39,6 +39,24 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let re2Game=GameProfile.all.first{$0.id=="re2"}!
     let re2System=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data00-1.bin"),size:0,modified:Date(),kind:"DSSS")
     let re2Campaign=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data001Slot.bin"),size:0,modified:Date(),kind:"DSSS")
+    let re2Rogue=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data021Slot.bin"),size:0,modified:Date(),kind:"DSSS")
+    let roguePrefix="/3f25bafa.a9a2c119[0]/b6f9870b."
+    let rogueRecordHash=SaveCrypto.murmur(Data("IsClearedRogueRecord".utf8))
+    let rogueRecords=(0..<15).map {index in
+        SaveScalar(id:index,owner:0xb6f9870b,field:rogueRecordHash,type:2,offset:index,size:1,
+                   path:roguePrefix+String(format:"%08x[%d]",rogueRecordHash,index),text:index==3 ? "true":"false")
+    }
+    let roguePlayHash=SaveCrypto.murmur(Data("RoguePlayCount".utf8))
+    let roguePlay=SaveScalar(id:15,owner:0xb6f9870b,field:roguePlayHash,type:7,offset:15,size:4,
+                             path:roguePrefix+String(format:"%08x",roguePlayHash),text:"2")
+    let rogueGroups=RE2RogueProgressCatalog.groups(game:re2Game,source:re2Rogue,fields:rogueRecords+[roguePlay],names:re2FieldNames)
+    check(rogueGroups.count==2 && rogueGroups.first(where:{$0.name=="IsClearedRogueRecord"})?.markedCount==1 &&
+          rogueGroups.first(where:{$0.name=="RoguePlayCount"})?.entries.first?.value=="2",
+          "RE2-Zusatzmodus liest indizierte Flags und Einzelzähler nur lesend")
+    check(RE2RogueProgressCatalog.groups(game:re2Game,source:re2Campaign,fields:rogueRecords,names:re2FieldNames).isEmpty,
+          "Rogue-Daten nicht einem Kampagnensave zuordnen")
+    check(RE2RogueProgressCatalog.groups(game:re2Game,source:re2Rogue,fields:rogueRecords+[rogueRecords[0]],names:re2FieldNames).isEmpty,
+          "Doppelte Rogue-Status-ID ausblenden")
     let re2ItemOwner="app.ropeway.gamemastering.ItemManager.SystemSaveData"
     let re2SystemStatus=re2StatusFields(re2ItemOwner,"GetItemList",297,[15,32])+re2StatusFields(re2ItemOwner,"GetWeaponList",383,[9])
     let systemHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2System,fields:re2SystemStatus,names:names)
