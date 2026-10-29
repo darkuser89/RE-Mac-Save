@@ -313,13 +313,18 @@ struct EditorDetailView:View {
                                 }
                             }
                         }
-                        if !doc.re2ClearRecords.isEmpty {
-                            DisclosureGroup("Abschlussdetails · \(doc.re2ClearRecords.count) gesetzte ID") {
+                        if !doc.re2ClearSlots.isEmpty {
+                            DisclosureGroup("Abschlussübersicht · \(doc.re2ClearRecords.count) von \(doc.re2ClearSlots.count) abgeschlossen") {
                                 Text("Zeitwerte sind in Mikrosekunden gespeichert. Leon/Veteran und Rang S+ sind für ID 2 mit dem Ergebnisbildschirm abgeglichen; andere IDs bleiben intern, bis sie im Spiel verglichen sind.").font(.caption).foregroundStyle(.secondary)
-                                ForEach(doc.re2ClearRecords) {record in
+                                ForEach(doc.re2ClearSlots) {record in
                                     VStack(alignment:.leading,spacing:3) {
                                         Text("Interne Abschluss-ID \(record.id)\(record.observedScenario.map {" · \($0)"} ?? "")").font(.subheadline.bold())
-                                        Text("Zeit \(record.displayTime) · \(record.observedRank ?? "Rangcode \(record.rankCode)") · \(record.saveCount) Speicherungen").font(.caption.monospacedDigit())
+                                        if record.cleared {
+                                            Text("Zeit \(record.displayTime) · \(record.observedRank ?? "Rangcode \(record.rankCode)") · \(record.saveCount) Speicherungen").font(.caption.monospacedDigit())
+                                        } else {
+                                            Text("Kein Abschluss gespeichert · Rangcode \(record.rankCode) · \(record.saveCount) Speicherungen")
+                                                .font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                                        }
                                         Text("Rohzeitwert \(record.clearTimeRaw)").font(.caption2).foregroundStyle(.secondary)
                                     }.padding(.vertical,3)
                                 }

@@ -641,7 +641,7 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in
             SaveScalar(id:index,owner:0x4e4210f9,field:hash,type:2,offset:index,size:1,
-                       path:String(format:"/4e4210f9.%08x[%d]",hash,index),
+                       path:String(format:"/9e0932a9.9074a186[7]/4e4210f9.%08x[%d]",hash,index),
                        text:marked.contains(index) ? "true":"false")
         }
     }
@@ -682,13 +682,24 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<21).map {index in
             SaveScalar(id:index,owner:0x4e4210f9,field:hash,type:type,offset:index*size,size:size,
-                       path:String(format:"/4e4210f9.%08x[%d]",hash,index),text:value(index))
+                       path:String(format:"/9e0932a9.9074a186[7]/4e4210f9.%08x[%d]",hash,index),text:value(index))
         }
     }
     let clearFields=progressFields+resultFields("ClearTime",10,8,{$0==7 ? "169007204":"0"})
         + resultFields("ClearRank",1,4,{$0==7 ? "1":"0"})
         + resultFields("SaveCount",7,4,{_ in "0"})
     let clearRecords=RE2ClearRecordCatalog.records(game:re2Game,source:re2System,fields:clearFields)
+    let clearSlots=RE2ClearRecordCatalog.slots(game:re2Game,source:re2System,fields:clearFields)
+    check(clearSlots.count==21 && clearSlots[7].cleared && !clearSlots[0].cleared &&
+          clearSlots[7].clearTimeRaw==169007204 && clearSlots[0].clearTimeRaw==0,
+          "RE2-Ergebnisübersicht liest auch die 20 unbelegten Systemplätze indexgleich")
+    let wrongResultParent=clearFields.map {field in
+        SaveScalar(id:field.id,owner:field.owner,field:field.field,type:field.type,
+                   offset:field.offset,size:field.size,
+                   path:field.path.replacingOccurrences(of:"[7]/",with:"[6]/"),text:field.text)
+    }
+    check(RE2ClearRecordCatalog.slots(game:re2Game,source:re2System,fields:wrongResultParent).isEmpty,
+          "RE2-Abschlussplätze nur aus dem bestätigten Systemlistenindex lesen")
     check(clearRecords.count==1 && clearRecords[0].id==7 && clearRecords[0].clearTimeRaw==169007204 && clearRecords[0].rankCode==1 && clearRecords[0].saveCount==0,"RE2-Abschlussdaten verbinden vier native Listen über denselben Index")
     check(clearRecords[0].displayTime=="00:02:49" && clearRecords[0].observedScenario==nil && clearRecords[0].observedRank==nil,
           "Unbelegte Abschluss-IDs bleiben unbenannt; Zeitwert wird als Mikrosekunden angezeigt")

@@ -34,6 +34,7 @@ struct SaveDocument {
     let re2SystemOptions:[RE2SystemOption]
     let re2TofuTimes:[RE2TofuClearTime]
     let re2SystemProgress:RE2SystemProgress?
+    let re2ClearSlots:[RE2ClearRecord]
     let re2ClearRecords:[RE2ClearRecord]
     let re2MapProgress:[RE2MapProgress]
     let re2MapMarkers:[RE2MapMarkerGroup]
@@ -85,7 +86,8 @@ struct SaveDocument {
         re2SystemOptions=RE2SystemArrayCatalog.options(game:game,source:file,fields:parsed.fields)
         re2TofuTimes=RE2SystemArrayCatalog.tofuTimes(game:game,source:file,fields:parsed.fields)
         re2SystemProgress=RE2SystemProgressCatalog.details(game:game,source:file,fields:parsed.fields)
-        re2ClearRecords=RE2ClearRecordCatalog.records(game:game,source:file,fields:parsed.fields)
+        re2ClearSlots=RE2ClearRecordCatalog.slots(game:game,source:file,fields:parsed.fields)
+        re2ClearRecords=re2ClearSlots.filter(\.cleared)
         re2MapProgress=RE2MapProgressCatalog.summaries(game:game,fields:parsed.fields,character:character)
         re2MapMarkers=RE2MapMarkerCatalog.groups(game:game,source:file,fields:parsed.fields,character:character)
         re2MapParts=RE2MapPartCatalog.entries(game:game,source:file,fields:parsed.fields,character:character)

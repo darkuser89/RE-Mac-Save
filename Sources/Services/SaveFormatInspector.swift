@@ -210,6 +210,12 @@ enum SaveFormatInspector {
                                     return row
                                 }
                             }
+                            if !doc.re2ClearSlots.isEmpty {
+                                result["clearSlots"]=doc.re2ClearSlots.map {slot in
+                                    ["id":slot.id,"cleared":slot.cleared,"timeRaw":slot.clearTimeRaw,
+                                     "rankCode":slot.rankCode,"saveCount":slot.saveCount] as [String:Any]
+                                }
+                            }
                             if let puzzle=doc.re2PuzzleProgress {
                                 var values:[String:Any]=[:]
                                 if let statue=puzzle.goddessStatue {
