@@ -119,7 +119,7 @@ struct EditorDetailView:View {
                     if !doc.re2ItemHistory.isEmpty {
                         Divider()
                         Text("RE2-Gegenstandsstatus").font(.title2.bold())
-                        Text("Aus den gespeicherten Statuslisten gelesen. Diese Angaben sind nur lesbar und ändern weder Inventar noch Spielfortschritt.").font(.caption).foregroundStyle(.secondary)
+                        Text("Aus den gespeicherten Statuslisten gelesen. Interne Effektkennungen beschreiben nur gesetzte Save-Bits; ihre Spielwirkung ist nicht geprüft. Alle Angaben sind nur lesbar.").font(.caption).foregroundStyle(.secondary)
                         ForEach(doc.re2ItemHistory) {list in
                             DisclosureGroup("\(list.title) · \(list.recorded.count) von \(list.total) Statusplätzen markiert") {
                                 if list.recorded.isEmpty {Text("Noch kein Eintrag markiert.").foregroundStyle(.secondary)}

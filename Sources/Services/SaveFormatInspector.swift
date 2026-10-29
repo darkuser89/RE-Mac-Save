@@ -229,7 +229,11 @@ enum SaveFormatInspector {
                    ("app.ropeway.gamemastering.ItemManager.SystemSaveData","GetWeaponList"),
                    ("app.ropeway.gamemastering.ItemManager.SaveData","IsSearchedItem"),
                    ("app.ropeway.gamemastering.ItemManager.SaveData","ChangedItemName"),
-                   ("app.ropeway.gamemastering.ItemManager.SaveData","ChangedItemText")]
+                   ("app.ropeway.gamemastering.ItemManager.SaveData","ChangedItemText"),
+                   ("app.ropeway.gamemastering.InventoryManager.SaveData","GetKeyItemEffect"),
+                   ("app.ropeway.gamemastering.InventoryManager.SaveData","GetKeyWeaponEffect"),
+                   ("app.ropeway.gamemastering.InventoryManager.SaveData","IsCustomWeaponEffect"),
+                   ("app.ropeway.gamemastering.InventoryManager.SaveData","IsAddRankItem")]
         return specs.compactMap {owner,name in
             let ownerHash=SaveCrypto.murmur(Data(owner.utf8)),nameHash=SaveCrypto.murmur(Data(name.utf8))
             let matches=doc.parsed.fields.filter{$0.owner==ownerHash && $0.field==nameHash && $0.type==2 && $0.size==1}

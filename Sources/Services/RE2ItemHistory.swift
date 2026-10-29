@@ -24,7 +24,11 @@ enum RE2ItemHistoryCatalog {
         Spec(owner:"app.ropeway.gamemastering.ItemManager.SystemSaveData",field:"GetWeaponList",count:383,title:"Als erhalten markierte Waffen",isWeapon:true)
     ]
     private static let campaignSpecs=[
-        Spec(owner:"app.ropeway.gamemastering.ItemManager.SaveData",field:"IsSearchedItem",count:297,title:"Als untersucht markierte Gegenstände",isWeapon:false)
+        Spec(owner:"app.ropeway.gamemastering.ItemManager.SaveData",field:"IsSearchedItem",count:297,title:"Als untersucht markierte Gegenstände",isWeapon:false),
+        Spec(owner:"app.ropeway.gamemastering.InventoryManager.SaveData",field:"GetKeyItemEffect",count:297,title:"Gesetzte Gegenstands-Effektflags (GetKeyItemEffect)",isWeapon:false),
+        Spec(owner:"app.ropeway.gamemastering.InventoryManager.SaveData",field:"GetKeyWeaponEffect",count:383,title:"Gesetzte Waffen-Effektflags (GetKeyWeaponEffect)",isWeapon:true),
+        Spec(owner:"app.ropeway.gamemastering.InventoryManager.SaveData",field:"IsCustomWeaponEffect",count:383,title:"Waffen mit IsCustomWeaponEffect-Flag",isWeapon:true),
+        Spec(owner:"app.ropeway.gamemastering.InventoryManager.SaveData",field:"IsAddRankItem",count:297,title:"Gegenstände mit IsAddRankItem-Flag",isWeapon:false)
     ]
 
     static func lists(game:GameProfile,source:SaveFile,fields:[SaveScalar],names:ItemNameCatalog?=ItemNameCatalog.bundled) -> [RE2ItemHistory] {

@@ -46,6 +46,19 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let searchedStatus=re2StatusFields("app.ropeway.gamemastering.ItemManager.SaveData","IsSearchedItem",297,[87,102])
     let campaignHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2Campaign,fields:searchedStatus,names:names)
     check(campaignHistory.count==1 && campaignHistory[0].recorded.map(\.name)==["S.T.A.R.S.-Abzeichen","USB-Dongle"],"RE2-Untersuchungsstatus wird spielstandgebunden angezeigt")
+    let inventoryOwner="app.ropeway.gamemastering.InventoryManager.SaveData"
+    let inventoryEffects=re2StatusFields(inventoryOwner,"GetKeyItemEffect",297,[32])
+        + re2StatusFields(inventoryOwner,"GetKeyWeaponEffect",383,[9])
+        + re2StatusFields(inventoryOwner,"IsCustomWeaponEffect",383,[46])
+        + re2StatusFields(inventoryOwner,"IsAddRankItem",297,[15])
+    let extendedHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2Campaign,fields:searchedStatus+inventoryEffects,names:names)
+    check(extendedHistory.count==5 && extendedHistory.map(\.recorded.count)==[2,1,1,1,1] &&
+          extendedHistory[1].recorded[0].name=="Farbband" &&
+          extendedHistory[2].recorded[0].name=="SLS 60" &&
+          extendedHistory[3].recorded[0].name=="Kampfmesser",
+          "RE2-Inventareffekte nur aus vollständigen indizierten Listen und nativen IDs lesen")
+    check(RE2ItemHistoryCatalog.lists(game:re2Game,source:re2Campaign,fields:searchedStatus+Array(inventoryEffects.dropFirst()),names:names).count==4,
+          "Unvollständige RE2-Effektliste ausblenden")
     let useWeaponsOwner=SaveCrypto.murmur(Data("app.ropeway.PlayerManager.GameSaveData".utf8))
     let useWeaponsHash=SaveCrypto.murmur(Data("UseWeapons".utf8))
     let usedWeaponIDs=[1,31,8,41]
