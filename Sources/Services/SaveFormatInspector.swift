@@ -223,6 +223,12 @@ enum SaveFormatInspector {
                                 }
                                 result["mechanismProgress"]=values
                             }
+                            if let triggers=doc.re2TriggerProgress {
+                                result["triggerProgress"]=[
+                                    "triggers":re2TriggerRows(triggers.triggers),
+                                    "itemTriggers":re2TriggerRows(triggers.itemTriggers)
+                                ] as [String:Any]
+                            }
                             if let environment=doc.re2EnvironmentProgress {
                                 var values:[String:Any]=[
                                     "windows":environment.windows.map {row in
@@ -355,6 +361,14 @@ enum SaveFormatInspector {
                     "sampleNamedPaths":group.paths.map{RE2FieldNameCatalog.labeledPath($0)}]
             if !group.pathValues.isEmpty {row["shortcutPathValues"]=group.pathValues}
             return row
+        }
+    }
+    private static func re2TriggerRows(_ groups:[RE2TriggerProgress.Group]) -> [[String:Any]] {
+        groups.map {group in
+            ["groupID":group.listIndex,"listKind":group.listKind,"completed":group.completedCount,"used":group.usedCount,
+             "entries":group.entries.map {entry in
+                 ["index":entry.id,"key":entry.key,"done":entry.done,"usedFlags":entry.usedFlags] as [String:Any]
+             }] as [String:Any]
         }
     }
     private static func re2ItemDiscovery(_ doc:SaveDocument) -> [[String:Any]] {

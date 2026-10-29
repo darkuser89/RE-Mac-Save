@@ -430,6 +430,9 @@ struct EditorDetailView:View {
                         }
                         RE2AdditionalMechanismView(mechanisms:mechanisms)
                     }
+                    if let triggers=doc.re2TriggerProgress {
+                        RE2TriggerProgressView(progress:triggers)
+                    }
                     if let environment=doc.re2EnvironmentProgress {
                         Divider()
                         Text("RE2-Tutorials und Fenster").font(.title2.bold())
@@ -709,6 +712,44 @@ private struct RE2AdditionalMechanismView: View {
                 ForEach(rows) {row in
                     HStack {Text("Objekt-ID \(row.id)");Spacer();Text("\(field): \(row.value ? "ja":"nein")")}
                         .font(.caption.monospacedDigit()).padding(.vertical,2)
+                }
+            }
+        }
+    }
+}
+
+private struct RE2TriggerProgressView: View {
+    let progress: RE2TriggerProgress
+
+    var body: some View {
+        Divider()
+        Text("RE2-Triggerzustände").font(.title2.bold())
+        Text("Interne Listen-, Eintrags- und Schlüsselcodes. Welche sichtbaren Ereignisse sie bezeichnen, wurde nicht im Spiel zugeordnet; nur lesbar.")
+            .font(.caption).foregroundStyle(.secondary)
+        section("Ereignis-Trigger",groups:progress.triggers,showUsed:false)
+        section("Gegenstands-Trigger",groups:progress.itemTriggers,showUsed:true)
+    }
+
+    @ViewBuilder private func section(_ title:String,groups:[RE2TriggerProgress.Group],showUsed:Bool) -> some View {
+        if !groups.isEmpty {
+            let total=groups.reduce(0) {$0+$1.entries.count}
+            let completed=groups.reduce(0) {$0+$1.completedCount}
+            DisclosureGroup("\(title) · \(completed) von \(total) Erfolgsflags gesetzt") {
+                ForEach(groups) {group in
+                    DisclosureGroup("Liste \(group.listIndex) · Typ \(group.listKind) · \(group.completedCount) von \(group.entries.count) gesetzt") {
+                        ForEach(group.entries) {entry in
+                            HStack(alignment:.firstTextBaseline) {
+                                Text("Eintrag \(entry.id) · Schlüsselcode \(entry.key)")
+                                Spacer(minLength:10)
+                                if showUsed {
+                                    let used=entry.usedFlags.filter {$0}.count
+                                    Text("Erfolg: \(entry.done ? "Ja":"Nein") · HasUsed \(used)/\(entry.usedFlags.count)")
+                                } else {
+                                    Text("Erfolg: \(entry.done ? "Ja":"Nein")")
+                                }
+                            }.font(.caption.monospacedDigit()).padding(.vertical,2).textSelection(.enabled)
+                        }
+                    }.padding(.vertical,2)
                 }
             }
         }

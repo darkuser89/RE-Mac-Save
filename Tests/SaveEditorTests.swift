@@ -306,6 +306,46 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Unvollständige Steckplatz-Erstflags ausblenden")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+gateFields,character:"Leon")?.plugGates.isEmpty==true,
           "Doppeltes Stecktor ausblenden")
+    let triggerName="app.ropeway.gimmick.action.TriggerSaveData"
+    let itemTriggerName="app.ropeway.gimmick.action.TriggerSaveDataUseItem"
+    let triggerParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[2]/b145081f.51b3dc27[0]"
+    let itemTriggerParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[9]/b145081f.51b3dc27[1]"
+    let triggerFields=[mechanism(triggerName,"Key",8,"7",triggerParent,339),
+                       mechanism(triggerName,"DoneSucceed",2,"true",triggerParent,340)]
+    let itemTriggerFields=[mechanism(itemTriggerName,"Key",8,"8",itemTriggerParent,341),
+                           mechanism(itemTriggerName,"DoneSucceed",2,"false",itemTriggerParent,342),
+                           mechanism(itemTriggerName,"HasUsed",2,"true",itemTriggerParent,343,arrayIndex:0),
+                           mechanism(itemTriggerName,"HasUsed",2,"false",itemTriggerParent,344,arrayIndex:1)]
+    let triggerProgress=RE2TriggerProgressCatalog.details(game:re2Game,source:re2Campaign,
+                                                          fields:triggerFields+itemTriggerFields,character:"Leon")
+    check(triggerProgress?.triggers.first?.entries.first?.key==7 &&
+          triggerProgress?.triggers.first?.completedCount==1 &&
+          triggerProgress?.itemTriggers.first?.entries.first?.usedFlags==[true,false],
+          "RE2-Trigger aus vollständigen Schlüssel- und Erfolgsfeldern lesen")
+    let alternateParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[2]/5a30060b.51b3dc27[0]"
+    let rareParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[2]/1e149e87.51b3dc27[0]"
+    let alternateFields=[mechanism(triggerName,"Key",8,"9",alternateParent,345),
+                         mechanism(triggerName,"DoneSucceed",2,"false",alternateParent,346),
+                         mechanism(triggerName,"Key",8,"10",rareParent,347),
+                         mechanism(triggerName,"DoneSucceed",2,"true",rareParent,348)]
+    let allTriggerKinds=RE2TriggerProgressCatalog.details(game:re2Game,source:re2Campaign,
+                                                          fields:triggerFields+alternateFields,character:"Leon")
+    check(allTriggerKinds?.triggers.count==3 &&
+          Set(allTriggerKinds?.triggers.map(\.listKind) ?? [])==Set(["b145081f","5a30060b","1e149e87"]),
+          "RE2-Triggerlisten mit drei belegten Kennungen getrennt anzeigen")
+    let duplicateTrigger=RE2TriggerProgressCatalog.details(game:re2Game,source:re2Campaign,
+                                                            fields:triggerFields+Array(triggerFields.prefix(1))+itemTriggerFields,
+                                                            character:"Leon")
+    check(duplicateTrigger?.triggers.isEmpty==true && duplicateTrigger?.itemTriggers.count==1,
+          "Doppeltes Trigger-Schlüsselfeld ausblenden")
+    let gapItemTrigger=RE2TriggerProgressCatalog.details(game:re2Game,source:re2Campaign,
+                                                          fields:triggerFields+itemTriggerFields.filter {$0.id != 343},
+                                                          character:"Leon")
+    check(gapItemTrigger?.itemTriggers.isEmpty==true,
+          "Lücke im HasUsed-Array ausblenden")
+    check(RE2TriggerProgressCatalog.details(game:re2Game,source:re2System,
+                                            fields:triggerFields+itemTriggerFields,character:nil)==nil,
+          "Triggerzustände nicht dem Systemsave zuordnen")
     let tutorialOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.TutorialManager.GameSaveData".utf8))
     let tutorialField=SaveCrypto.murmur(Data("IsDispTutorial".utf8))
     let tutorialPrefix="/7f9decbe.8aab887b[12]/91bb4685.bfb6252d["
