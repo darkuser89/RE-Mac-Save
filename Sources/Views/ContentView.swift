@@ -203,6 +203,19 @@ struct EditorDetailView:View {
                         Divider()
                         Text("RE2-Systemfortschritt").font(.title2.bold())
                         Text("Die internen IDs stammen aus Statuslisten der lokalen Systemdatei. Titel und Wirkung einzelner IDs sind noch nicht zugeordnet; die Anzeige ist nur lesbar.").font(.caption).foregroundStyle(.secondary)
+                        if !doc.re2SystemMetadata.isEmpty {
+                            DisclosureGroup("Weitere Systemwerte · \(doc.re2SystemMetadata.count)") {
+                                Text("Diese Werte stammen aus eindeutig zugeordneten Rohfeldern der lokalen Systemdatei. Die Bedeutung der internen IDs, Flags und Zeiteinheiten ist nicht im Spiel verifiziert; nur lesbar.")
+                                    .font(.caption).foregroundStyle(.secondary)
+                                ForEach(doc.re2SystemMetadata) {entry in
+                                    HStack(alignment:.firstTextBaseline) {
+                                        Text(entry.title)
+                                        Spacer(minLength:10)
+                                        Text(entry.value).font(.caption.monospacedDigit()).textSelection(.enabled)
+                                    }.help("Interner Save-Pfad: \(entry.path)").padding(.vertical,2)
+                                }
+                            }
+                        }
                         ForEach(doc.re2ProgressFlags) {list in
                             DisclosureGroup("\(list.title) · \(list.marked.count) von \(list.total)") {
                                 if list.marked.isEmpty {Text("Kein Eintrag markiert.").foregroundStyle(.secondary)}

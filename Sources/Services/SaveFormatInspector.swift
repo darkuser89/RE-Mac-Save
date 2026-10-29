@@ -158,6 +158,11 @@ enum SaveFormatInspector {
                         if game.id=="re2" {
                             result["difficulty"]=doc.difficulty ?? "Nicht im gewählten Save enthalten"
                             result["costumeFieldProbe"]=re2CostumeFields(doc)
+                            if !doc.re2SystemMetadata.isEmpty {
+                                result["systemMetadata"]=doc.re2SystemMetadata.map {
+                                    ["name":$0.id,"value":$0.value,"path":$0.path]
+                                }
+                            }
                             result["scalarFieldInventory"]=re2ScalarInventory(doc)
                             result["itemDiscoveryProbe"]=re2ItemDiscovery(doc)
                             result["rogueFieldGroups"]=doc.re2RogueFields.map {group in

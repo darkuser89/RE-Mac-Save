@@ -522,6 +522,32 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let pairedStates=RE2CostumeStateCatalog.states(game:re2Game,fields:pairedCostumes)
     check(pairedStates.count==1 && pairedStates[0].entries.count==1 && pairedStates[0].entries[0].survivorTypeCode==0,"RE2-Kostüm-ID nur mit Figurentyp aus demselben Eintrag verbinden")
     check(RE2CostumeStateCatalog.states(game:re2Game,fields:[pairedCostumes[0],pairedCostumes[2]])[0].entries[0].survivorTypeCode==nil,"RE2-Kostümtyp aus anderem Eintrag nicht zuordnen")
+    let systemMetaSpecs:[(UInt32,String,Int32,Int,String)]=[
+        (0x4683bfe1,"LastSaveSlotId",7,4,"3"),
+        (0x4683bfe1,"LastSavedTimeTicks",9,8,"639288507851617920"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"LatestGameId",8,4,"37"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsFirstPlayLeon",2,1,"false"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsClearedGameImmediately",2,1,"false"),
+        (SaveCrypto.murmur(Data("app.ropeway.GameClock.SystemSaveData".utf8)),"_SystemElapsedTime",10,8,"16410718948")
+    ]
+    let systemMetaFields=systemMetaSpecs.enumerated().map {index,spec in
+        let (owner,name,type,size,value)=spec
+        let field=SaveCrypto.murmur(Data(name.utf8))
+        return SaveScalar(id:index,owner:owner,field:field,type:type,offset:index*8,size:size,
+            path:String(format:"/9e0932a9.9074a186[%d]/%08x.%08x",index,owner,field),text:value)
+    }
+    let systemMeta=RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:systemMetaFields)
+    check(systemMeta.count==6 && systemMeta[0].value=="3" && systemMeta[3].value=="false",
+          "RE2-Systemwerte nur aus eindeutig passenden nativen Rohfeldern lesen")
+    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2Campaign,fields:systemMetaFields).isEmpty &&
+          RE2SystemMetadataCatalog.entries(game:GameProfile.all.first{$0.id=="re3"}!,source:re2System,fields:systemMetaFields).isEmpty,
+          "RE2-Systemwerte nicht in Kampagnensaves oder anderen Spielen anbieten")
+    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:systemMetaFields+[systemMetaFields[0]]).count==5,
+          "Mehrdeutige RE2-Systemwerte ausblenden")
+    let misplacedMeta=SaveScalar(id:99,owner:systemMetaFields[0].owner,field:systemMetaFields[0].field,
+        type:7,offset:0,size:4,path:"/other/4683bfe1.c3e42c22",text:"3")
+    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:[misplacedMeta]).isEmpty,
+          "RE2-Systemwerte nur aus der bestätigten Systemliste lesen")
     func re2ProgressFields(_ name:String,_ count:Int,_ marked:Set<Int>) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in
