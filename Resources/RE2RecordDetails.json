@@ -1,0 +1,437 @@
+{
+  "0": {
+    "title": "Einwohner von Raccoon City",
+    "objective": "Schließen Sie alle Herausforderungen ab.",
+    "catalogValue": 1
+  },
+  "1": {
+    "title": "Die Stadt der Toten",
+    "objective": "Erreichen Sie die Polizeistation.",
+    "catalogValue": 1
+  },
+  "2": {
+    "title": "Weg zur Göttin",
+    "objective": "Lösen Sie das Puzzle der Göttinnenstatue.",
+    "catalogValue": 1
+  },
+  "3": {
+    "title": "Endloser Regen",
+    "objective": "Entkommen Sie aus der Polizeistation.",
+    "catalogValue": 1
+  },
+  "4": {
+    "title": "Erfolgreich gehackt",
+    "objective": "Schließen Sie Adas Segment ab.",
+    "catalogValue": 1
+  },
+  "5": {
+    "title": "Versteckspiel",
+    "objective": "Schließen Sie Sherrys Segment ab.",
+    "catalogValue": 1
+  },
+  "6": {
+    "title": "Ich brauch 'ne Dusche",
+    "objective": "Entkommen Sie aus der Kanalisation.",
+    "catalogValue": 1
+  },
+  "7": {
+    "title": "Überleben",
+    "objective": "Entkommen Sie aus dem Labor.",
+    "catalogValue": 1
+  },
+  "8": {
+    "title": "Ein neuer Held",
+    "objective": "Schließen Sie Leons Kampagne ab.",
+    "catalogValue": 1
+  },
+  "9": {
+    "title": "Eine neue Heldin",
+    "objective": "Schließen Sie Claires Kampagne ab.",
+    "catalogValue": 1
+  },
+  "10": {
+    "title": "Sieg über Umbrella",
+    "objective": "Erleben Sie das wahre Ende.",
+    "catalogValue": 1
+  },
+  "11": {
+    "title": "Überlebensgrundlagen",
+    "objective": "Kombinieren Sie zwei Gegenstände miteinander.",
+    "catalogValue": 1
+  },
+  "12": {
+    "title": "Erster Einbruch",
+    "objective": "Knacken Sie einen Tresor mit Zahlenschloss.",
+    "catalogValue": 1
+  },
+  "13": {
+    "title": "Panzerknacker",
+    "objective": "Knacken Sie einen tragbaren Tresor.",
+    "catalogValue": 1
+  },
+  "14": {
+    "title": "Waschbärbekämpfung",
+    "objective": "Zerstören Sie einen Mr. Raccoon.",
+    "catalogValue": 1
+  },
+  "15": {
+    "title": "Anpassung",
+    "objective": "Modifizieren Sie eine Waffe.",
+    "catalogValue": 1
+  },
+  "16": {
+    "title": "Quadratschädel",
+    "objective": "Erhöhen Sie die Zahl Ihrer Inventarplätze.",
+    "catalogValue": 1
+  },
+  "17": {
+    "title": "Nimm das!",
+    "objective": "Führen Sie einen Gegenangriff mit einer Nebenwaffe aus.",
+    "catalogValue": 1
+  },
+  "18": {
+    "title": "Das sollte sie aufhalten",
+    "objective": "Vernageln Sie ein Fenster mit Holzbrettern.",
+    "catalogValue": 1
+  },
+  "19": {
+    "title": "Pistolero",
+    "objective": "Töten Sie 10 Gegner mit einer Pistole.",
+    "catalogValue": 10
+  },
+  "20": {
+    "title": "Blut und Gedärm",
+    "objective": "Töten Sie 10 Gegner mit einer Flinte.",
+    "catalogValue": 10
+  },
+  "21": {
+    "title": "Dauerfeuer",
+    "objective": "Töten Sie 10 Gegner mit einer MP.",
+    "catalogValue": 10
+  },
+  "22": {
+    "title": "Haste 'n Problem?",
+    "objective": "Töten Sie 5 Gegner mit einer MAG.",
+    "catalogValue": 5
+  },
+  "23": {
+    "title": "Granatenstark",
+    "objective": "Töten Sie 5 Gegner mit dem Granatwerfer.",
+    "catalogValue": 5
+  },
+  "24": {
+    "title": "Menschlicher Stromgenerator",
+    "objective": "Töten Sie 5 Gegner mit dem Elektroschockgewehr.",
+    "catalogValue": 5
+  },
+  "25": {
+    "title": "Her mit den Marshmallows!",
+    "objective": "Töten Sie 5 Gegner mit dem chemischen Flammenwerfer.",
+    "catalogValue": 5
+  },
+  "26": {
+    "title": "Meistertaktiker",
+    "objective": "Töten Sie 10 Gegner mit einer Nebenwaffe.",
+    "catalogValue": 10
+  },
+  "27": {
+    "title": "Ich brauch keine Knarre",
+    "objective": "Besiegen Sie einen Gegner mit einem Messer.",
+    "catalogValue": 1
+  },
+  "28": {
+    "title": "Nur noch ein Torso",
+    "objective": "Vernichten Sie die Arme und Beine eines Zombies.",
+    "catalogValue": 1
+  },
+  "29": {
+    "title": "Guten Appetit",
+    "objective": "Schießen Sie auf die Granate, die Sie einem Gegner in den Mund gerammt haben.",
+    "catalogValue": 1
+  },
+  "30": {
+    "title": "Ich zieh den Hut",
+    "objective": "Schießen Sie 5 Zombies den Hut vom Kopf.",
+    "catalogValue": 5
+  },
+  "31": {
+    "title": "Wie Tontaubenschießen",
+    "objective": "Schießen Sie einen Zombiehund oder Licker aus der Luft.",
+    "catalogValue": 1
+  },
+  "32": {
+    "title": "Ohrensausen",
+    "objective": "Lähmen Sie den Hörsinn eines Lickers.",
+    "catalogValue": 1
+  },
+  "33": {
+    "title": "Zwei auf einen Streich",
+    "objective": "Töten Sie mit nur einer Kugel / einem Flintenschuss zwei Gegner auf einmal.",
+    "catalogValue": 2
+  },
+  "34": {
+    "title": "Voll auf die Knolle",
+    "objective": "Machen Sie einen Ivy-Zombie nur per Schuss auf die Sporen bewegungsunfähig.",
+    "catalogValue": 1
+  },
+  "35": {
+    "title": "Ein schockierendes Ende",
+    "objective": "Feuern Sie mit dem Elektroschockgewehr eine Maximale Entladung ab, indem Sie es voll aufladen.",
+    "catalogValue": 1
+  },
+  "36": {
+    "title": "Zombiemassaker",
+    "objective": "Töten Sie 3 Gegner augenblicklich mit einer Nebenwaffe.",
+    "catalogValue": 3
+  },
+  "37": {
+    "title": "Hut ab!",
+    "objective": "Schießen Sie Tyrant den Hut vom Kopf.",
+    "catalogValue": 1
+  },
+  "38": {
+    "title": "Atempause",
+    "objective": "Bringen Sie Tyrant auf ein Knie.",
+    "catalogValue": 1
+  },
+  "39": {
+    "title": "Stromkreisunterbrecher",
+    "objective": "Öffnen Sie die elektronische Zellentür in 13 Zügen. [Leons Kampagne]",
+    "catalogValue": 13
+  },
+  "40": {
+    "title": "Spannungsvirtuosin",
+    "objective": "Öffnen Sie die elektronische Tür im Privatsammlungszimmer in 7 Zügen. [Claires Kampagne]",
+    "catalogValue": 7
+  },
+  "41": {
+    "title": "Kaum Widerstand",
+    "objective": "Öffnen Sie die elektronische Zellentür in 10 Zügen. [Leon - 2. Durchgang]",
+    "catalogValue": 10
+  },
+  "42": {
+    "title": "Unter Strom",
+    "objective": "Öffnen Sie die elektronische Tür im Privatsammlungszimmer in 11 Zügen. [Claire - 2. Durchgang]",
+    "catalogValue": 11
+  },
+  "43": {
+    "title": "Chemiker",
+    "objective": "Füllen Sie die Kartusche im Medikamententestlabor in 8 Zügen. [Leons oder Claires Kampagne]",
+    "catalogValue": 8
+  },
+  "44": {
+    "title": "Chemiegenie",
+    "objective": "Füllen Sie die Kartusche im Medikamententestlabor in 9 Zügen. [Leon oder Claire - 2. Durchgang]",
+    "catalogValue": 9
+  },
+  "45": {
+    "title": "Voll aufs Auge",
+    "objective": "Stoßen Sie G (Phase 1) ein Messer in den Riesenaugapfel.",
+    "catalogValue": 1
+  },
+  "46": {
+    "title": "Hab dich!",
+    "objective": "Besiegen Sie G (Phase 2) und setzen Sie den Kran dabei nur einmal ein.",
+    "catalogValue": 1
+  },
+  "47": {
+    "title": "Weg damit!",
+    "objective": "Verhindern Sie, dass G (Phase 3) Dinge wirft.",
+    "catalogValue": 1
+  },
+  "48": {
+    "title": "Runter mit dir",
+    "objective": "Schießen Sie G (Phase 4) von einer Wand.",
+    "catalogValue": 1
+  },
+  "49": {
+    "title": "Locker Zeit",
+    "objective": "Besiegen Sie G (Phase 4) mit mindestens 4 Minuten bis zur Detonation.",
+    "catalogValue": 4
+  },
+  "50": {
+    "title": "Ausgepowert",
+    "objective": "Verhindern Sie den Ansturm des Super-Tyrant.",
+    "catalogValue": 1
+  },
+  "51": {
+    "title": "Im Handumdrehen",
+    "objective": "Besiegen Sie Super-Tyrant mit mindestens 5 Minuten bis zur Detonation.",
+    "catalogValue": 5
+  },
+  "52": {
+    "title": "Superspionin",
+    "objective": "Schließen Sie Adas Segment ausschließlich unter Verwendung des EMF Visualizer ab.",
+    "catalogValue": 1
+  },
+  "53": {
+    "title": "Junger Flüchtling",
+    "objective": "Entkommen Sie in Sherrys Abschnitt innerhalb von 60 Sekunden aus dem Schlafzimmer.",
+    "catalogValue": 60
+  },
+  "54": {
+    "title": "Schlosser",
+    "objective": "Öffnen Sie alle Tresore und Schlösser im Spiel.",
+    "catalogValue": 8
+  },
+  "55": {
+    "title": "Waschbärausrottung",
+    "objective": "Zerstören Sie alle Mr. Raccoons.",
+    "catalogValue": 15
+  },
+  "56": {
+    "title": "Wissensdurst",
+    "objective": "Lesen Sie alle Akten.",
+    "catalogValue": 58
+  },
+  "57": {
+    "title": "Dunkle Zeiten, dunkle Kammer",
+    "objective": "Entwickeln Sie alle Filme.",
+    "catalogValue": 5
+  },
+  "58": {
+    "title": "Schatzjäger",
+    "objective": "Finden Sie mithilfe der Fotohinweise zwei versteckte Objekte.",
+    "catalogValue": 1
+  },
+  "59": {
+    "title": "Platzverschwendung",
+    "objective": "Maximieren Sie Ihre Inventarplätze.",
+    "catalogValue": 1
+  },
+  "60": {
+    "title": "Vollbewaffneter Anfänger",
+    "objective": "Sammeln Sie alle Spezialzubehör-Teile in Leons Kampagne.",
+    "catalogValue": 8
+  },
+  "61": {
+    "title": "Vollbewaffnete Studentin",
+    "objective": "Sammeln Sie alle Spezialzubehör-Teile in Claires Kampagne.",
+    "catalogValue": 7
+  },
+  "62": {
+    "title": "Waffensammler",
+    "objective": "Sammeln Sie alle Waffen in Leons Kampagne.",
+    "catalogValue": 6
+  },
+  "63": {
+    "title": "Waffenliebhaberin",
+    "objective": "Sammeln Sie alle Waffen in Claires Kampagne.",
+    "catalogValue": 7
+  },
+  "64": {
+    "title": "Am ersten Tag schon Veteran",
+    "objective": "Schließen Sie Leons Kampagne auf \"Veteran\" ab.",
+    "catalogValue": 1
+  },
+  "65": {
+    "title": "Veteran-Studentin",
+    "objective": "Schließen Sie Claires Kampagne auf \"Veteran\" ab.",
+    "catalogValue": 1
+  },
+  "66": {
+    "title": "Leon \"A.\" Kennedy",
+    "objective": "Schließen Sie Leons Kampagne auf \"Standard\" oder \"Veteran\" mit Rang A ab.",
+    "catalogValue": 1
+  },
+  "67": {
+    "title": "Mutige purpurne Heldin",
+    "objective": "Schließen Sie Claires Kampagne auf \"Standard\" oder \"Veteran\" mit Rang A ab.",
+    "catalogValue": 1
+  },
+  "68": {
+    "title": "Leon \"S.\" Kennedy",
+    "objective": "Schließen Sie Leons Kampagne auf \"Standard\" oder \"Veteran\" mit Rang S ab.",
+    "catalogValue": 1
+  },
+  "69": {
+    "title": "Heiße blutrote Heldin",
+    "objective": "Schließen Sie Claires Kampagne auf \"Standard\" oder \"Veteran\" mit Rang S ab.",
+    "catalogValue": 1
+  },
+  "70": {
+    "title": "Kein Anfänger mehr",
+    "objective": "Schließen Sie Leons Kampagne auf \"Veteran\" mit Rang S ab.",
+    "catalogValue": 1
+  },
+  "71": {
+    "title": "Auf die Redfield-Art",
+    "objective": "Schließen Sie Claires Kampagne auf \"Veteran\" mit Rang S ab.",
+    "catalogValue": 1
+  },
+  "72": {
+    "title": "Sprinter",
+    "objective": "Spielen Sie das Spiel in 4 Stunden durch.",
+    "catalogValue": 4
+  },
+  "73": {
+    "title": "Minimalist",
+    "objective": "Schließen Sie das Spiel ab, ohne die Inventarbox zu öffnen.",
+    "catalogValue": 3
+  },
+  "74": {
+    "title": "Frugalist",
+    "objective": "Schließen Sie das Spiel ab, ohne ein Heilungsobjekt zu verwenden.",
+    "catalogValue": 3
+  },
+  "75": {
+    "title": "Gute CO2-Bilanz",
+    "objective": "Machen Sie höchstens 14000 Schritte in einem Spieldurchlauf.",
+    "catalogValue": 14000
+  },
+  "76": {
+    "title": "Gevatter Tod",
+    "objective": "Schließen Sie den Zusatzmodus \"The 4th Survivor\" ab.",
+    "catalogValue": 1
+  },
+  "77": {
+    "title": "Wackel-Delikatesse",
+    "objective": "Schließen Sie den Zusatzmodus \"The Tofu Survivor\" ab.",
+    "catalogValue": 1
+  },
+  "78": {
+    "title": "Erlesener Geschmack",
+    "objective": "Schließen Sie den Zusatzmodus \"The Tofu Survivor\" mit Uiro-Mochi ab.",
+    "catalogValue": 1
+  },
+  "79": {
+    "title": "Ich krieg nicht genug",
+    "objective": "Schließen Sie den Zusatzmodus \"The Tofu Survivor\" mit Annin Tofu ab.",
+    "catalogValue": 1
+  },
+  "80": {
+    "title": "Ideale Bissfestigkeit",
+    "objective": "Schließen Sie den Zusatzmodus \"The Tofu Survivor\" mit Konjak ab.",
+    "catalogValue": 1
+  },
+  "81": {
+    "title": "Erlesene Süße",
+    "objective": "Schließen Sie den Zusatzmodus \"The Tofu Survivor\" mit Flan ab.",
+    "catalogValue": 1
+  },
+  "82": {
+    "title": "Kampagnenmeister",
+    "objective": "Schließen Sie alle vier Kampagnen ab. (Leon / Leon [2. Durchgang] / Claire / Claire [2. Durchgang])",
+    "catalogValue": 1
+  },
+  "83": {
+    "title": "Rang-A-Spieler",
+    "objective": "Schließen Sie das Spiel auf \"Standard\" oder \"Veteran\" mit Rang A ab.",
+    "catalogValue": 1
+  },
+  "84": {
+    "title": "Rang-S-Spieler",
+    "objective": "Schließen Sie das Spiel auf \"Standard\" oder \"Veteran\" mit Rang S ab.",
+    "catalogValue": 1
+  },
+  "85": {
+    "title": "Veteranspieler vom Rang S",
+    "objective": "Schließen Sie das Spiel auf \"Veteran\" mit Rang S ab.",
+    "catalogValue": 1
+  },
+  "88": {
+    "title": "Bedrohte Art",
+    "objective": "Zerstören Sie 10 Mr. Raccoons.",
+    "catalogValue": 10
+  }
+}

@@ -10,11 +10,13 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(names.entry(gameID:"re4",itemID:"112800000")?.name=="Pistolenmunition","RE4-Name aus Spieltext")
     check(names.entry(gameID:"re7",itemID:"MiaDriversLicense")?.name=="Führerschein","RE7-Name aus Spieltext")
     check(names.entry(gameID:"re8",itemID:"1179972000")==nil,"Unbekannte Village-ID bleibt ohne geratenen Namen")
-    let re2RecordTitles=try RE2RecordTextCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_RECORD_NAMES"]!))
-    check(re2RecordTitles.count==89 && re2RecordTitles[59]=="Schatzjäger" &&
-          re2RecordTitles[0]=="Einwohner von Raccoon City" &&
-          re2RecordTitles[87]==nil && re2RecordTitles[88]==nil,
-          "RE2-Rekordtitel aus installierter deutscher Nachrichtentabelle; unbelegte IDs bleiben namenlos")
+    let re2RecordDetails=try RE2RecordTextCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_RECORD_DETAILS"]!))
+    check(re2RecordDetails.count==87 && re2RecordDetails[58]?.title=="Schatzjäger" &&
+          re2RecordDetails[0]?.title=="Einwohner von Raccoon City" &&
+          re2RecordDetails[19]?.objective=="Töten Sie 10 Gegner mit einer Pistole." &&
+          re2RecordDetails[75]?.catalogValue==14000 &&
+          [86,87,89,90].allSatisfy{re2RecordDetails[$0]==nil},
+          "RE2-Rekorde über Katalog-GUIDs zugeordnet; unbelegte IDs bleiben namenlos")
     let re2FieldNames=try RE2FieldNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FIELD_NAMES"]!))
     check(re2FieldNames.count==319 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"] && re2FieldNames["9074a186"]==["SystemSaveDataList"],"RE2-Skalar- und Pfadfeldnamen aus installiertem Build")
     check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")

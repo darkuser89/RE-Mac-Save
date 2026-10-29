@@ -173,8 +173,10 @@ enum SaveFormatInspector {
                                 result["recordDetails"]=progress.records.map {record in
                                     var row:[String:Any]=["id":record.id,"cleared":record.cleared,
                                                           "new":record.newMark,"progress":record.progress]
-                                    if let title=RE2RecordTextCatalog.title(for:record.id) {
-                                        row["titleFromMatchingMessageIndex"]=title
+                                    if let entry=RE2RecordTextCatalog.entry(for:record.id) {
+                                        row["titleFromRecordCatalogGUID"]=entry.title
+                                        row["objectiveFromRecordCatalogGUID"]=entry.objective
+                                        row["catalogValue"]=entry.catalogValue
                                     }
                                     return row
                                 }

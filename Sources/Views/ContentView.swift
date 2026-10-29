@@ -226,11 +226,16 @@ struct EditorDetailView:View {
                         }
                         if let progress=doc.re2SystemProgress {
                             DisclosureGroup("Rekorddetails · \(progress.records.filter(\.cleared).count) von 91 abgeschlossen") {
-                                Text("Gespeicherter Abschluss, Neu-Markierung und roher Fortschrittswert je interner ID. Titel stammen aus der deutschen Nachrichtentabelle des installierten Spiels und werden anhand gleicher Nummer zugeordnet; die Spielwirkung jedes Rekords ist nicht einzeln geprüft.")
+                                Text("Gespeicherter Abschluss, Neu-Markierung und roher Fortschrittswert je interner ID. Titel und Aufgaben stammen aus den per GUID verknüpften Originaldaten der Mac-Version; die Spielwirkung jedes Rekords ist nicht einzeln geprüft.")
                                     .font(.caption).foregroundStyle(.secondary)
                                 ForEach(progress.records) {record in
                                     HStack(alignment:.firstTextBaseline) {
-                                        Text("ID \(record.id) · \(RE2RecordTextCatalog.title(for:record.id) ?? "Kein Titel im Spieltext")").font(.caption)
+                                        VStack(alignment:.leading,spacing:2) {
+                                            Text("ID \(record.id) · \(RE2RecordTextCatalog.title(for:record.id) ?? "Kein belegter Titel")").font(.caption)
+                                            if let objective=RE2RecordTextCatalog.objective(for:record.id) {
+                                                Text(objective).font(.caption2).foregroundStyle(.secondary)
+                                            }
+                                        }
                                         Spacer(minLength:10)
                                         Text("\(record.cleared ? "abgeschlossen" : "nicht abgeschlossen") · \(record.newMark ? "als neu markiert" : "nicht als neu markiert") · Wert \(record.progress)")
                                             .font(.caption.monospacedDigit()).textSelection(.enabled)

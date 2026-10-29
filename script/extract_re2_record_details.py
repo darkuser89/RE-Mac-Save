@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read German RE2 record titles from the installed Mac game's message archive."""
+"""Read RE2 record titles, objectives and catalog values from the installed Mac game."""
 
 import argparse
 import json
@@ -10,6 +10,7 @@ from pathlib import Path
 
 
 MESSAGE_PATH = "natives/mac/sectionroot/message/mes_sys/mes_sys_bonus.msg.23"
+RECORD_PATH = "natives/mac/sectionroot/userdata/record/recordlistuserdata.user.3"
 MESSAGE_KEY = bytes.fromhex("cfcefbf8ec0a336693a91d9350395f09")
 
 
@@ -39,10 +40,10 @@ def murmur(data: bytes) -> int:
     return value
 
 
-def message_bytes(app: Path) -> bytes:
+def archive_bytes(app: Path, path: str) -> bytes:
     target = (
-        murmur(MESSAGE_PATH.lower().encode("utf-16le")),
-        murmur(MESSAGE_PATH.upper().encode("utf-16le")),
+        murmur(path.lower().encode("utf-16le")),
+        murmur(path.upper().encode("utf-16le")),
     )
     resources = app / "Contents/Resources"
     matches = []
@@ -61,24 +62,24 @@ def message_bytes(app: Path) -> bytes:
                 )
                 if (low, high) != target:
                     continue
-                if flags & 2 == 0 or compressed > 10_000_000 or real > 20_000_000:
-                    raise ValueError("Unexpected message entry layout")
+                if flags not in (2, 4098) or compressed > 10_000_000 or real > 20_000_000:
+                    raise ValueError("Unexpected archive entry layout")
                 file.seek(offset)
                 blob = file.read(compressed)
                 if len(blob) != compressed:
-                    raise ValueError("Truncated message entry")
+                    raise ValueError("Truncated archive entry")
                 result = subprocess.run(
                     ["zstd", "-d", "-q", "-c"], input=blob, capture_output=True, check=True
                 ).stdout
                 if len(result) != real:
-                    raise ValueError("Wrong decompressed message size")
+                    raise ValueError("Wrong decompressed archive entry size")
                 matches.append(result)
     if len(matches) != 1:
-        raise ValueError(f"Expected exactly one Mac RE2 bonus message, found {len(matches)}")
+        raise ValueError(f"Expected exactly one Mac RE2 entry for {path}, found {len(matches)}")
     return matches[0]
 
 
-def german_titles(data: bytes) -> dict[str, str]:
+def german_messages(data: bytes) -> dict[str, tuple[bytes, str]]:
     version, magic = struct.unpack_from("<I4s", data)
     if (version, magic) != (23, b"GMSG"):
         raise ValueError("Unexpected RE2 message version")
@@ -122,20 +123,55 @@ def german_titles(data: bytes) -> dict[str, str]:
         if offset + 40 + languages * 8 > pool_offset:
             raise ValueError("Invalid message row")
         name_offset = struct.unpack_from("<Q", data, offset + 24)[0]
-        match = re.fullmatch(r"Mes_Sys_Bouns_Record(\d{2})", string_at(name_offset))
+        name = string_at(name_offset)
+        if not re.fullmatch(r"Mes_Sys_Bouns_Record\d{2}(Guide)?", name):
+            continue
+        text_offset = struct.unpack_from(f"<{languages}Q", data, offset + 40)[german_index]
+        value = re.sub(r"\s+", " ", string_at(text_offset)).strip()
+        if not value or name in names:
+            raise ValueError("Invalid or duplicate record message")
+        names[name] = (data[offset:offset + 16], value)
+    if len(names) != 178:
+        raise ValueError("Unexpected RE2 record message coverage")
+    return names
+
+
+def record_details(messages: dict[str, tuple[bytes, str]], catalog: bytes) -> dict[str, dict[str, object]]:
+    if catalog[:4] != b"USR\0" or catalog[48:52] != b"RSZ\0":
+        raise ValueError("Unexpected RE2 record catalog header")
+    if struct.unpack_from("<I", catalog, 60)[0] != 93:
+        raise ValueError("Unexpected RE2 record instance count")
+    data_start = 48 + struct.unpack_from("<Q", catalog, 80)[0]
+    if not (data_start < len(catalog)):
+        raise ValueError("Invalid record catalog data offset")
+
+    result = {}
+    for name, (guid, title) in messages.items():
+        match = re.fullmatch(r"Mes_Sys_Bouns_Record(\d{2})", name)
         if not match:
             continue
-        number = int(match.group(1))
-        text_offset = struct.unpack_from(f"<{languages}Q", data, offset + 40)[german_index]
-        title = string_at(text_offset).strip()
-        if not title or number > 90 or number in names:
-            raise ValueError("Invalid or duplicate record title")
-        names[number] = title
-    if len(names) != 89 or set(range(91)) - names.keys() != {87, 88}:
-        raise ValueError("Unexpected RE2 record title coverage")
-    if names[59] != "Schatzjäger":
-        raise ValueError("Record 59 does not match the game's treasure counter")
-    return {str(number): names[number] for number in sorted(names)}
+        where = catalog.find(guid, data_start)
+        if where < 0:
+            continue  # Record00 and Record90 have text but no catalog entry.
+        if catalog.find(guid, where + 1) >= 0 or where < data_start + 8 or where + 76 > len(catalog):
+            raise ValueError("Ambiguous record GUID in catalog")
+        record_id, reserved = struct.unpack_from("<II", catalog, where - 8)
+        guide = messages.get(name + "Guide")
+        if not (0 <= record_id <= 90 and record_id + 1 == int(match.group(1)) and
+                reserved == 0 and guide and catalog[where + 16:where + 32] == guide[0]):
+            raise ValueError("Record ID or guide GUID mismatch")
+        catalog_value = struct.unpack_from("<I", catalog, where + 72)[0]
+        objective = guide[1].replace("{0}", str(catalog_value))
+        if not objective or "{0}" in objective or str(record_id) in result:
+            raise ValueError("Invalid record objective")
+        result[str(record_id)] = {"title": title, "objective": objective, "catalogValue": catalog_value}
+    if len(result) != 87 or set(range(91)) - {int(key) for key in result} != {86, 87, 89, 90}:
+        raise ValueError("Unexpected RE2 record catalog coverage")
+    if result["58"]["title"] != "Schatzjäger" or \
+       result["58"]["objective"] != "Finden Sie mithilfe der Fotohinweise zwei versteckte Objekte." or \
+       result["19"]["catalogValue"] != 10 or result["75"]["catalogValue"] != 14000:
+        raise ValueError("Record catalog cross-check failed")
+    return {str(number): result[str(number)] for number in sorted(map(int, result))}
 
 
 if __name__ == "__main__":
@@ -143,6 +179,7 @@ if __name__ == "__main__":
     parser.add_argument("app", type=Path, help="Installed Resident Evil 2.app")
     parser.add_argument("output", type=Path, help="Output JSON inside the project")
     args = parser.parse_args()
-    titles = german_titles(message_bytes(args.app))
-    args.output.write_text(json.dumps(titles, ensure_ascii=False, indent=2) + "\n")
-    print(f"Extracted {len(titles)} German RE2 record titles")
+    messages = german_messages(archive_bytes(args.app, MESSAGE_PATH))
+    details = record_details(messages, archive_bytes(args.app, RECORD_PATH))
+    args.output.write_text(json.dumps(details, ensure_ascii=False, indent=2) + "\n")
+    print(f"Extracted {len(details)} German RE2 record titles, objectives and catalog values")
