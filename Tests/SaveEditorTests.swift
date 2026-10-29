@@ -139,6 +139,37 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Doppeltes Türfeld ausblenden")
     check(RE2DoorProgressCatalog.entries(game:re2Game,source:re2Campaign,fields:Array(doorFields.dropLast()),character:"Leon").isEmpty,
           "Unvollständigen Türdatensatz ausblenden")
+    let markerSpecs:[(String,String,String,[(String,Int32,String)])]=[
+        ("app.ropeway.gamemastering.UIMapManager.ItemLockerInfo","itemLockerData",
+         "/7f9decbe.8aab887b[8]/090ff53c.00c7b7b6/b2f815e5.695a3627[",
+         [("_Hash",8,"200"),("_MapId",1,"112"),("_SlotNum",8,"400")]),
+        ("app.ropeway.gamemastering.UIMapManager.TypewriterInfo","typewriterData",
+         "/7f9decbe.8aab887b[8]/090ff53c.d1a4c8f8/dd9eb20d.695a3627[",
+         [("_Hash",8,"300"),("_MapId",1,"120")])]
+    var markerFields:[SaveScalar]=[]
+    for (ownerName,_,prefix,fields) in markerSpecs {
+        let owner=SaveCrypto.murmur(Data(ownerName.utf8))
+        for index in 0..<2 {
+            for (name,type,value) in fields {
+                let hash=SaveCrypto.murmur(Data(name.utf8))
+                let text=name=="_Hash" ? String((Int(value) ?? 0)+index):value
+                markerFields.append(SaveScalar(id:markerFields.count+400,owner:owner,field:hash,type:type,
+                                               offset:markerFields.count*4,size:4,
+                                               path:prefix+"\(index)]"+String(format:"/%08x.%08x",owner,hash),text:text))
+            }
+        }
+    }
+    let markerGroups=RE2MapMarkerCatalog.groups(game:re2Game,source:re2Campaign,fields:markerFields,character:"Leon")
+    check(markerGroups.count==2 && markerGroups[0].id=="itemLockerData" &&
+          markerGroups[0].markers.map(\.objectHash)==[200,201] && markerGroups[0].markers[0].slotNumber==400 &&
+          markerGroups[1].id=="typewriterData" && markerGroups[1].markers[1].mapID==120,
+          "RE2-Kartenobjekte nur aus vollständigen, gleichnamigen Datensätzen lesen")
+    check(RE2MapMarkerCatalog.groups(game:re2Game,source:re2System,fields:markerFields,character:nil).isEmpty,
+          "Kartenobjekte nicht Systemdaten zuordnen")
+    check(RE2MapMarkerCatalog.groups(game:re2Game,source:re2Campaign,fields:markerFields+[markerFields[0]],character:"Leon").map(\.id)==["typewriterData"],
+          "Doppelte Itemschrank-Felder ausblenden")
+    check(RE2MapMarkerCatalog.groups(game:re2Game,source:re2Campaign,fields:Array(markerFields.dropLast()),character:"Leon").map(\.id)==["itemLockerData"],
+          "Unvollständige Schreibmaschinen-Datensätze ausblenden")
     func mechanism(_ ownerName:String,_ fieldName:String,_ type:Int32,_ text:String,_ parent:String,_ id:Int) -> SaveScalar {
         let owner=SaveCrypto.murmur(Data(ownerName.utf8))
         let field=SaveCrypto.murmur(Data(fieldName.utf8))

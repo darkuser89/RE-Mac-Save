@@ -226,6 +226,15 @@ enum SaveFormatInspector {
                                      "mapID":door.mapID,"stateCode":door.stateCode] as [String:Any]
                                 }
                             }
+                            if !doc.re2MapMarkers.isEmpty {
+                                result["mapMarkers"]=doc.re2MapMarkers.map {group in
+                                    ["kind":group.id,"markers":group.markers.map {marker in
+                                        ["index":marker.id,"hash":String(format:"%08x",marker.objectHash),
+                                         "mapID":marker.mapID,
+                                         "slotNumber":marker.slotNumber.map {$0 as Any} ?? NSNull()] as [String:Any]
+                                    }] as [String:Any]
+                                }
+                            }
                         }
                         for section in ["Inventar","Itembox"] {
                             result[section.lowercased()]=doc.items.filter{$0.section==section}.map {item in

@@ -43,6 +43,8 @@ Die geprüften lokalen Dateien zeigen im Leon-Slot zwei Profile mit Typcodes 2 u
 
 Die RE2-Kampagnendateien enthalten außerdem eigene Kartenlisten: `openedFloor`, `mapDispState`, `Arrived`, `HasCleared` und `MapPartsChangeInfo.Done`. Der Editor zeigt deren gespeicherte Codeverteilung und Anzahl nur lesend. Die Feldnamen und Besitzer passen zum installierten Mac-Build; aus ihnen allein folgen noch keine sicheren Ortsnamen oder Kartenfarben. Deshalb werden keine Kartenmarkierungen zum Bearbeiten angeboten.
 
+Die gespeicherten RE2-Kartendaten enthalten auch getrennte Einträge für Schreibmaschinen (`typewriterData`) und Itemschränke (`itemLockerData`). Der Editor zeigt nur vollständig gepaarte Datensätze mit Karten-ID und Objektkennung; Itemschränke haben zusätzlich eine gespeicherte Platznummer. Ob ein solcher Eintrag einen entdeckten Ort oder lediglich einen vorhandenen Kartenmarker bedeutet, ist nicht belegt. Die Werte sind nur lesbar.
+
 Unter `RecordManager.GameSaveData` liegen in den drei geprüften RE2-Kampagnendateien je ein `UseSpecialWeapon`- und `UseAimAssist`-Bool. Die App zeigt beide als gespeicherte Spielmerkmale nur lesend. Alle sechs beobachteten Werte sind derzeit `false`. Ein Vergleich im Spiel, ob und wann diese Felder Rang oder Freischaltungen beeinflussen, steht aus.
 
 Die lokale RE2-Datei `data021Slot.bin` enthält keine Leon- oder Claire-Kampagne, sondern eine interne `RogueSystemSaveData`-Liste. Der Editor zeigt die darin eindeutig benannten booleschen und numerischen Feldgruppen mit ihren gespeicherten IDs/Werten nur lesend an. Die genaue Bedeutung einzelner Zusatzmodus-IDs und die Wirkung einer Änderung wurden nicht im Spiel geprüft; diese Datei bietet deshalb keine Schreibschalter.
@@ -113,7 +115,7 @@ Die aktuelle App und Module liegen ausschließlich unter `../RESaveEditorBuild`.
 
 Das Skript prüft Zahlenformate, den großen RE7-Byteblock, Schlüsselzuordnung, lokale Schreibziele und bestehende lokale RE4-Saves ausschließlich lesend. Alle Schreib-, Rücknahme- und Konflikttests verwenden temporäre Dateien. Fehlen die Testdaten oder schlägt ein Test fehl, wird die vorherige App beibehalten. Die zusätzliche Prüfung in der App verwendet deren regulär freigegebene Ordnerzugriffe für alle Spiele.
 
-GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.24` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
+GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.25` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
 
 Der Codex-Run-Button verwendet dasselbe Skript. Optionale Modi: `--verify`, `--logs`, `--telemetry`, `--debug` (LLDB nur für den Editor).
 

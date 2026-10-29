@@ -260,6 +260,24 @@ struct EditorDetailView:View {
                             Text("\(group.total) gespeicherte Einträge · Code: Anzahl").font(.caption).foregroundStyle(.secondary)
                         }
                     }
+                    if !doc.re2MapMarkers.isEmpty {
+                        Divider()
+                        Text("RE2-Kartenobjekte").font(.title2.bold())
+                        Text("Gespeicherte Schreibmaschinen- und Itemschrank-Einträge mit Karten-ID und Objektkennung. Ob ein Eintrag bereits entdeckt wurde, ist nicht belegt; nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        ForEach(doc.re2MapMarkers) {group in
+                            DisclosureGroup("\(group.title) · \(group.markers.count) Einträge") {
+                                ForEach(group.markers) {marker in
+                                    HStack {
+                                        Text("ID \(marker.id) · Karte \(marker.mapID)")
+                                        Spacer(minLength:8)
+                                        Text(String(format:"Objekt %08x",marker.objectHash))
+                                        if let slot=marker.slotNumber {Text("Platz \(slot)")}
+                                    }.font(.caption.monospacedDigit()).textSelection(.enabled).padding(.vertical,2)
+                                }
+                            }
+                        }
+                    }
                     if let puzzle=doc.re2PuzzleProgress {
                         Divider()
                         Text("RE2-Rätselstände").font(.title2.bold())
