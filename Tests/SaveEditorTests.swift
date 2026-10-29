@@ -13,6 +13,14 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let re2FieldNames=try RE2FieldNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FIELD_NAMES"]!))
     check(re2FieldNames.count==268 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"],"Alle beobachteten RE2-Feldnamen aus installiertem Build")
     check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")
+    let re2OwnerNames=try RE2OwnerNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_OWNER_NAMES"]!))
+    check(re2OwnerNames.count==81 &&
+          re2OwnerNames["4e4210f9"]==["app.ropeway.gamemastering.RecordManager.SystemSaveData"] &&
+          re2OwnerNames["2f11c239"]==["app.ropeway.CostumeManager.SystemSaveData"] &&
+          re2OwnerNames["2675722d"]==["app.ropeway.gamemastering.InventoryManager.PrimitiveItem"] &&
+          re2OwnerNames["55d1d375"]==["app.ropeway.gamemastering.InventoryManager.ItemExData"] &&
+          re2OwnerNames["090ff53c"]==["app.ropeway.gamemastering.UIMapManager.SaveData"],
+          "RE2-Besitzernamen aus nativen Klassen- und Namespace-Zeichenketten")
     func re2StatusFields(_ owner:String,_ name:String,_ count:Int,_ set:Set<Int>) -> [SaveScalar] {
         let ownerHash=SaveCrypto.murmur(Data(owner.utf8)),fieldHash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in

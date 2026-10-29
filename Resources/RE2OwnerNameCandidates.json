@@ -1,0 +1,245 @@
+{
+  "01f914d1": [
+    "app.ropeway.gimmick.action.GimmickCircuitPuzzle.SaveData"
+  ],
+  "024cb9d8": [
+    "app.ropeway.RogueEnemySpawnManager.GameSaveData"
+  ],
+  "05cb06fd": [
+    "app.ropeway.GimmickRogueRucksackManager.GameSaveData"
+  ],
+  "06c59e49": [
+    "app.ropeway.CostumeManager.GameSaveData"
+  ],
+  "090ff53c": [
+    "app.ropeway.gamemastering.UIMapManager.SaveData"
+  ],
+  "098bc695": [
+    "app.ropeway.gimmick.action.GimmickRigidbody.SaveData"
+  ],
+  "0b4892b0": [
+    "app.ropeway.gamemastering.ActorManager.GameSaveData"
+  ],
+  "0f7cb1e9": [
+    "app.ropeway.gimmick.action.GimmickPlugPlaceControl.SaveData"
+  ],
+  "13be38d8": [
+    "app.ropeway.gimmick.action.GimmickAutoDoor.SaveData"
+  ],
+  "13e8507e": [
+    "app.ropeway.gamemastering.UIFileManager.SystemSaveData"
+  ],
+  "17401e6c": [
+    "app.ropeway.gamemastering.UIFileManager.SaveData"
+  ],
+  "233c73f9": [
+    "app.ropeway.EquipmentManager.GameSaveData"
+  ],
+  "2412050a": [
+    "app.ropeway.PlayerManager.GameSaveData"
+  ],
+  "2675722d": [
+    "app.ropeway.gamemastering.InventoryManager.PrimitiveItem"
+  ],
+  "2700834c": [
+    "app.ropeway.gimmick.action.GimmickShutterG2Break.SaveData"
+  ],
+  "2bf4a799": [
+    "app.ropeway.gimmick.action.TriggerSaveDataUseItem"
+  ],
+  "2d66faab": [
+    "app.ropeway.gimmick.action.GimmickPlugGateControl.SaveData"
+  ],
+  "2e107bcb": [
+    "app.ropeway.gimmick.action.GimmickTopboard.SaveData"
+  ],
+  "2f11c239": [
+    "app.ropeway.CostumeManager.SystemSaveData"
+  ],
+  "30cb2158": [
+    "app.ropeway.gimmick.action.GimmickRigidBodySavable.SaveData"
+  ],
+  "3833f5b4": [
+    "app.ropeway.EnvironmentStandbyManager.GameSaveData"
+  ],
+  "3a355f8c": [
+    "app.ropeway.inventory.MainSlotData"
+  ],
+  "3a61fc34": [
+    "app.ropeway.gamemastering.ItemManager.SystemSaveData"
+  ],
+  "3bcdd01f": [
+    "app.ropeway.gimmick.action.TriggerSaveData"
+  ],
+  "3e0cb890": [
+    "app.ropeway.gamemastering.ItemLockerManager.GameSaveData"
+  ],
+  "41f30892": [
+    "app.ropeway.gamemastering.InventoryManager.SaveData"
+  ],
+  "44ccdde9": [
+    "app.ropeway.EnemyManager.GameSaveData"
+  ],
+  "4a2ba8d5": [
+    "app.ropeway.gamemastering.RecordManager.GameSaveData"
+  ],
+  "4c70bc9f": [
+    "app.ropeway.gui.GUIMaster.GameSaveData"
+  ],
+  "4e4210f9": [
+    "app.ropeway.gamemastering.RecordManager.SystemSaveData"
+  ],
+  "4fc65e6e": [
+    "app.ropeway.gamemastering.TimelineEventManager.GameSaveData"
+  ],
+  "504a9f83": [
+    "app.SIWAManager.SystemSaveData"
+  ],
+  "55d1d375": [
+    "app.ropeway.gamemastering.InventoryManager.ItemExData"
+  ],
+  "58dd1c5a": [
+    "app.ropeway.gamemastering.ScenarioSequenceManager.GameSaveData"
+  ],
+  "58f3a7ed": [
+    "app.ropeway.M1PlayLogManager.SystemSaveData"
+  ],
+  "5c7a1a7a": [
+    "app.ropeway.enemy.savedata.Em0000SaveData"
+  ],
+  "5e3f8617": [
+    "app.ropeway.inventory.ShortcutSlotData"
+  ],
+  "5f1f4440": [
+    "app.ropeway.GameRankSystem.GameSaveData"
+  ],
+  "66631d43": [
+    "app.ropeway.enemy.savedata.Em0200SaveData"
+  ],
+  "6ab2d026": [
+    "app.ropeway.enemy.savedata.Em6200SaveData"
+  ],
+  "6bc67874": [
+    "app.ropeway.gamemastering.RogueBaseAreaManager.GameSaveData"
+  ],
+  "6d2fcbf4": [
+    "app.ropeway.gimmick.action.GimmickFanForOvercurrent.SaveData"
+  ],
+  "6da6a8d3": [
+    "app.ropeway.survivor.player.PlayerCondition.GameSaveData"
+  ],
+  "7309369b": [
+    "app.ropeway.gui.MapClearingResultManager.GameSaveData"
+  ],
+  "7b064da2": [
+    "app.ropeway.gimmick.action.GimmickLaboratoryBulkhead.SaveData"
+  ],
+  "8413308a": [
+    "app.ropeway.gimmick.GimmickSetManager.GameSaveData"
+  ],
+  "88e009b6": [
+    "app.ropeway.GimmickDialLockManager.SystemSaveData"
+  ],
+  "8b6fe1de": [
+    "app.ropeway.gamemastering.MainFlowManager.SystemSaveData"
+  ],
+  "8b7b9cac": [
+    "app.ropeway.gimmick.action.GimmickMobileBookShelf.SaveData"
+  ],
+  "8dcc7c21": [
+    "app.ropeway.enemy.savedata.Em6000SaveData"
+  ],
+  "91bb4685": [
+    "app.ropeway.gamemastering.TutorialManager.GameSaveData"
+  ],
+  "943224b8": [
+    "app.ropeway.inventory.SubSlotData"
+  ],
+  "9e0932a9": [
+    "app.ropeway.gamemastering.SaveDataManager.SystemSaveData"
+  ],
+  "9fe67770": [
+    "app.ropeway.enemy.savedata.Em3000SaveData"
+  ],
+  "a3544b75": [
+    "app.ropeway.GameClock.GameSaveData"
+  ],
+  "a3dfc739": [
+    "app.ropeway.OptionManager.SystemSaveData"
+  ],
+  "a44d83d1": [
+    "app.ropeway.gamemastering.RogueLevelManager.GameSaveData"
+  ],
+  "aa9adb89": [
+    "app.ropeway.enemy.savedata.Em0100SaveData"
+  ],
+  "ac60f49b": [
+    "app.ropeway.gimmick.GimmickUtilManager.SaveData"
+  ],
+  "b134fa76": [
+    "app.ropeway.gimmick.action.GimmickStabbedCorpse.SaveData"
+  ],
+  "b2db0a9d": [
+    "app.ropeway.M1PlayLogManager.GameSaveData"
+  ],
+  "b573ba0b": [
+    "app.ropeway.enemy.savedata.EmSupportItemSaveData"
+  ],
+  "b6953184": [
+    "app.ropeway.WwiseStateManager.GameSaveData"
+  ],
+  "c014293c": [
+    "app.ropeway.gamemastering.RogueStorageManager.GameSaveData"
+  ],
+  "c14fbcd7": [
+    "app.ropeway.GameClock.SystemSaveData"
+  ],
+  "c5e4b1fc": [
+    "app.ropeway.GimmickBattleCraneManager.SystemSaveData"
+  ],
+  "cbedfe1b": [
+    "via.wwise.WwiseSavableSetStateParam"
+  ],
+  "cdcc735d": [
+    "app.ropeway.GimmickRaccoonFigureManager.SystemSaveData"
+  ],
+  "d2653fac": [
+    "app.ropeway.gamemastering.ItemManager.SaveData"
+  ],
+  "dbf6ff26": [
+    "app.ropeway.gimmick.action.GimmickToggleSwitch.SaveData"
+  ],
+  "dd1b4207": [
+    "app.ropeway.gamemastering.RogueManager.GameSaveData"
+  ],
+  "df89a2f7": [
+    "app.ropeway.gimmick.action.GimmickClockGearControl.SaveData"
+  ],
+  "e0f3601e": [
+    "app.ropeway.enemy.savedata.EmSaveData"
+  ],
+  "ec0a4538": [
+    "app.ropeway.gimmick.action.GimmickElevator.SaveData"
+  ],
+  "ed7364ec": [
+    "app.ropeway.gimmick.action.GimmickWiringNodeBase.SaveData"
+  ],
+  "edf4f67e": [
+    "app.ropeway.gamemastering.InventoryManager.StockItem"
+  ],
+  "f543b8e7": [
+    "app.ropeway.gamemastering.PurposeManager.GameSaveData"
+  ],
+  "f56dc2b5": [
+    "app.ropeway.gimmick.action.GimmickGoddessStatue.SaveData"
+  ],
+  "f914c1fd": [
+    "app.ropeway.gamemastering.NpcManager.GameSaveData"
+  ],
+  "f96bfecf": [
+    "app.ropeway.inventory.Data"
+  ],
+  "fad63ec1": [
+    "app.ropeway.gamemastering.GlobalUserDataManager.GameSaveData"
+  ]
+}

@@ -217,7 +217,9 @@ enum SaveFormatInspector {
             let group=groups[key]!
             let parts=key.split(separator:".")
             let names=parts.count==4 ? RE2FieldNameCatalog.names(for:UInt32(parts[1],radix:16) ?? 0):[]
-            return ["signature":key,"fieldNameCandidates":names,"count":group.count,"values":group.values,
+            let owners=parts.count==4 ? RE2OwnerNameCatalog.names(for:UInt32(parts[0],radix:16) ?? 0):[]
+            return ["signature":key,"fieldNameCandidates":names,"ownerNameCandidates":owners,
+                    "count":group.count,"values":group.values,
                     "valuesTruncated":group.truncated,"samplePaths":group.paths] as [String:Any]
         }
     }
