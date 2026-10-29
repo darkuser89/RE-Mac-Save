@@ -118,6 +118,27 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
                                 path:goddessParent.replacingOccurrences(of:"[75]",with:"[76]")+String(format:"/%08x.%08x",goddessOwner,stateHash),text:"1")
     check(RE2PuzzleProgressCatalog.details(game:re2Game,source:re2Campaign,fields:medalFields+[foreignState],character:"Leon")==nil,
           "Unterschiedliche Göttinnenstatuen-Objekte nicht zusammenführen")
+    let doorOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.UIMapManager.DoorInfo".utf8))
+    let doorPrefix="/7f9decbe.8aab887b[8]/090ff53c.cb78b1f4/b15a035f.695a3627["
+    let doorSpecs:[(String,Int32,String)]=[("_Hash",8,"12345"),("_MapId",1,"0"),("_State",1,"2")]
+    let doorFields=(0..<2).flatMap {index in
+        doorSpecs.enumerated().map {offset,spec in
+            let field=SaveCrypto.murmur(Data(spec.0.utf8))
+            return SaveScalar(id:index*3+offset,owner:doorOwner,field:field,type:spec.1,
+                              offset:index*12+offset*4,size:4,
+                              path:doorPrefix+"\(index)]"+String(format:"/%08x.%08x",doorOwner,field),
+                              text:spec.0=="_Hash" ? String(12345+index):spec.2)
+        }
+    }
+    let doorRows=RE2DoorProgressCatalog.entries(game:re2Game,source:re2Campaign,fields:doorFields,character:"Leon")
+    check(doorRows.count==2 && doorRows[0].doorHash==12345 && doorRows[1].id==1 && doorRows[1].stateCode==2,
+          "RE2-Türstatus aus vollständigen, gepaarten Kartendatensätzen lesen")
+    check(RE2DoorProgressCatalog.entries(game:re2Game,source:re2System,fields:doorFields,character:nil).isEmpty,
+          "Türstatus nicht dem Systemsave zuordnen")
+    check(RE2DoorProgressCatalog.entries(game:re2Game,source:re2Campaign,fields:doorFields+[doorFields[0]],character:"Leon").isEmpty,
+          "Doppeltes Türfeld ausblenden")
+    check(RE2DoorProgressCatalog.entries(game:re2Game,source:re2Campaign,fields:Array(doorFields.dropLast()),character:"Leon").isEmpty,
+          "Unvollständigen Türdatensatz ausblenden")
     let re2ItemOwner="app.ropeway.gamemastering.ItemManager.SystemSaveData"
     let re2SystemStatus=re2StatusFields(re2ItemOwner,"GetItemList",297,[15,32])+re2StatusFields(re2ItemOwner,"GetWeaponList",383,[9])
     let systemHistory=RE2ItemHistoryCatalog.lists(game:re2Game,source:re2System,fields:re2SystemStatus,names:names)

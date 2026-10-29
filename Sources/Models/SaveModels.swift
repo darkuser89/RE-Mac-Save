@@ -32,6 +32,7 @@ struct SaveDocument {
     let re2SystemProgress:RE2SystemProgress?
     let re2ClearRecords:[RE2ClearRecord]
     let re2MapProgress:[RE2MapProgress]
+    let re2DoorProgress:[RE2DoorProgress]
     let re2PuzzleProgress:RE2PuzzleProgress?
     let re2RunFlags:[RE2RunFlag]
     let re2RogueFields:[RE2RogueFieldGroup]
@@ -72,6 +73,7 @@ struct SaveDocument {
         re2SystemProgress=RE2SystemProgressCatalog.details(game:game,source:file,fields:parsed.fields)
         re2ClearRecords=RE2ClearRecordCatalog.records(game:game,source:file,fields:parsed.fields)
         re2MapProgress=RE2MapProgressCatalog.summaries(game:game,fields:parsed.fields,character:character)
+        re2DoorProgress=RE2DoorProgressCatalog.entries(game:game,source:file,fields:parsed.fields,character:character)
         re2PuzzleProgress=RE2PuzzleProgressCatalog.details(game:game,source:file,fields:parsed.fields,character:character)
         re2RunFlags=RE2RunFlagCatalog.flags(game:game,fields:parsed.fields,character:character)
         re2RogueFields=RE2RogueProgressCatalog.groups(game:game,source:file,fields:parsed.fields)

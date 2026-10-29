@@ -172,6 +172,12 @@ enum SaveFormatInspector {
                                 }
                                 result["puzzleProgress"]=values
                             }
+                            if !doc.re2DoorProgress.isEmpty {
+                                result["doorProgress"]=doc.re2DoorProgress.map {door in
+                                    ["index":door.id,"hash":String(format:"%08x",door.doorHash),
+                                     "mapID":door.mapID,"stateCode":door.stateCode] as [String:Any]
+                                }
+                            }
                         }
                         for section in ["Inventar","Itembox"] {
                             result[section.lowercased()]=doc.items.filter{$0.section==section}.map {item in

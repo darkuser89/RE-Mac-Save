@@ -273,6 +273,25 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if !doc.re2DoorProgress.isEmpty {
+                        Divider()
+                        Text("RE2-Türzustände").font(.title2.bold())
+                        Text("Gespeicherte Türinformationen der Karte. Statuscodes und interne Hashes sind noch keinen sichtbaren Türen oder Bedeutungen zugeordnet; nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        let distribution=Dictionary(grouping:doc.re2DoorProgress,by:\.stateCode)
+                        Text(distribution.keys.sorted().map {"Code \($0): \(distribution[$0]!.count)"}.joined(separator:" · "))
+                            .font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                        DisclosureGroup("\(doc.re2DoorProgress.count) gespeicherte Türdatensätze") {
+                            ForEach(doc.re2DoorProgress) {door in
+                                HStack(alignment:.firstTextBaseline) {
+                                    Text("Interne Tür-ID \(door.id)")
+                                    Spacer(minLength:10)
+                                    Text(String(format:"Hash %08x · Karte %d · Code %d",door.doorHash,door.mapID,door.stateCode))
+                                        .font(.caption.monospacedDigit()).textSelection(.enabled)
+                                }.font(.caption).padding(.vertical,2)
+                            }
+                        }
+                    }
                     if !doc.re2RunFlags.isEmpty {
                         Divider()
                         Text("RE2-Gespeicherte Spielmerkmale").font(.title2.bold())
