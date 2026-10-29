@@ -174,6 +174,14 @@ enum SaveFormatInspector {
                                 }
                             }
                             result["scalarFieldInventory"]=re2ScalarInventory(doc)
+                            if !doc.re2ItemBoxBonus.isEmpty {
+                                result["itemBoxBonusStatus"]=doc.re2ItemBoxBonus.map {box in
+                                    ["label":box.label,"extraValid":box.extraValid,
+                                     "extraNotice":box.extraNotice,"bonusValid":box.bonusValid,
+                                     "bonusNotice":box.bonusNotice,
+                                     "extraNoticeAdded":box.extraNoticeAdded] as [String:Any]
+                                }
+                            }
                             if !doc.re2PlacedItems.isEmpty {
                                 result["placedWorldItems"]=doc.re2PlacedItems.map {entry in
                                     ["setIndex":entry.setIndex,"entryIndex":entry.entryIndex,

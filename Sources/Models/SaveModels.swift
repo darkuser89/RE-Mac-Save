@@ -27,6 +27,7 @@ struct SaveDocument {
     let items:[SaveInventory.ItemRow]
     let re2ItemHistory:[RE2ItemHistory]
     let re2PlacedItems:[RE2PlacedItem]
+    let re2ItemBoxBonus:[RE2ItemBoxBonus]
     let re2WeaponUse:[RE2WeaponUse]
     let re2InventoryLayouts:[RE2InventoryLayout]
     let re2CostumeStates:[RE2CostumeState]
@@ -82,6 +83,7 @@ struct SaveDocument {
         items=SaveInventory.rows(game:game,parsed:parsed)
         re2ItemHistory=RE2ItemHistoryCatalog.lists(game:game,source:file,fields:parsed.fields)
         re2PlacedItems=RE2PlacedItemCatalog.entries(game:game,source:file,character:character,fields:parsed.fields)
+        re2ItemBoxBonus=RE2ItemBoxBonusCatalog.groups(game:game,source:file,character:character,fields:parsed.fields)
         re2WeaponUse=RE2WeaponUseCatalog.entries(game:game,fields:parsed.fields,character:character)
         re2InventoryLayouts=RE2InventoryLayoutCatalog.profiles(game:game,source:file,fields:parsed.fields,character:character)
         re2CostumeStates=RE2CostumeStateCatalog.states(game:game,fields:parsed.fields)

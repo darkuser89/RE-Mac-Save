@@ -103,6 +103,28 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           RE2PlacedItemCatalog.entries(game:re2Game,source:re2Campaign,character:nil,fields:placementFields,names:names).isEmpty &&
           RE2PlacedItemCatalog.entries(game:re2Game,source:re2Rogue,character:"Leon",fields:placementFields,names:names).isEmpty,
           "Unvollständige Weltgegenstände und unklare Kampagnensaves ausschließen")
+    let boxRoot="/7f9decbe.8aab887b[20]/3e0cb890.1bd539fc/c0d6d676"
+    let boxNames:[(String,Int)]=[("_isValidExItems",3),("_isNoticeExItems",3),
+                                 ("_isValidOmakeItems",5),("_isNoticeOmakeItems",5),
+                                 ("_isAddExItemNotice",1)]
+    let boxFields=boxNames.flatMap {name,count in
+        (0..<count).map {index in
+            let hash=SaveCrypto.murmur(Data(name.utf8))
+            let suffix=name=="_isAddExItemNotice" ? "":"[\(index)]"
+            return SaveScalar(id:index,owner:0xc0d6d676,field:hash,type:2,offset:index,size:1,
+                              path:String(format:"%@.%08x%@",boxRoot,hash,suffix),text:index==0 ? "true":"false")
+        }
+    }
+    let boxGroups=RE2ItemBoxBonusCatalog.groups(game:re2Game,source:re2Campaign,character:"Leon",fields:boxFields)
+    check(boxGroups.count==1 && boxGroups[0].label=="Globale Itembox-Daten" &&
+          boxGroups[0].extraValid==[true,false,false] &&
+          boxGroups[0].bonusValid==[true,false,false,false,false] &&
+          boxGroups[0].extraNoticeAdded,
+          "RE2-Itembox-Flags nur aus vollständigen nativen Listen paaren")
+    check(RE2ItemBoxBonusCatalog.groups(game:re2Game,source:re2Campaign,character:"Leon",fields:Array(boxFields.dropLast())).isEmpty &&
+          RE2ItemBoxBonusCatalog.groups(game:re2Game,source:re2Campaign,character:nil,fields:boxFields).isEmpty &&
+          RE2ItemBoxBonusCatalog.groups(game:re2Game,source:re2Rogue,character:"Leon",fields:boxFields).isEmpty,
+          "Unvollständige Itembox-Flags und unklare RE2-Dateien ausschließen")
     func re2SystemFields(_ name:String,_ count:Int,_ type:Int32,_ values:[Int:String]) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in

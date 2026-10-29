@@ -190,6 +190,30 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if !doc.re2ItemBoxBonus.isEmpty {
+                        Divider()
+                        Text("RE2-Itembox-Zusatzstatus").font(.title2.bold())
+                        Text("Rohe Extra- und Bonusgegenstands-Flags der gespeicherten Itembox- und Mechanikdaten. Die einzelnen Indizes sind noch keinen Gegenständen oder sichtbaren Meldungen zugeordnet. Nur lesbar.")
+                            .font(.caption).foregroundStyle(.secondary)
+                        DisclosureGroup("\(doc.re2ItemBoxBonus.count) gespeicherte Datensätze") {
+                            ForEach(doc.re2ItemBoxBonus) {box in
+                                DisclosureGroup(box.label) {
+                                    VStack(alignment:.leading,spacing:4) {
+                                        Text("Zusatzhinweis-Flag: \(box.extraNoticeAdded ? "an":"aus")")
+                                            .font(.caption.monospacedDigit())
+                                        ForEach(0..<box.extraValid.count,id:\.self) {index in
+                                            Text("Extra \(index) · Valid \(box.extraValid[index] ? "an":"aus") · Notice \(box.extraNotice[index] ? "an":"aus")")
+                                                .font(.caption.monospacedDigit())
+                                        }
+                                        ForEach(0..<box.bonusValid.count,id:\.self) {index in
+                                            Text("Bonus \(index) · Valid \(box.bonusValid[index] ? "an":"aus") · Notice \(box.bonusNotice[index] ? "an":"aus")")
+                                                .font(.caption.monospacedDigit())
+                                        }
+                                    }.frame(maxWidth:.infinity,alignment:.leading)
+                                }
+                            }
+                        }
+                    }
                     if !doc.re2PlacedItems.isEmpty {
                         Divider()
                         Text("RE2-Platzierte Weltgegenstände").font(.title2.bold())
