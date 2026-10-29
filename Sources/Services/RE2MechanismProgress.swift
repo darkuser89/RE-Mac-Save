@@ -18,15 +18,34 @@ struct RE2MechanismProgress {
         let initialized: Bool
         let firstFlags: [Bool]
     }
+    struct AutoDoor: Identifiable {
+        let id: Int
+        let opened: Bool
+    }
+    struct WiringNode: Identifiable {
+        let id: Int
+        let motorBroken: Bool
+        let switchedIndex: Int
+    }
+    struct Elevator: Identifiable {
+        let id: Int
+        let currentIndex: Int
+    }
     let switches: [Switch]
     let plugs: [Plug]
     let clockGear: ClockGear?
+    let autoDoors: [AutoDoor]
+    let wiringNodes: [WiringNode]
+    let elevators: [Elevator]
 }
 
 enum RE2MechanismProgressCatalog {
     private static let switchOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickToggleSwitch.SaveData".utf8))
     private static let plugOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickPlugPlaceControl.SaveData".utf8))
     private static let clockOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickClockGearControl.SaveData".utf8))
+    private static let autoDoorOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickAutoDoor.SaveData".utf8))
+    private static let wiringOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickWiringNodeBase.SaveData".utf8))
+    private static let elevatorOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickElevator.SaveData".utf8))
     private static let bodyPrefix = "/7f9decbe.8aab887b[23]/8413308a.34be46bd["
     private static let controlPrefix = "/7f9decbe.8aab887b[23]/8413308a.c81a3eff["
 
@@ -45,6 +64,24 @@ enum RE2MechanismProgressCatalog {
                             listPrefix: controlPrefix, objectTail: "/29a21e52.1bd539fc") {id, values -> RE2MechanismProgress.Plug? in
             guard let code = integer(values[0],type:1), let initialized = boolean(values[1]) else {return nil}
             return .init(id:id,plugCode:code,initialized:initialized)
+        } ?? []
+        let autoDoors = grouped(fields, owner: autoDoorOwner,
+                                names: ["HasOpened"],
+                                listPrefix: bodyPrefix, objectTail: "/80e2f7c5.1bd539fc") {id, values -> RE2MechanismProgress.AutoDoor? in
+            guard let opened = boolean(values[0]) else {return nil}
+            return .init(id:id,opened:opened)
+        } ?? []
+        let wiringNodes = grouped(fields, owner: wiringOwner,
+                                  names: ["HasBrokenMotor", "SwitchedIndex"],
+                                  listPrefix: bodyPrefix, objectTail: "/9847e6b3.1bd539fc") {id, values -> RE2MechanismProgress.WiringNode? in
+            guard let broken = boolean(values[0]), let index = integer(values[1],type:7) else {return nil}
+            return .init(id:id,motorBroken:broken,switchedIndex:index)
+        } ?? []
+        let elevators = grouped(fields, owner: elevatorOwner,
+                                names: ["CurIndex"],
+                                listPrefix: bodyPrefix, objectTail: "/73c3755b.1bd539fc") {id, values -> RE2MechanismProgress.Elevator? in
+            guard let index = integer(values[0],type:7) else {return nil}
+            return .init(id:id,currentIndex:index)
         } ?? []
         let clockFields = fields.filter {$0.owner == clockOwner}
         var clockGear: RE2MechanismProgress.ClockGear?
@@ -76,8 +113,10 @@ enum RE2MechanismProgressCatalog {
                 }
             }
         }
-        guard !switches.isEmpty || !plugs.isEmpty || clockGear != nil else {return nil}
-        return .init(switches:switches,plugs:plugs,clockGear:clockGear)
+        guard !switches.isEmpty || !plugs.isEmpty || clockGear != nil ||
+              !autoDoors.isEmpty || !wiringNodes.isEmpty || !elevators.isEmpty else {return nil}
+        return .init(switches:switches,plugs:plugs,clockGear:clockGear,
+                     autoDoors:autoDoors,wiringNodes:wiringNodes,elevators:elevators)
     }
 
     private static func grouped<Row: Identifiable>(_ fields: [SaveScalar], owner: UInt32,

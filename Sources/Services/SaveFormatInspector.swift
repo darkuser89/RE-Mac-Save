@@ -179,6 +179,15 @@ enum SaveFormatInspector {
                                     },
                                     "plugs":mechanisms.plugs.map {row in
                                         ["index":row.id,"plugCode":row.plugCode,"initialized":row.initialized] as [String:Any]
+                                    },
+                                    "autoDoors":mechanisms.autoDoors.map {row in
+                                        ["index":row.id,"opened":row.opened] as [String:Any]
+                                    },
+                                    "wiringNodes":mechanisms.wiringNodes.map {row in
+                                        ["index":row.id,"motorBroken":row.motorBroken,"switchedIndex":row.switchedIndex] as [String:Any]
+                                    },
+                                    "elevators":mechanisms.elevators.map {row in
+                                        ["index":row.id,"currentIndex":row.currentIndex] as [String:Any]
                                     }
                                 ]
                                 if let gear=mechanisms.clockGear {

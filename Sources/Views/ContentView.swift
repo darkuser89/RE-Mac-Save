@@ -358,6 +358,39 @@ struct EditorDetailView:View {
                                     .font(.caption.monospacedDigit()).textSelection(.enabled)
                             }
                         }
+                        if !mechanisms.autoDoors.isEmpty {
+                            DisclosureGroup("Automatische Türen · \(mechanisms.autoDoors.filter(\.opened).count) von \(mechanisms.autoDoors.count) geöffnet") {
+                                ForEach(mechanisms.autoDoors) {item in
+                                    HStack {
+                                        Text("Objekt-ID \(item.id)")
+                                        Spacer()
+                                        Text(item.opened ? "HasOpened: ja" : "HasOpened: nein")
+                                    }.font(.caption.monospacedDigit()).padding(.vertical,2)
+                                }
+                            }
+                        }
+                        if !mechanisms.wiringNodes.isEmpty {
+                            DisclosureGroup("Verkabelungsknoten · \(mechanisms.wiringNodes.count) Zustände") {
+                                ForEach(mechanisms.wiringNodes) {item in
+                                    HStack {
+                                        Text("Objekt-ID \(item.id)")
+                                        Spacer()
+                                        Text("Motor beschädigt: \(item.motorBroken ? "Ja":"Nein") · Schaltindex \(item.switchedIndex)")
+                                    }.font(.caption.monospacedDigit()).padding(.vertical,2)
+                                }
+                            }
+                        }
+                        if !mechanisms.elevators.isEmpty {
+                            DisclosureGroup("Aufzüge · \(mechanisms.elevators.count) gespeicherte Indexwerte") {
+                                ForEach(mechanisms.elevators) {item in
+                                    HStack {
+                                        Text("Objekt-ID \(item.id)")
+                                        Spacer()
+                                        Text("Aktueller Index \(item.currentIndex)")
+                                    }.font(.caption.monospacedDigit()).padding(.vertical,2)
+                                }
+                            }
+                        }
                     }
                     if let environment=doc.re2EnvironmentProgress {
                         Divider()

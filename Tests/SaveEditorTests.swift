@@ -203,6 +203,9 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let switchName="app.ropeway.gimmick.action.GimmickToggleSwitch.SaveData"
     let plugName="app.ropeway.gimmick.action.GimmickPlugPlaceControl.SaveData"
     let clockName="app.ropeway.gimmick.action.GimmickClockGearControl.SaveData"
+    let autoDoorName="app.ropeway.gimmick.action.GimmickAutoDoor.SaveData"
+    let wiringName="app.ropeway.gimmick.action.GimmickWiringNodeBase.SaveData"
+    let elevatorName="app.ropeway.gimmick.action.GimmickElevator.SaveData"
     let switchParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[42]/6fa91e18.1bd539fc"
     let plugParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[91]/29a21e52.1bd539fc"
     let clockParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[83]/a288cd46.1bd539fc"
@@ -221,18 +224,31 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
                    path:clockParent+String(format:"/%08x.%08x[%d]",clockOwner,firstHash,index),
                    text:index==0 ? "true":"false")
     }
-    let allMechanisms=switchFields+plugFields+clockFields+firstFields
+    let autoDoorParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[75]/80e2f7c5.1bd539fc"
+    let wiringParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[48]/9847e6b3.1bd539fc"
+    let elevatorParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[69]/73c3755b.1bd539fc"
+    let autoDoorFields=[mechanism(autoDoorName,"HasOpened",2,"true",autoDoorParent,312)]
+    let wiringFields=[mechanism(wiringName,"HasBrokenMotor",2,"true",wiringParent,313),
+                      mechanism(wiringName,"SwitchedIndex",7,"-1",wiringParent,314)]
+    let elevatorFields=[mechanism(elevatorName,"CurIndex",7,"1",elevatorParent,315)]
+    let allMechanisms=switchFields+plugFields+clockFields+firstFields+autoDoorFields+wiringFields+elevatorFields
     let mechanisms=RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms,character:"Leon")
     check(mechanisms?.switches.count==1 && mechanisms?.switches[0].toggled==true &&
           mechanisms?.switches[0].finalApplied==false && mechanisms?.plugs[0].plugCode==3 &&
-          mechanisms?.clockGear?.topCode==2 && mechanisms?.clockGear?.firstFlags==[true,false,false,false],
-          "RE2-Schalter, Steckplätze und Uhrwerk aus vollständigen Objektgruppen lesen")
+          mechanisms?.clockGear?.topCode==2 && mechanisms?.clockGear?.firstFlags==[true,false,false,false] &&
+          mechanisms?.autoDoors.first?.opened==true && mechanisms?.wiringNodes.first?.switchedIndex == -1 &&
+          mechanisms?.elevators.first?.currentIndex==1,
+          "RE2-Schalter, Steckplätze, Uhrwerk, Türen, Kabel und Aufzüge aus vollständigen Objektgruppen lesen")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2System,fields:allMechanisms,character:nil)==nil,
           "Mechanikzustände nicht dem Systemsave zuordnen")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+[switchFields[0]],character:"Leon")?.switches.isEmpty==true,
           "Doppeltes Schalterfeld ausblenden")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:Array(plugFields.dropLast())+switchFields,character:"Leon")?.plugs.isEmpty==true,
           "Unvollständigen Steckplatz ausblenden")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+autoDoorFields,character:"Leon")?.autoDoors.isEmpty==true,
+          "Doppelte automatische Tür ausblenden")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms.filter {$0.id != 314},character:"Leon")?.wiringNodes.isEmpty==true,
+          "Unvollständigen Verkabelungsknoten ausblenden")
     let tutorialOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.TutorialManager.GameSaveData".utf8))
     let tutorialField=SaveCrypto.murmur(Data("IsDispTutorial".utf8))
     let tutorialPrefix="/7f9decbe.8aab887b[12]/91bb4685.bfb6252d["
