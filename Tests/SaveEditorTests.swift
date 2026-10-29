@@ -47,14 +47,20 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
                                     path:"/9e0932a9.9074a186[7]/4e4210f9.f7ec3e63[1]",text:"account-data")
     let rawFields=[numericProbe,privateTextProbe]
     check(RE2RawFieldCatalog.numericCount(rawFields)==1,"RE2-Feldsuche zählt ausschließlich Zahlen- und Bool-Felder")
+    check(RE2RawFieldCatalog.textCount(rawFields)==1,"RE2-Feldsuche zählt Textfeld-Strukturen getrennt")
     let rawMatch=RE2RawFieldCatalog.search(rawFields,query:"HP",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
-    check(rawMatch.matches==1 && rawMatch.rows.first?.fieldLabel=="HP" && rawMatch.rows.first?.value=="42" &&
-          rawMatch.rows.first?.namedPath.contains("SystemSaveDataList[7]")==true,
-          "RE2-Feldsuche zeigt native Namens- und Pfadtreffer")
+    check(rawMatch.matches==2 && rawMatch.rows.first?.fieldLabel=="HP" && rawMatch.rows.first?.value=="42" &&
+          rawMatch.rows.first?.namedPath.contains("SystemSaveDataList[7]")==true &&
+          rawMatch.rows.last?.value=="Textwert verborgen" && rawMatch.rows.last?.type==15,
+          "RE2-Feldsuche zeigt native Namen und Textfeld-Struktur ohne Textwert")
     check(RE2RawFieldCatalog.search(rawFields,query:"account-data",fieldNames:re2FieldNames,ownerNames:re2OwnerNames).matches==0,
-          "RE2-Feldsuche gibt Textfelder mit möglichen Kontodaten nicht aus")
+          "RE2-Feldsuche sucht nicht in Textwerten mit möglichen Kontodaten")
+    let textOnly=RE2RawFieldCatalog.search(rawFields,query:"#text",fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
+    check(textOnly.matches==1 && textOnly.rows[0].value=="Textwert verborgen" &&
+          !textOnly.rows[0].namedPath.contains("account-data"),
+          "RE2-Textfeld-Strukturen getrennt suchbar, ohne gespeicherten Text")
     let bounded=RE2RawFieldCatalog.search(rawFields,query:"42",limit:0,fieldNames:re2FieldNames,ownerNames:re2OwnerNames)
-    check(bounded.matches==1 && bounded.rows.isEmpty,"RE2-Feldsuche begrenzt Anzeige ohne Trefferverlust")
+    check(bounded.matches==2 && bounded.rows.isEmpty,"RE2-Feldsuche begrenzt Anzeige ohne Trefferverlust")
     func re2StatusFields(_ owner:String,_ name:String,_ count:Int,_ set:Set<Int>) -> [SaveScalar] {
         let ownerHash=SaveCrypto.murmur(Data(owner.utf8)),fieldHash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in

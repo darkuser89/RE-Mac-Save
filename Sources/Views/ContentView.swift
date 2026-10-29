@@ -107,7 +107,7 @@ struct EditorDetailView:View {
                     if doc.game.id=="re2" {
                         Divider()
                         Text("RE2-Feldsuche").font(.title2.bold())
-                        Text("Durchsucht alle \(RE2RawFieldCatalog.numericCount(doc.parsed.fields)) dekodierten Zahlen- und Bool-Felder dieser Datei. Namen sind Hash-Treffer aus dem installierten Spiel, keine bestätigte Spielwirkung. Textfelder und undurchsichtige Datenblöcke werden nicht angezeigt. Nur lesbar.")
+                        Text("Durchsucht \(RE2RawFieldCatalog.numericCount(doc.parsed.fields)) Zahlen-/Bool-Felder und \(RE2RawFieldCatalog.textCount(doc.parsed.fields)) Textfeld-Strukturen dieser Datei. Mit #text werden nur Textfeld-Strukturen gezeigt. Gespeicherte Textwerte bleiben verborgen und werden nicht durchsucht. Namen sind Hash-Treffer aus dem installierten Spiel, keine bestätigte Spielwirkung. Undurchsichtige Datenblöcke bleiben außen vor. Nur lesbar.")
                             .font(.caption).foregroundStyle(.secondary)
                         TextField("Feldname, Besitzer, Wert oder Pfad suchen",text:$re2FieldSearch)
                             .textFieldStyle(.roundedBorder)

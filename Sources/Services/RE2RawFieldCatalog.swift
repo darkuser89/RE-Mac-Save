@@ -17,10 +17,13 @@ struct RE2RawFieldSearch {
 }
 
 enum RE2RawFieldCatalog {
-    // String fields may contain account data. They are intentionally absent
-    // from this read-only explorer and are never included in search results.
+    // String values may contain account data. Search their structural metadata
+    // only; never match against or display their contents.
     static func numericCount(_ fields:[SaveScalar]) -> Int {
         fields.reduce(0) {$0 + ($1.type == 15 ? 0 : 1)}
+    }
+    static func textCount(_ fields:[SaveScalar]) -> Int {
+        fields.reduce(0) {$0 + ($1.type == 15 ? 1 : 0)}
     }
 
     static func search(_ fields:[SaveScalar],query:String,limit:Int=80,
@@ -28,19 +31,21 @@ enum RE2RawFieldCatalog {
                        ownerNames:[String:[String]]=RE2OwnerNameCatalog.bundled) -> RE2RawFieldSearch {
         let term=query.trimmingCharacters(in:.whitespacesAndNewlines)
         guard !term.isEmpty else {return RE2RawFieldSearch(matches:0,rows:[])}
+        let textOnly=term.localizedCaseInsensitiveCompare("#text") == .orderedSame
         var matches=0,rows:[RE2RawFieldRow]=[]
         var hashCache:[UInt32:String]=[:]
-        for field in fields where field.type != 15 {
+        for field in fields {
             let fieldHash=hashCache[field.field] ?? String(format:"%08x",field.field)
             let ownerHash=hashCache[field.owner] ?? String(format:"%08x",field.owner)
             hashCache[field.field]=fieldHash
             hashCache[field.owner]=ownerHash
             let fieldCandidates=fieldNames[fieldHash] ?? []
             let ownerCandidates=ownerNames[ownerHash] ?? []
-            guard field.path.localizedCaseInsensitiveContains(term) ||
-                  field.text.localizedCaseInsensitiveContains(term) ||
+            guard (textOnly && field.type==15) || (!textOnly && (
+                  field.path.localizedCaseInsensitiveContains(term) ||
+                  (field.type != 15 && field.text.localizedCaseInsensitiveContains(term)) ||
                   fieldCandidates.contains(where:{$0.localizedCaseInsensitiveContains(term)}) ||
-                  ownerCandidates.contains(where:{$0.localizedCaseInsensitiveContains(term)}) else {continue}
+                  ownerCandidates.contains(where:{$0.localizedCaseInsensitiveContains(term)}))) else {continue}
             matches+=1
             if rows.count < max(0,limit) {
                 let fieldLabel=fieldCandidates.isEmpty ? "Feldhash \(fieldHash)" :
@@ -49,7 +54,8 @@ enum RE2RawFieldCatalog {
                     ownerCandidates.count==1 ? ownerCandidates[0] : "Besitzerkandidaten: \(ownerCandidates.joined(separator:" / "))"
                 let namedPath=RE2FieldNameCatalog.labeledPath(field.path,fieldNames:fieldNames,ownerNames:ownerNames)
                 rows.append(RE2RawFieldRow(id:field.id,fieldLabel:fieldLabel,ownerLabel:ownerLabel,
-                                           value:field.text,type:field.type,size:field.size,
+                                           value:field.type == 15 ? "Textwert verborgen" : field.text,
+                                           type:field.type,size:field.size,
                                            namedPath:namedPath,rawPath:field.path))
             }
         }
