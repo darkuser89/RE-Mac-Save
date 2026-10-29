@@ -70,6 +70,13 @@ struct EditorDetailView:View {
                     VStack(alignment:.leading,spacing:6) {Text(doc.source.title).font(.headline);Text(doc.source.url.path).font(.caption).foregroundStyle(.secondary).textSelection(.enabled);Text("\(doc.parsed.objects) Datenobjekte · \(doc.parsed.fields.count) Felder · \(ByteCountFormatter.string(fromByteCount:Int64(doc.source.size),countStyle:.file))").font(.caption).foregroundStyle(.secondary)}
                     if let character=doc.character {Label("Spielfigur: \(character)",systemImage:"person.fill").font(.headline)}
                     if let difficulty=doc.difficulty {Label("Schwierigkeit: \(difficulty)",systemImage:"shield.lefthalf.filled").font(.headline)}
+                    if let clock=doc.re2PlayClock {
+                        VStack(alignment:.leading,spacing:4) {
+                            Text("RE2-Spielzeit: \(clock.displayedTime)").font(.headline.monospacedDigit())
+                            Text("Spieluhr gesamt − Inventarzeit − Pausenzeit. Im aktuellen Claire-Save mit dem Ergebnisbildschirm abgeglichen.")
+                                .font(.caption).foregroundStyle(.secondary)
+                        }.textSelection(.enabled)
+                    }
                     if let header=doc.re2SaveHeader {
                         VStack(alignment:.leading,spacing:5) {
                             Text("RE2-Spielstandkopf").font(.headline)

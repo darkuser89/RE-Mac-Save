@@ -748,6 +748,22 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields+[leonHeaderFields[5]],character:"Leon")==nil,"Mehrdeutiger RE2-Szenariocode wird nicht angezeigt")
     check(RE2SaveHeaderCatalog.details(game:GameProfile.all[1],fields:leonHeaderFields,character:"Leon")==nil,"RE2-Spielstandkopf ist spielgebunden")
     check(RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields,character:nil)==nil,"Systemsave ohne Figur hat keinen Kampagnenkopf")
+    let playClockOwner=SaveCrypto.murmur(Data("app.ropeway.GameClock.GameSaveData".utf8))
+    func clockField(_ name:String,_ value:String) -> SaveScalar {
+        SaveScalar(id:0,owner:playClockOwner,field:SaveCrypto.murmur(Data(name.utf8)),
+                   type:10,offset:0,size:8,path:"/clock",text:value)
+    }
+    let claireClockFields=[clockField("_GameElapsedTime","3706401757"),
+                           clockField("_InventorySpendingTime","493259370"),
+                           clockField("_PauseSpendingTime","578771869")]
+    let claireClockFile=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data002Slot.bin"),size:0,modified:Date(),kind:"DSSS")
+    let claireClock=RE2PlayClockCatalog.clock(game:re2Game,source:claireClockFile,fields:claireClockFields)
+    check(claireClock?.displayed==2634370518 && claireClock?.displayedTime=="00:43:54",
+          "RE2-Ergebnisanzeige aus Claires drei gespeicherten Spieluhrwerten")
+    check(RE2PlayClockCatalog.clock(game:re2Game,source:re2System,fields:claireClockFields)==nil,
+          "RE2-Ergebnisuhr stammt nicht aus der Systemdatei")
+    check(RE2PlayClockCatalog.clock(game:re2Game,source:claireClockFile,fields:claireClockFields+[claireClockFields[0]])==nil,
+          "Mehrdeutige RE2-Spieluhr wird nicht angezeigt")
     var eggList=Data()
     func eggWord(_ value:UInt32) {var bytes=Data(count:4);try! bytes.put(UInt64(value),at:0,width:4);eggList+=bytes}
     eggWord(0);eggWord(1);eggWord(RE7EasterEggCatalog.owner)

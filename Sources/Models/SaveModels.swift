@@ -57,6 +57,7 @@ struct SaveDocument {
     let difficulty:String?
     let character:String?
     let re2SaveHeader:RE2SaveHeader?
+    let re2PlayClock:RE2PlayClock?
     init(file:SaveFile,game:GameProfile) throws {
         guard LocalSavePolicy.permitsFile(file.url,game:game),file.kind=="DSSS" else {throw SaveError.invalid("Nur lokale DSSS-Spielstände im SaveData-Ordner dieses Spiels sind erlaubt.")}
         let size=try file.url.resourceValues(forKeys:[.fileSizeKey]).fileSize ?? 0
@@ -68,6 +69,7 @@ struct SaveDocument {
         guard parsed.consumed==container.payload.count,try container.encode()==container.original else {throw SaveError.invalid("Die vollständige unveränderte Rückverschlüsselung stimmt nicht überein.")}
         character=game.id=="re2" ? RE2Character.name(fields:parsed.fields):nil
         re2SaveHeader=RE2SaveHeaderCatalog.details(game:game,fields:parsed.fields,character:character)
+        re2PlayClock=RE2PlayClockCatalog.clock(game:game,source:file,fields:parsed.fields)
         if game.id=="re2" {
             let owner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.MainFlowManager.GameHeaderSaveData".utf8))
             let name=SaveCrypto.murmur(Data("CurrentDifficulty".utf8))

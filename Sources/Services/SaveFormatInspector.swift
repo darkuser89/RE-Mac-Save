@@ -200,6 +200,11 @@ enum SaveFormatInspector {
                                     return row
                                 }
                             }
+                            if let clock=doc.re2PlayClock {
+                                result["re2DisplayedPlayTime"]=["totalRaw":clock.total,
+                                    "inventoryRaw":clock.inventory,"pauseRaw":clock.pause,
+                                    "displayedRaw":clock.displayed,"displayed":clock.displayedTime] as [String:Any]
+                            }
                             if !doc.re2ClearRecords.isEmpty {
                                 result["clearRecords"]=doc.re2ClearRecords.map {record in
                                     var row:[String:Any]=["id":record.id,"timeRaw":record.clearTimeRaw,
