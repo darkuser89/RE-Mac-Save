@@ -528,26 +528,40 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"LatestGameId",8,4,"37"),
         (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsFirstPlayLeon",2,1,"false"),
         (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsClearedGameImmediately",2,1,"false"),
-        (SaveCrypto.murmur(Data("app.ropeway.GameClock.SystemSaveData".utf8)),"_SystemElapsedTime",10,8,"16410718948")
+        (SaveCrypto.murmur(Data("app.ropeway.GameClock.SystemSaveData".utf8)),"_SystemElapsedTime",10,8,"16410718948"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsCheckedNewMark_NewGamePlus",2,1,"true"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsOpenedPopUp_ExtraContentsNotice",2,1,"true"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsOpenedPopUp_TofuCharacter",2,1,"false"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsOpenedPopUp_Weapon",2,1,"false"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"The4thClearPlayTime",10,8,"0"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsCheckedNewMark_ClearState",2,1,"true"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsCheckedNewMark_Extra",2,1,"true"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"HuntedTreasureOfRecord059",8,4,"3"),
+        (SaveCrypto.murmur(Data("app.ropeway.gamemastering.RecordManager.SystemSaveData".utf8)),"IsOpenedPopUp_NewGamePlus",2,1,"true")
     ]
     let systemMetaFields=systemMetaSpecs.enumerated().map {index,spec in
         let (owner,name,type,size,value)=spec
         let field=SaveCrypto.murmur(Data(name.utf8))
+        let rootIndex=owner==0x4683bfe1 ? 2 : (owner==SaveCrypto.murmur(Data("app.ropeway.GameClock.SystemSaveData".utf8)) ? 0 : 7)
         return SaveScalar(id:index,owner:owner,field:field,type:type,offset:index*8,size:size,
-            path:String(format:"/9e0932a9.9074a186[%d]/%08x.%08x",index,owner,field),text:value)
+            path:String(format:"/9e0932a9.9074a186[%d]/%08x.%08x",rootIndex,owner,field),text:value)
     }
     let systemMeta=RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:systemMetaFields)
-    check(systemMeta.count==6 && systemMeta[0].value=="3" && systemMeta[3].value=="false",
+    check(systemMeta.count==15 && systemMeta[0].value=="3" && systemMeta[3].value=="false" && systemMeta[14].value=="true",
           "RE2-Systemwerte nur aus eindeutig passenden nativen Rohfeldern lesen")
     check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2Campaign,fields:systemMetaFields).isEmpty &&
           RE2SystemMetadataCatalog.entries(game:GameProfile.all.first{$0.id=="re3"}!,source:re2System,fields:systemMetaFields).isEmpty,
           "RE2-Systemwerte nicht in Kampagnensaves oder anderen Spielen anbieten")
-    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:systemMetaFields+[systemMetaFields[0]]).count==5,
+    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:systemMetaFields+[systemMetaFields[0]]).count==14,
           "Mehrdeutige RE2-Systemwerte ausblenden")
     let misplacedMeta=SaveScalar(id:99,owner:systemMetaFields[0].owner,field:systemMetaFields[0].field,
         type:7,offset:0,size:4,path:"/other/4683bfe1.c3e42c22",text:"3")
     check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:[misplacedMeta]).isEmpty,
           "RE2-Systemwerte nur aus der bestätigten Systemliste lesen")
+    let wrongIndexMeta=SaveScalar(id:100,owner:systemMetaFields[0].owner,field:systemMetaFields[0].field,
+        type:7,offset:0,size:4,path:"/9e0932a9.9074a186[5]/4683bfe1.c3e42c22",text:"3")
+    check(RE2SystemMetadataCatalog.entries(game:re2Game,source:re2System,fields:[wrongIndexMeta]).isEmpty,
+          "RE2-Systemwerte nur am bestätigten Systemeintragsindex lesen")
     func re2ProgressFields(_ name:String,_ count:Int,_ marked:Set<Int>) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in
