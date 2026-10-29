@@ -234,31 +234,35 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         let tail=String(format:"/%08x.%08x",dataOwner,SaveCrypto.murmur(Data(name.utf8)))
         layoutFields.append(layoutField(subOwner,"_LastWeaponType",1,"-1",tail,layoutFields.count+600))
     }
-    for index in 0..<16 {
-        let tail=String(format:"/%08x.%08x[%d]",dataOwner,SaveCrypto.murmur(Data("ShortcutDataList".utf8)),index)
-        layoutFields.append(layoutField(shortcutOwner,"_ShortcutKind",1,String(index/4),tail,layoutFields.count+600))
-        layoutFields.append(layoutField(shortcutOwner,"_Index",7,index==0 ? "0":"-1",tail,layoutFields.count+600))
-        layoutFields.append(layoutField(shortcutOwner,"_LastWeaponType",1,index==0 ? "9":"-1",tail,layoutFields.count+600))
+    for (listIndex,name) in ["ShortcutDataList","SubShortcutDataList","_ShortcutDataList","_SubShortcutDataList"].enumerated() {
+        for index in 0..<4 {
+            let tail=String(format:"/%08x.%08x[%d]",dataOwner,SaveCrypto.murmur(Data(name.utf8)),index)
+            layoutFields.append(layoutField(shortcutOwner,"_ShortcutKind",1,String(listIndex),tail,layoutFields.count+600))
+            layoutFields.append(layoutField(shortcutOwner,"_Index",7,index==0 && listIndex==0 ? "0":"-1",tail,layoutFields.count+600))
+            layoutFields.append(layoutField(shortcutOwner,"_LastWeaponType",1,index==0 && listIndex==0 ? "9":"-1",tail,layoutFields.count+600))
+        }
     }
     let layout=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,fields:layoutFields,character:"Claire")
     check(layout.count==1 && layout[0].survivorCode==1 && layout[0].slotSize==8 &&
-          layout[0].mainSlot.lastWeaponCode==9 && layout[0].shortcuts.count==16 &&
-          layout[0].shortcuts[0].slotIndex==0 && layout[0].shortcuts[15].slotIndex == -1,
-          "RE2-Figurenprofil, Kapazität und Schnellplätze vollständig paaren")
+          layout[0].mainSlot.lastWeaponCode==9 && layout[0].shortcuts.count==4 &&
+          layout[0].subShortcuts.count==4 && layout[0].storedShortcuts.count==4 &&
+          layout[0].storedSubShortcuts.count==4 && layout[0].shortcuts[0].slotIndex==0 &&
+          layout[0].storedSubShortcuts[3].slotIndex == -1,
+          "RE2-Figurenprofil, Kapazität und vier Schnellplatzlisten paaren")
     check(RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2System,fields:layoutFields,character:nil).isEmpty,
           "Inventarprofil nicht dem Systemsave zuordnen")
     let absentWeapon=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,
                                                          fields:Array(layoutFields.dropLast()),character:"Claire")
-    check(absentWeapon.count==1 && absentWeapon[0].shortcuts[15].lastWeaponCode==nil,
+    check(absentWeapon.count==1 && absentWeapon[0].storedSubShortcuts[3].lastWeaponCode==nil,
           "Nicht gespeicherten Waffencode des Schnellplatzes als fehlend ausgeben")
     let absentBoth=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,
                                                        fields:Array(layoutFields.dropLast(2)),character:"Claire")
-    check(absentBoth.count==1 && absentBoth[0].shortcuts[15].slotIndex==nil &&
-          absentBoth[0].shortcuts[15].lastWeaponCode==nil,
+    check(absentBoth.count==1 && absentBoth[0].storedSubShortcuts[3].slotIndex==nil &&
+          absentBoth[0].storedSubShortcuts[3].lastWeaponCode==nil,
           "Leeren Schnellplatz ohne Index und Waffencode anzeigen")
     let shorter=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,
                                                     fields:Array(layoutFields.dropLast(3)),character:"Claire")
-    check(shorter.count==1 && shorter[0].shortcuts.count==15,
+    check(shorter.count==1 && shorter[0].storedSubShortcuts.count==3,
           "Variable Anzahl gespeicherter Schnellplätze lesen")
     let re2ItemOwner="app.ropeway.gamemastering.ItemManager.SystemSaveData"
     let re2SystemStatus=re2StatusFields(re2ItemOwner,"GetItemList",297,[15,32])+re2StatusFields(re2ItemOwner,"GetWeaponList",383,[9])

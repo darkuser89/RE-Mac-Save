@@ -20,6 +20,9 @@ struct RE2InventoryLayout: Identifiable {
     let subWeaponCode: Int
     let savedSubWeaponCode: Int
     let shortcuts: [Shortcut]
+    let subShortcuts: [Shortcut]
+    let storedShortcuts: [Shortcut]
+    let storedSubShortcuts: [Shortcut]
 }
 
 enum RE2InventoryLayoutCatalog {
@@ -58,34 +61,41 @@ enum RE2InventoryLayoutCatalog {
                 let tail = String(format:"/%08x.%08x",dataOwner,hash(name))
                 return value(tail,owner:subOwner,field:"_LastWeaponType",type:1,size:4)
             }
+            func shortcutList(_ name:String) -> [RE2InventoryLayout.Shortcut]? {
+                var shortcuts:[RE2InventoryLayout.Shortcut] = []
+                for index in 0..<32 {
+                    let tail = String(format:"/%08x.%08x[%d]",dataOwner,hash(name),index)
+                    let kindPath = root + tail + String(format:"/%08x.%08x",shortcutOwner,hash("_ShortcutKind"))
+                    let slotPath = root + tail + String(format:"/%08x.%08x",shortcutOwner,hash("_Index"))
+                    let weaponPath = root + tail + String(format:"/%08x.%08x",shortcutOwner,hash("_LastWeaponType"))
+                    if relevant[kindPath] == nil && relevant[slotPath] == nil && relevant[weaponPath] == nil {break}
+                    let kindValue = value(tail,owner:shortcutOwner,field:"_ShortcutKind",type:1,size:4)
+                    let slotValue = value(tail,owner:shortcutOwner,field:"_Index",type:7,size:4)
+                    let weaponValue = value(tail,owner:shortcutOwner,field:"_LastWeaponType",type:1,size:4)
+                    guard let kind = kindValue, (0...31).contains(kind),
+                          relevant[slotPath] == nil || slotValue != nil,
+                          relevant[weaponPath] == nil || weaponValue != nil,
+                          slotValue.map({(-1...42).contains($0)}) ?? true,
+                          weaponValue.map({(-1...382).contains($0)}) ?? true else {return nil}
+                    shortcuts.append(.init(id:index,kindCode:kind,slotIndex:slotValue,lastWeaponCode:weaponValue))
+                }
+                return shortcuts.isEmpty ? nil : shortcuts
+            }
             guard let survivor = value("",owner:dataOwner,field:"_SurvivorType",type:1,size:4),
                   let size = value("",owner:dataOwner,field:"CurrentSlotSize",type:7,size:4),
                   let storedSize = value("",owner:dataOwner,field:"_CurrentSlotSize",type:7,size:4),
                   let mainSlot = main("MainData"), let savedMainSlot = main("_MainData"),
                   let subWeapon = sub("SubData"), let savedSubWeapon = sub("_SubData"),
+                  let shortcuts = shortcutList("ShortcutDataList"),
+                  let subShortcuts = shortcutList("SubShortcutDataList"),
+                  let storedShortcuts = shortcutList("_ShortcutDataList"),
+                  let storedSubShortcuts = shortcutList("_SubShortcutDataList"),
                   (0...3).contains(survivor), (0...42).contains(size), (0...42).contains(storedSize) else {return []}
-            var shortcuts:[RE2InventoryLayout.Shortcut] = []
-            for index in 0..<32 {
-                let tail = String(format:"/%08x.%08x[%d]",dataOwner,hash("ShortcutDataList"),index)
-                let kindPath = root + tail + String(format:"/%08x.%08x",shortcutOwner,hash("_ShortcutKind"))
-                let kindValue = value(tail,owner:shortcutOwner,field:"_ShortcutKind",type:1,size:4)
-                let slotValue = value(tail,owner:shortcutOwner,field:"_Index",type:7,size:4)
-                let weaponValue = value(tail,owner:shortcutOwner,field:"_LastWeaponType",type:1,size:4)
-                let slotPath = root + tail + String(format:"/%08x.%08x",shortcutOwner,hash("_Index"))
-                let weaponPath = root + tail + String(format:"/%08x.%08x",shortcutOwner,hash("_LastWeaponType"))
-                if relevant[kindPath] == nil && relevant[slotPath] == nil && relevant[weaponPath] == nil {break}
-                guard let kind = kindValue, (0...3).contains(kind),
-                      relevant[slotPath] == nil || slotValue != nil,
-                      relevant[weaponPath] == nil || weaponValue != nil,
-                      slotValue.map({(-1...42).contains($0)}) ?? true,
-                      weaponValue.map({(-1...382).contains($0)}) ?? true else {return []}
-                shortcuts.append(.init(id:index,kindCode:kind,slotIndex:slotValue,lastWeaponCode:weaponValue))
-            }
-            guard !shortcuts.isEmpty else {return []}
             result.append(.init(id:profile,survivorCode:survivor,slotSize:size,storedSlotSize:storedSize,
                                 mainSlot:mainSlot,savedMainSlot:savedMainSlot,
                                 subWeaponCode:subWeapon,savedSubWeaponCode:savedSubWeapon,
-                                shortcuts:shortcuts))
+                                shortcuts:shortcuts,subShortcuts:subShortcuts,
+                                storedShortcuts:storedShortcuts,storedSubShortcuts:storedSubShortcuts))
         }
         guard Set(result.map(\.survivorCode)).count == result.count else {return []}
         return result

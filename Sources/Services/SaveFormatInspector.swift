@@ -202,16 +202,22 @@ enum SaveFormatInspector {
                             }
                             if !doc.re2InventoryLayouts.isEmpty {
                                 result["inventoryLayouts"]=doc.re2InventoryLayouts.map {profile in
-                                    ["profile":profile.id,"survivorCode":profile.survivorCode,
+                                    func encode(_ list:[RE2InventoryLayout.Shortcut]) -> [[String:Any]] {
+                                        list.map {shortcut in
+                                            ["index":shortcut.id,"kindCode":shortcut.kindCode,
+                                             "slotIndex":shortcut.slotIndex.map {$0 as Any} ?? NSNull(),
+                                             "lastWeaponCode":shortcut.lastWeaponCode.map {$0 as Any} ?? NSNull()]
+                                        }
+                                    }
+                                    return ["profile":profile.id,"survivorCode":profile.survivorCode,
                                      "slotSize":profile.slotSize,"storedSlotSize":profile.storedSlotSize,
                                      "mainSlot":["index":profile.mainSlot.index,"lastWeaponCode":profile.mainSlot.lastWeaponCode],
                                      "savedMainSlot":["index":profile.savedMainSlot.index,"lastWeaponCode":profile.savedMainSlot.lastWeaponCode],
                                      "subWeaponCode":profile.subWeaponCode,"savedSubWeaponCode":profile.savedSubWeaponCode,
-                                     "shortcuts":profile.shortcuts.map {shortcut in
-                                         ["index":shortcut.id,"kindCode":shortcut.kindCode,
-                                          "slotIndex":shortcut.slotIndex.map {$0 as Any} ?? NSNull(),
-                                          "lastWeaponCode":shortcut.lastWeaponCode.map {$0 as Any} ?? NSNull()] as [String:Any]
-                                     }] as [String:Any]
+                                     "shortcuts":encode(profile.shortcuts),
+                                     "subShortcuts":encode(profile.subShortcuts),
+                                     "storedShortcuts":encode(profile.storedShortcuts),
+                                     "storedSubShortcuts":encode(profile.storedSubShortcuts)] as [String:Any]
                                 }
                             }
                             if !doc.re2DoorProgress.isEmpty {
@@ -270,9 +276,11 @@ enum SaveFormatInspector {
             var count=0
             var values:[String]=[]
             var paths:[String]=[]
+            var pathValues:[[String:String]]=[]
             var truncated=false
         }
         var groups:[String:Group]=[:]
+        let shortcutOwner=SaveCrypto.murmur(Data("app.ropeway.inventory.ShortcutSlotData".utf8))
         for field in doc.parsed.fields {
             let key=String(format:"%08x.%08x.%d.%d",field.owner,field.field,field.type,field.size)
             var group=groups[key] ?? Group()
@@ -281,6 +289,9 @@ enum SaveFormatInspector {
                 if group.values.count<32 {group.values.append(field.text)} else {group.truncated=true}
             }
             if group.paths.count<3 {group.paths.append(field.path)}
+            if field.owner==shortcutOwner && group.pathValues.count<128 {
+                group.pathValues.append(["path":field.path,"value":field.text])
+            }
             groups[key]=group
         }
         return groups.keys.sorted().map {key in
@@ -288,10 +299,12 @@ enum SaveFormatInspector {
             let parts=key.split(separator:".")
             let names=parts.count==4 ? RE2FieldNameCatalog.names(for:UInt32(parts[1],radix:16) ?? 0):[]
             let owners=parts.count==4 ? RE2OwnerNameCatalog.names(for:UInt32(parts[0],radix:16) ?? 0):[]
-            return ["signature":key,"fieldNameCandidates":names,"ownerNameCandidates":owners,
+            var row:[String:Any]=["signature":key,"fieldNameCandidates":names,"ownerNameCandidates":owners,
                     "count":group.count,"values":group.values,
                     "valuesTruncated":group.truncated,"samplePaths":group.paths,
-                    "sampleNamedPaths":group.paths.map{RE2FieldNameCatalog.labeledPath($0)}] as [String:Any]
+                    "sampleNamedPaths":group.paths.map{RE2FieldNameCatalog.labeledPath($0)}]
+            if !group.pathValues.isEmpty {row["shortcutPathValues"]=group.pathValues}
+            return row
         }
     }
     private static func re2ItemDiscovery(_ doc:SaveDocument) -> [[String:Any]] {

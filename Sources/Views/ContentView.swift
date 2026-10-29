@@ -170,16 +170,10 @@ struct EditorDetailView:View {
                                 Text("Hauptfeld: Index \(profile.mainSlot.index) · \(re2WeaponName(profile.mainSlot.lastWeaponCode))")
                                 Text("Gespeichertes Hauptfeld: Index \(profile.savedMainSlot.index) · \(re2WeaponName(profile.savedMainSlot.lastWeaponCode))")
                                 Text("Nebenfeld: \(re2WeaponName(profile.subWeaponCode)) · gespeicherter Wert: \(re2WeaponName(profile.savedSubWeaponCode))")
-                                Text("Schnellplätze: \(profile.shortcuts.filter {($0.slotIndex ?? -1) >= 0 || ($0.lastWeaponCode ?? -1) >= 0}.count) von \(profile.shortcuts.count) mit gespeichertem Index oder Waffentyp")
-                                    .font(.caption).foregroundStyle(.secondary)
-                                ForEach(profile.shortcuts) {shortcut in
-                                    HStack(alignment:.firstTextBaseline) {
-                                        Text("Platz-ID \(shortcut.id) · Artcode \(shortcut.kindCode)")
-                                        Spacer(minLength:10)
-                                        Text("Index \(shortcut.slotIndex.map {String($0)} ?? "nicht gespeichert") · \(re2WeaponName(shortcut.lastWeaponCode))")
-                                            .font(.caption.monospacedDigit()).textSelection(.enabled)
-                                    }.font(.caption).padding(.vertical,2)
-                                }
+                                re2ShortcutGroup("Haupt-Schnellplätze",profile.shortcuts)
+                                re2ShortcutGroup("Neben-Schnellplätze",profile.subShortcuts)
+                                re2ShortcutGroup("Zweiter Satz Haupt-Schnellplätze",profile.storedShortcuts)
+                                re2ShortcutGroup("Zweiter Satz Neben-Schnellplätze",profile.storedSubShortcuts)
                             }
                         }
                     }
@@ -551,5 +545,20 @@ struct EditorDetailView:View {
             return "\(name) (Code \(code))"
         }
         return "Waffencode \(code)"
+    }
+    private func re2ShortcutGroup(_ title:String,_ shortcuts:[RE2InventoryLayout.Shortcut]) -> some View {
+        VStack(alignment:.leading,spacing:4) {
+            let occupied=shortcuts.filter {($0.slotIndex ?? -1) >= 0 || ($0.lastWeaponCode ?? -1) >= 0}.count
+            Text("\(title): \(occupied) von \(shortcuts.count) mit gespeichertem Index oder Waffentyp")
+                .font(.caption.bold()).foregroundStyle(.secondary)
+            ForEach(shortcuts) {shortcut in
+                HStack(alignment:.firstTextBaseline) {
+                    Text("Platz-ID \(shortcut.id) · Artcode \(shortcut.kindCode)")
+                    Spacer(minLength:10)
+                    Text("Index \(shortcut.slotIndex.map {String($0)} ?? "nicht gespeichert") · \(re2WeaponName(shortcut.lastWeaponCode))")
+                        .font(.caption.monospacedDigit()).textSelection(.enabled)
+                }.font(.caption).padding(.vertical,2)
+            }
+        }.padding(.vertical,4)
     }
 }
