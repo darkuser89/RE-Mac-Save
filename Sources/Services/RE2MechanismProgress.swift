@@ -12,6 +12,10 @@ struct RE2MechanismProgress {
         let plugCode: Int
         let initialized: Bool
     }
+    struct PlugFirst: Identifiable {
+        let id: Int
+        let flags: [Bool]
+    }
     struct ClockGear {
         let topCode: Int
         let bottomCode: Int
@@ -45,6 +49,19 @@ struct RE2MechanismProgress {
         let id: Int
         let broken: Bool
     }
+    struct ObjectFlag: Identifiable {
+        let id: Int
+        let value: Bool
+    }
+    struct ObjectCode: Identifiable {
+        let id: Int
+        let code: Int
+    }
+    struct PlugGate: Identifiable {
+        let id: Int
+        let inserted: Int
+        let ejected: Int
+    }
     let switches: [Switch]
     let plugs: [Plug]
     let clockGear: ClockGear?
@@ -54,6 +71,12 @@ struct RE2MechanismProgress {
     let bookShelves: [BookShelf]
     let movables: [Movable]
     let fans: [Fan]
+    let plugFirstFlags: [PlugFirst]
+    let rigidBodies: [ObjectCode]
+    let plugGates: [PlugGate]
+    let laboratoryBulkheads: [ObjectFlag]
+    let g2Shutters: [ObjectFlag]
+    let topboards: [ObjectFlag]
 }
 
 enum RE2MechanismProgressCatalog {
@@ -66,6 +89,11 @@ enum RE2MechanismProgressCatalog {
     private static let bookShelfOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickMobileBookShelf.SaveData".utf8))
     private static let movableOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickRigidBodySavable.SaveData".utf8))
     private static let fanOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickFanForOvercurrent.SaveData".utf8))
+    private static let rigidBodyOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickRigidbody.SaveData".utf8))
+    private static let plugGateOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickPlugGateControl.SaveData".utf8))
+    private static let bulkheadOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickLaboratoryBulkhead.SaveData".utf8))
+    private static let g2ShutterOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickShutterG2Break.SaveData".utf8))
+    private static let topboardOwner = SaveCrypto.murmur(Data("app.ropeway.gimmick.action.GimmickTopboard.SaveData".utf8))
     private static let bodyPrefix = "/7f9decbe.8aab887b[23]/8413308a.34be46bd["
     private static let controlPrefix = "/7f9decbe.8aab887b[23]/8413308a.c81a3eff["
     private static let movablePrefix = "/7f9decbe.8aab887b[23]/8413308a.59a3dafc["
@@ -86,6 +114,8 @@ enum RE2MechanismProgressCatalog {
             guard let code = integer(values[0],type:1), let initialized = boolean(values[1]) else {return nil}
             return .init(id:id,plugCode:code,initialized:initialized)
         } ?? []
+        let plugFirstFlags = indexedFlags(fields,owner:plugOwner,name:"isFirst",count:6,
+                                          listPrefix:controlPrefix,objectTail:"/29a21e52.1bd539fc") ?? []
         let autoDoors = grouped(fields, owner: autoDoorOwner,
                                 names: ["HasOpened"],
                                 listPrefix: bodyPrefix, objectTail: "/80e2f7c5.1bd539fc") {id, values -> RE2MechanismProgress.AutoDoor? in
@@ -116,6 +146,31 @@ enum RE2MechanismProgressCatalog {
                            listPrefix: bodyPrefix, objectTail: "/b843da90.1bd539fc") {id, values -> RE2MechanismProgress.Fan? in
             guard let broken = boolean(values[0]) else {return nil}
             return .init(id:id,broken:broken)
+        } ?? []
+        let rigidBodies = grouped(fields,owner:rigidBodyOwner,names:["Status"],
+                                  listPrefix:bodyPrefix,objectTail:"/22a089f8.1bd539fc") {id,values -> RE2MechanismProgress.ObjectCode? in
+            guard let code=integer(values[0],type:7) else {return nil}
+            return .init(id:id,code:code)
+        } ?? []
+        let plugGates = grouped(fields,owner:plugGateOwner,names:["InsertCount","EjectCount"],
+                                listPrefix:controlPrefix,objectTail:"/1e149e87.1bd539fc") {id,values -> RE2MechanismProgress.PlugGate? in
+            guard let inserted=integer(values[0],type:7),let ejected=integer(values[1],type:7) else {return nil}
+            return .init(id:id,inserted:inserted,ejected:ejected)
+        } ?? []
+        let laboratoryBulkheads = grouped(fields,owner:bulkheadOwner,names:["HasOpened"],
+                                          listPrefix:bodyPrefix,objectTail:"/f57f51a6.1bd539fc") {id,values -> RE2MechanismProgress.ObjectFlag? in
+            guard let value=boolean(values[0]) else {return nil}
+            return .init(id:id,value:value)
+        } ?? []
+        let g2Shutters = grouped(fields,owner:g2ShutterOwner,names:["IsBreak"],
+                                 listPrefix:movablePrefix,objectTail:"/6f269a41.1bd539fc") {id,values -> RE2MechanismProgress.ObjectFlag? in
+            guard let value=boolean(values[0]) else {return nil}
+            return .init(id:id,value:value)
+        } ?? []
+        let topboards = grouped(fields,owner:topboardOwner,names:["IsFall"],
+                                listPrefix:movablePrefix,objectTail:"/3cdf6985.1bd539fc") {id,values -> RE2MechanismProgress.ObjectFlag? in
+            guard let value=boolean(values[0]) else {return nil}
+            return .init(id:id,value:value)
         } ?? []
         let clockFields = fields.filter {$0.owner == clockOwner}
         var clockGear: RE2MechanismProgress.ClockGear?
@@ -149,10 +204,44 @@ enum RE2MechanismProgressCatalog {
         }
         guard !switches.isEmpty || !plugs.isEmpty || clockGear != nil ||
               !autoDoors.isEmpty || !wiringNodes.isEmpty || !elevators.isEmpty ||
-              !bookShelves.isEmpty || !movables.isEmpty || !fans.isEmpty else {return nil}
+              !bookShelves.isEmpty || !movables.isEmpty || !fans.isEmpty ||
+              !plugFirstFlags.isEmpty || !rigidBodies.isEmpty || !plugGates.isEmpty ||
+              !laboratoryBulkheads.isEmpty || !g2Shutters.isEmpty || !topboards.isEmpty else {return nil}
         return .init(switches:switches,plugs:plugs,clockGear:clockGear,
                      autoDoors:autoDoors,wiringNodes:wiringNodes,elevators:elevators,
-                     bookShelves:bookShelves,movables:movables,fans:fans)
+                     bookShelves:bookShelves,movables:movables,fans:fans,
+                     plugFirstFlags:plugFirstFlags,rigidBodies:rigidBodies,plugGates:plugGates,
+                     laboratoryBulkheads:laboratoryBulkheads,g2Shutters:g2Shutters,topboards:topboards)
+    }
+
+    private static func indexedFlags(_ fields:[SaveScalar],owner:UInt32,name:String,count:Int,
+                                     listPrefix:String,objectTail:String) -> [RE2MechanismProgress.PlugFirst]? {
+        let hash=SaveCrypto.murmur(Data(name.utf8))
+        let selected=fields.filter {$0.owner==owner && $0.field==hash}
+        guard !selected.isEmpty,selected.count<=6_144,selected.count.isMultiple(of:count) else {return nil}
+        let groups=Dictionary(grouping:selected) {field -> String in
+            guard let slash=field.path.lastIndex(of:"/") else {return ""}
+            return String(field.path[..<slash])
+        }
+        guard groups.count*count==selected.count else {return nil}
+        var rows:[RE2MechanismProgress.PlugFirst]=[]
+        for (parent,siblings) in groups {
+            guard parent.hasPrefix(listPrefix),parent.hasSuffix(objectTail),siblings.count==count else {return nil}
+            let rest=parent.dropFirst(listPrefix.count)
+            guard let end=rest.firstIndex(of:"]"),String(rest[end...])=="]"+objectTail,
+                  let id=Int(rest[..<end]),(0..<1_024).contains(id) else {return nil}
+            var flags:[Bool]=[]
+            for index in 0..<count {
+                let path=parent+String(format:"/%08x.%08x[%d]",owner,hash,index)
+                let matches=siblings.filter {$0.path==path}
+                guard matches.count==1,let value=boolean(matches[0]) else {return nil}
+                flags.append(value)
+            }
+            rows.append(.init(id:id,flags:flags))
+        }
+        rows.sort {$0.id<$1.id}
+        guard Set(rows.map(\.id)).count==rows.count else {return nil}
+        return rows
     }
 
     private static func shelves(_ fields: [SaveScalar]) -> [RE2MechanismProgress.BookShelf]? {

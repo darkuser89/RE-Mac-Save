@@ -209,6 +209,11 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let shelfName="app.ropeway.gimmick.action.GimmickMobileBookShelf.SaveData"
     let movableName="app.ropeway.gimmick.action.GimmickRigidBodySavable.SaveData"
     let fanName="app.ropeway.gimmick.action.GimmickFanForOvercurrent.SaveData"
+    let rigidName="app.ropeway.gimmick.action.GimmickRigidbody.SaveData"
+    let gateName="app.ropeway.gimmick.action.GimmickPlugGateControl.SaveData"
+    let bulkheadName="app.ropeway.gimmick.action.GimmickLaboratoryBulkhead.SaveData"
+    let shutterName="app.ropeway.gimmick.action.GimmickShutterG2Break.SaveData"
+    let topboardName="app.ropeway.gimmick.action.GimmickTopboard.SaveData"
     let switchParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[42]/6fa91e18.1bd539fc"
     let plugParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[91]/29a21e52.1bd539fc"
     let clockParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[83]/a288cd46.1bd539fc"
@@ -246,8 +251,23 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     }
     let movableFields=[mechanism(movableName,"HasMoved",2,"true",movableParent,325)]
     let fanFields=[mechanism(fanName,"HasBroken",2,"true",fanParent,326)]
+    var plugFirstFields:[SaveScalar]=[]
+    for index in 0..<6 {
+        plugFirstFields.append(mechanism(plugName,"isFirst",2,index==1 ? "true":"false",plugParent,327+index,arrayIndex:index))
+    }
+    let rigidParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[1]/22a089f8.1bd539fc"
+    let gateParent="/7f9decbe.8aab887b[23]/8413308a.c81a3eff[505]/1e149e87.1bd539fc"
+    let bulkheadParent="/7f9decbe.8aab887b[23]/8413308a.34be46bd[243]/f57f51a6.1bd539fc"
+    let shutterParent="/7f9decbe.8aab887b[23]/8413308a.59a3dafc[39]/6f269a41.1bd539fc"
+    let topboardParent="/7f9decbe.8aab887b[23]/8413308a.59a3dafc[81]/3cdf6985.1bd539fc"
+    let rigidFields=[mechanism(rigidName,"Status",7,"0",rigidParent,333)]
+    let gateFields=[mechanism(gateName,"InsertCount",7,"5",gateParent,334),
+                    mechanism(gateName,"EjectCount",7,"2",gateParent,335)]
+    let bulkheadFields=[mechanism(bulkheadName,"HasOpened",2,"true",bulkheadParent,336)]
+    let shutterFields=[mechanism(shutterName,"IsBreak",2,"true",shutterParent,337)]
+    let topboardFields=[mechanism(topboardName,"IsFall",2,"false",topboardParent,338)]
     var allMechanisms: [SaveScalar] = []
-    for group in [switchFields,plugFields,clockFields,firstFields,autoDoorFields,wiringFields,elevatorFields,shelfFields,movableFields,fanFields] {
+    for group in [switchFields,plugFields,clockFields,firstFields,autoDoorFields,wiringFields,elevatorFields,shelfFields,movableFields,fanFields,plugFirstFields,rigidFields,gateFields,bulkheadFields,shutterFields,topboardFields] {
         allMechanisms.append(contentsOf:group)
     }
     let mechanisms=RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms,character:"Leon")
@@ -259,8 +279,15 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let newMechanismsValid = mechanisms?.bookShelves.first?.positions==[1,2,3,4] &&
         mechanisms?.bookShelves.first?.locked==[false,false,true,false] &&
         mechanisms?.movables.first?.moved==true && mechanisms?.fans.first?.broken==true
+    let plugFirstValid = mechanisms?.plugFirstFlags.first?.flags==[false,true,false,false,false,false]
+    let objectCodesValid = mechanisms?.rigidBodies.first?.code==0 &&
+        mechanisms?.plugGates.first?.inserted==5 && mechanisms?.plugGates.first?.ejected==2
+    let objectFlagsValid = mechanisms?.laboratoryBulkheads.first?.value==true &&
+        mechanisms?.g2Shutters.first?.value==true && mechanisms?.topboards.first?.value==false
     check(baseMechanismsValid && worldMechanismsValid && newMechanismsValid,
           "RE2-Mechanik nur aus vollständigen und passend typisierten Objektgruppen lesen")
+    check(plugFirstValid && objectCodesValid && objectFlagsValid,
+          "Weitere RE2-Objektgruppen nur aus exakten Pfaden lesen")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2System,fields:allMechanisms,character:nil)==nil,
           "Mechanikzustände nicht dem Systemsave zuordnen")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+[switchFields[0]],character:"Leon")?.switches.isEmpty==true,
@@ -275,6 +302,10 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           "Unvollständige Bücherregal-Positionen ausblenden")
     check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+movableFields,character:"Leon")?.movables.isEmpty==true,
           "Doppeltes Bewegungsflag ausblenden")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms.filter {$0.id != 332},character:"Leon")?.plugFirstFlags.isEmpty==true,
+          "Unvollständige Steckplatz-Erstflags ausblenden")
+    check(RE2MechanismProgressCatalog.details(game:re2Game,source:re2Campaign,fields:allMechanisms+gateFields,character:"Leon")?.plugGates.isEmpty==true,
+          "Doppeltes Stecktor ausblenden")
     let tutorialOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.TutorialManager.GameSaveData".utf8))
     let tutorialField=SaveCrypto.murmur(Data("IsDispTutorial".utf8))
     let tutorialPrefix="/7f9decbe.8aab887b[12]/91bb4685.bfb6252d["

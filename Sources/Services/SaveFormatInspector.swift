@@ -180,6 +180,9 @@ enum SaveFormatInspector {
                                     "plugs":mechanisms.plugs.map {row in
                                         ["index":row.id,"plugCode":row.plugCode,"initialized":row.initialized] as [String:Any]
                                     },
+                                    "plugFirstFlags":mechanisms.plugFirstFlags.map {row in
+                                        ["index":row.id,"flags":row.flags] as [String:Any]
+                                    },
                                     "autoDoors":mechanisms.autoDoors.map {row in
                                         ["index":row.id,"opened":row.opened] as [String:Any]
                                     },
@@ -197,6 +200,21 @@ enum SaveFormatInspector {
                                     },
                                     "fans":mechanisms.fans.map {row in
                                         ["index":row.id,"broken":row.broken] as [String:Any]
+                                    },
+                                    "rigidBodies":mechanisms.rigidBodies.map {row in
+                                        ["index":row.id,"statusCode":row.code] as [String:Any]
+                                    },
+                                    "plugGates":mechanisms.plugGates.map {row in
+                                        ["index":row.id,"insertCount":row.inserted,"ejectCount":row.ejected] as [String:Any]
+                                    },
+                                    "laboratoryBulkheads":mechanisms.laboratoryBulkheads.map {row in
+                                        ["index":row.id,"opened":row.value] as [String:Any]
+                                    },
+                                    "g2Shutters":mechanisms.g2Shutters.map {row in
+                                        ["index":row.id,"broken":row.value] as [String:Any]
+                                    },
+                                    "topboards":mechanisms.topboards.map {row in
+                                        ["index":row.id,"fallen":row.value] as [String:Any]
                                     }
                                 ]
                                 if let gear=mechanisms.clockGear {

@@ -428,6 +428,7 @@ struct EditorDetailView:View {
                                 }
                             }
                         }
+                        RE2AdditionalMechanismView(mechanisms:mechanisms)
                     }
                     if let environment=doc.re2EnvironmentProgress {
                         Divider()
@@ -661,5 +662,55 @@ struct EditorDetailView:View {
                 }.font(.caption).padding(.vertical,2)
             }
         }.padding(.vertical,4)
+    }
+}
+
+private struct RE2AdditionalMechanismView: View {
+    let mechanisms: RE2MechanismProgress
+
+    var body: some View {
+        Group {
+            if !mechanisms.plugFirstFlags.isEmpty {
+                DisclosureGroup("Steckplätze · \(mechanisms.plugFirstFlags.count) Erstflag-Gruppen") {
+                    ForEach(mechanisms.plugFirstFlags) {row in
+                        HStack {
+                            Text("Objekt-ID \(row.id)")
+                            Spacer()
+                            Text("isFirst: \(row.flags.map {$0 ? "1":"0"}.joined(separator:", "))")
+                        }.font(.caption.monospacedDigit()).padding(.vertical,2)
+                    }
+                }
+            }
+            if !mechanisms.rigidBodies.isEmpty {
+                DisclosureGroup("Physikobjekte · \(mechanisms.rigidBodies.count) Statuscodes") {
+                    ForEach(mechanisms.rigidBodies) {row in
+                        HStack {Text("Objekt-ID \(row.id)");Spacer();Text("Statuscode \(row.code)")}
+                            .font(.caption.monospacedDigit()).padding(.vertical,2)
+                    }
+                }
+            }
+            if !mechanisms.plugGates.isEmpty {
+                DisclosureGroup("Stecktore · \(mechanisms.plugGates.count) Zählerpaare") {
+                    ForEach(mechanisms.plugGates) {row in
+                        HStack {Text("Objekt-ID \(row.id)");Spacer();Text("Eingesetzt \(row.inserted) · Entnommen \(row.ejected)")}
+                            .font(.caption.monospacedDigit()).padding(.vertical,2)
+                    }
+                }
+            }
+            flagGroup("Labor-Schotte",field:"HasOpened",rows:mechanisms.laboratoryBulkheads)
+            flagGroup("G2-Verschlüsse",field:"IsBreak",rows:mechanisms.g2Shutters)
+            flagGroup("Deckenelemente",field:"IsFall",rows:mechanisms.topboards)
+        }
+    }
+
+    @ViewBuilder private func flagGroup(_ title:String,field:String,rows:[RE2MechanismProgress.ObjectFlag]) -> some View {
+        if !rows.isEmpty {
+            DisclosureGroup("\(title) · \(rows.filter(\.value).count) von \(rows.count) Flags gesetzt") {
+                ForEach(rows) {row in
+                    HStack {Text("Objekt-ID \(row.id)");Spacer();Text("\(field): \(row.value ? "ja":"nein")")}
+                        .font(.caption.monospacedDigit()).padding(.vertical,2)
+                }
+            }
+        }
     }
 }
