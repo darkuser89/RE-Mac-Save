@@ -15,8 +15,7 @@ enum RE2DoorProgressCatalog {
     private static let listPrefix = "/7f9decbe.8aab887b[8]/090ff53c.cb78b1f4/b15a035f.695a3627["
 
     static func entries(game: GameProfile, source: SaveFile, fields: [SaveScalar], character: String?) -> [RE2DoorProgress] {
-        guard game.id == "re2", character != nil,
-              ["data000.bin", "data001Slot.bin", "data002Slot.bin"].contains(source.url.lastPathComponent) else {return []}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return []}
         let selected = fields.filter {$0.owner == owner && [state, hash, mapID].contains($0.field)}
         guard !selected.isEmpty, selected.count <= 3_072, selected.count.isMultiple(of: 3) else {return []}
         let grouped = Dictionary(grouping: selected) {field -> String in

@@ -25,6 +25,7 @@ CORE+=("$ROOT/Sources/Services/RE2SystemMetadata.swift")
 CORE+=("$ROOT/Sources/Services/RE2RecordTextCatalog.swift")
 CORE+=("$ROOT/Sources/Services/RE2RewardTextCatalog.swift")
 CORE+=("$ROOT/Sources/Services/RE2RawFieldCatalog.swift")
+CORE+=("$ROOT/Sources/Services/RE2CampaignSavePolicy.swift")
 xcrun swiftc -D SAVE_EDITOR_TESTS -swift-version 5 -O -target arm64-apple-macos14.0 -module-cache-path "$BUILD/ModuleCache" "${CORE[@]}" "$ROOT/Tests/SaveEditorTests.swift" -o "$STAGE/SaveEditorTests"
 RESAVE_TEST_KEY_FILE="$KEYS" RESAVE_ITEM_NAMES="$ROOT/Resources/ItemNames.json" RESAVE_RE2_FIELD_NAMES="$ROOT/Resources/RE2FieldNames.json" RESAVE_RE2_OWNER_NAMES="$ROOT/Resources/RE2OwnerNameCandidates.json" RESAVE_RE2_FILE_NAMES="$ROOT/Resources/RE2FileNames.json" RESAVE_RE2_RECORD_DETAILS="$ROOT/Resources/RE2RecordDetails.json" RESAVE_RE2_REWARD_DETAILS="$ROOT/Resources/RE2RewardDetails.json" RESAVE_RE3_FILE_NAMES="$ROOT/Resources/RE3FileNames.json" RESAVE_RE4_DOCUMENT_NAMES="$ROOT/Resources/RE4DocumentNames.json" RESAVE_RE7_DOCUMENT_NAMES="$ROOT/Resources/RE7DocumentNames.json" RESAVE_RE8_DOCUMENT_NAMES="$ROOT/Resources/RE8DocumentNames.json" "$STAGE/SaveEditorTests"
 cp "$ROOT/ThirdParty/RE4MacFormat-LICENSE" "$CANDIDATE/Contents/Resources/ThirdParty-LICENSE"
@@ -55,7 +56,7 @@ python3 -B - "$CANDIDATE" <<'PY'
 from pathlib import Path
 import plistlib,sys
 p=Path(sys.argv[1])/'Contents/Info.plist'
-p.write_bytes(plistlib.dumps({'CFBundleIdentifier':'local.residentevil.saveeditor','CFBundleExecutable':'RESaveEditor','CFBundleName':'Resident Evil Save Editor','CFBundlePackageType':'APPL','CFBundleShortVersionString':'0.8.40','CFBundleVersion':'64','CFBundleIconFile':'AppIcon','LSMinimumSystemVersion':'14.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication'}))
+p.write_bytes(plistlib.dumps({'CFBundleIdentifier':'local.residentevil.saveeditor','CFBundleExecutable':'RESaveEditor','CFBundleName':'Resident Evil Save Editor','CFBundlePackageType':'APPL','CFBundleShortVersionString':'0.8.41','CFBundleVersion':'65','CFBundleIconFile':'AppIcon','LSMinimumSystemVersion':'14.0','NSHighResolutionCapable':True,'NSPrincipalClass':'NSApplication'}))
 PY
 codesign --force --sign - --options runtime --timestamp=none "$CANDIDATE"
 codesign --verify --deep --strict "$CANDIDATE"

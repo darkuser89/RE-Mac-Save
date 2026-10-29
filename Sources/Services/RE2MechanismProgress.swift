@@ -99,8 +99,7 @@ enum RE2MechanismProgressCatalog {
     private static let movablePrefix = "/7f9decbe.8aab887b[23]/8413308a.59a3dafc["
 
     static func details(game: GameProfile, source: SaveFile, fields: [SaveScalar], character: String?) -> RE2MechanismProgress? {
-        guard game.id == "re2", character != nil,
-              ["data000.bin", "data001Slot.bin", "data002Slot.bin"].contains(source.url.lastPathComponent) else {return nil}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return nil}
         let switches = grouped(fields, owner: switchOwner,
                                names: ["Toggle", "_isToggleApply", "_isToggleEndApply"],
                                listPrefix: bodyPrefix, objectTail: "/6fa91e18.1bd539fc") {id, values -> RE2MechanismProgress.Switch? in

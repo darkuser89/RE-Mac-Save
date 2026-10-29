@@ -33,8 +33,7 @@ enum RE2EnemyStateCatalog {
     private static let listPrefix="/7f9decbe.8aab887b[29]/44ccdde9.1d563f16["
 
     static func details(game:GameProfile,source:SaveFile,fields:[SaveScalar],character:String?) -> RE2EnemyState? {
-        guard game.id=="re2",character != nil,
-              ["data000.bin","data001Slot.bin","data002Slot.bin"].contains(source.url.lastPathComponent) else {return nil}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return nil}
         let selected=fields.filter {$0.owner==owner && fieldHashes.contains($0.field)}
         guard !selected.isEmpty,selected.count<=21_504,selected.count.isMultiple(of:21) else {return nil}
         let groups=Dictionary(grouping:selected) {field -> String in

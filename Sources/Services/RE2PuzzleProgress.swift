@@ -19,8 +19,7 @@ enum RE2PuzzleProgressCatalog {
     private static let gameList = "/7f9decbe.8aab887b[23]/8413308a.34be46bd["
 
     static func details(game: GameProfile, source: SaveFile, fields: [SaveScalar], character: String?) -> RE2PuzzleProgress? {
-        guard game.id == "re2", character != nil,
-              ["data000.bin", "data001Slot.bin", "data002Slot.bin"].contains(source.url.lastPathComponent) else {return nil}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return nil}
 
         func direct(_ name: String, owner: UInt32, type: Int32, size: Int) -> SaveScalar? {
             let hash = SaveCrypto.murmur(Data(name.utf8))

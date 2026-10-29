@@ -66,7 +66,13 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let re2Game=GameProfile.all.first{$0.id=="re2"}!
     let re2System=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data00-1.bin"),size:0,modified:Date(),kind:"DSSS")
     let re2Campaign=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data001Slot.bin"),size:0,modified:Date(),kind:"DSSS")
+    let re2ThirdSlot=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data003Slot.bin"),size:0,modified:Date(),kind:"DSSS")
     let re2Rogue=SaveFile(url:URL(fileURLWithPath:"/private/tmp/data021Slot.bin"),size:0,modified:Date(),kind:"DSSS")
+    check(RE2CampaignSavePolicy.matches(game:re2Game,source:re2Campaign,character:"Leon") &&
+          RE2CampaignSavePolicy.matches(game:re2Game,source:re2ThirdSlot,character:"Leon") &&
+          !RE2CampaignSavePolicy.matches(game:re2Game,source:re2ThirdSlot,character:nil) &&
+          !RE2CampaignSavePolicy.matches(game:re2Game,source:re2Rogue,character:"Leon"),
+          "Alle bestätigten RE2-Kampagnenslots zuordnen, Zusatzmodus und unklare Figur ausschließen")
     func re2SystemFields(_ name:String,_ count:Int,_ type:Int32,_ values:[Int:String]) -> [SaveScalar] {
         let hash=SaveCrypto.murmur(Data(name.utf8))
         return (0..<count).map {index in
@@ -480,6 +486,8 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
           layout[0].storedSubShortcuts.count==4 && layout[0].shortcuts[0].slotIndex==0 &&
           layout[0].storedSubShortcuts[3].slotIndex == -1,
           "RE2-Figurenprofil, Kapazität und vier Schnellplatzlisten paaren")
+    check(RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2ThirdSlot,fields:layoutFields,character:"Leon").count==1,
+          "RE2-Inventarprofile auch in Kampagnen-Slot 3 anzeigen")
     check(RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2System,fields:layoutFields,character:nil).isEmpty,
           "Inventarprofil nicht dem Systemsave zuordnen")
     let absentWeapon=RE2InventoryLayoutCatalog.profiles(game:re2Game,source:re2Campaign,

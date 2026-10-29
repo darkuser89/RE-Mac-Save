@@ -33,8 +33,7 @@ enum RE2InventoryLayoutCatalog {
     private static let rootPrefix = "/7f9decbe.8aab887b[15]/41f30892.cbe14e81["
 
     static func profiles(game: GameProfile, source: SaveFile, fields: [SaveScalar], character: String?) -> [RE2InventoryLayout] {
-        guard game.id == "re2", character != nil,
-              ["data000.bin", "data001Slot.bin", "data002Slot.bin"].contains(source.url.lastPathComponent) else {return []}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return []}
         let typeHash = hash("_SurvivorType")
         let types = fields.filter {$0.owner == dataOwner && $0.field == typeHash}
         guard (1...4).contains(types.count) else {return []}

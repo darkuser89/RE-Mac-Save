@@ -29,8 +29,7 @@ enum RE2TriggerProgressCatalog {
     private static let listKinds=["b145081f","5a30060b","1e149e87"]
 
     static func details(game:GameProfile,source:SaveFile,fields:[SaveScalar],character:String?) -> RE2TriggerProgress? {
-        guard game.id=="re2",character != nil,
-              ["data000.bin","data001Slot.bin","data002Slot.bin"].contains(source.url.lastPathComponent) else {return nil}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return nil}
         let triggers=groups(fields,owner:triggerOwner) ?? []
         let itemTriggers=groups(fields,owner:itemOwner) ?? []
         guard !triggers.isEmpty || !itemTriggers.isEmpty else {return nil}

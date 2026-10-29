@@ -23,8 +23,7 @@ enum RE2EnvironmentProgressCatalog {
     private static let windowPrefix = "/7f9decbe.8aab887b[8]/090ff53c.c07d05d1/934e2e6b.695a3627["
 
     static func details(game: GameProfile, source: SaveFile, fields: [SaveScalar], character: String?) -> RE2EnvironmentProgress? {
-        guard game.id == "re2", character != nil,
-              ["data000.bin", "data001Slot.bin", "data002Slot.bin"].contains(source.url.lastPathComponent) else {return nil}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return nil}
         let tutorials = tutorialFlags(fields)
         let windows = windowRows(fields)
         guard tutorials != nil || !windows.isEmpty else {return nil}

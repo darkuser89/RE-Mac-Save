@@ -36,8 +36,7 @@ enum RE2MapMarkerCatalog {
     private static let slotField = SaveCrypto.murmur(Data("_SlotNum".utf8))
 
     static func groups(game:GameProfile,source:SaveFile,fields:[SaveScalar],character:String?) -> [RE2MapMarkerGroup] {
-        guard game.id=="re2",character != nil,
-              ["data000.bin","data001Slot.bin","data002Slot.bin"].contains(source.url.lastPathComponent) else {return []}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return []}
         return specs.compactMap {spec in
             let required=spec.hasSlot ? Set([hashField,mapField,slotField]) : Set([hashField,mapField])
             let selected=fields.filter {$0.owner==spec.owner && required.contains($0.field) && $0.path.hasPrefix(spec.prefix)}

@@ -97,6 +97,10 @@ Systemdaten, automatische Saves und manuelle Slots enthalten unterschiedliche Da
 
 Die Suche zeigt ausschließlich lokale `data*.bin`-Einzeldateien im `SaveData`-Ordner des jeweiligen Spielcontainers. iCloud-Orte und als iCloud-Datei gekennzeichnete Ziele, PACK-Dateien, andere Spielcontainer und symbolische Links sind als Bearbeitungsziele ausgeschlossen. Ein manuell freigegebener Ordner muss innerhalb des zugehörigen lokalen Spielcontainers liegen.
 
+## RE2-Kampagnenslots
+
+Die lesenden Detailansichten für Inventarprofile, Kartenobjekte, Türen, Rätsel, Gegner, Trigger und Umgebung akzeptieren nach geprüfter Leon-/Claire-Erkennung nun auch neuere manuelle Slots wie `data003Slot.bin`. Die frühere Dateinamensliste endete bei Slot 2 und blendete diese Informationen in Slot 3 aus. `data021Slot.bin` bleibt als bestätigte Zusatzmodusdatei ausgeschlossen. Keine Save-Datei wird durch diese Anzeige geändert.
+
 ## RE2-Feldsuche
 
 Die durchsuchbare Rohansicht zeigt nach Eingabe eines Suchbegriffs dekodierte Zahlen- und Bool-Felder mit Wert, nativem Namenskandidaten, Besitzer, Typ und ursprünglichem Save-Pfad. Sie begrenzt die sichtbaren Treffer auf 80, nennt aber die Gesamtzahl. Textfelder mit möglichen Kontoangaben und undurchsichtige Datenblöcke bleiben ausgeschlossen. Die Ansicht ist nur lesbar; ein passender Hash belegt keine Spielwirkung.
@@ -135,7 +139,7 @@ Die aktuelle App und Module liegen ausschließlich unter `../RESaveEditorBuild`.
 
 Das Skript prüft Zahlenformate, den großen RE7-Byteblock, Schlüsselzuordnung, lokale Schreibziele und bestehende lokale RE4-Saves ausschließlich lesend. Alle Schreib-, Rücknahme- und Konflikttests verwenden temporäre Dateien. Fehlen die Testdaten oder schlägt ein Test fehl, wird die vorherige App beibehalten. Die zusätzliche Prüfung in der App verwendet deren regulär freigegebene Ordnerzugriffe für alle Spiele.
 
-GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.40` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
+GitHub Actions baut bei jedem Push und Pull Request auf einem Apple-Silicon-Runner und führt mit `RESAVE_TEST_FIXTURE_ONLY=1` die Offline-Tests ohne private Spielstände aus. Ein Push eines Tags wie `v0.8.41` baut dieselbe App und veröffentlicht ZIP und SHA-256-Datei automatisch unter GitHub Releases. Der Tag muss zur Version in `script/build_and_run.sh` passen. Die veröffentlichte App ist ad hoc signiert und nicht mit einem Apple Developer ID Zertifikat notarisiert; die Prüfung der App-Signatur im Workflow ersetzt keine Gatekeeper-Freigabe auf fremden Macs.
 
 Der Codex-Run-Button verwendet dasselbe Skript. Optionale Modi: `--verify`, `--logs`, `--telemetry`, `--debug` (LLDB nur für den Editor).
 

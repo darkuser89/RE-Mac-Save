@@ -13,8 +13,7 @@ enum RE2MapPartCatalog {
     private static let prefix="/7f9decbe.8aab887b[8]/090ff53c.d584af3a/0e13127e.ef5095c4["
 
     static func entries(game:GameProfile,source:SaveFile,fields:[SaveScalar],character:String?) -> [RE2MapPart] {
-        guard game.id=="re2",character != nil,
-              ["data000.bin","data001Slot.bin","data002Slot.bin"].contains(source.url.lastPathComponent) else {return []}
+        guard RE2CampaignSavePolicy.matches(game:game,source:source,character:character) else {return []}
         let selected=fields.filter {$0.owner==owner && ($0.field==state || $0.field==done)}
         guard selected.count==128 else {return []}
         let grouped=Dictionary(grouping:selected) {field -> String in
