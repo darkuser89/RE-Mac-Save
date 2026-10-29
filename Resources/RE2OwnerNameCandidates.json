@@ -62,6 +62,9 @@
   "2a3b1ae0": [
     "app.ropeway.CostumeManager.CostumeData"
   ],
+  "2b1634eb": [
+    "via.storage.saveService.SaveFileDetail"
+  ],
   "2bf4a799": [
     "app.ropeway.gimmick.action.TriggerSaveDataUseItem"
   ],

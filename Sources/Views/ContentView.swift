@@ -69,6 +69,17 @@ struct EditorDetailView:View {
                     VStack(alignment:.leading,spacing:6) {Text(doc.source.title).font(.headline);Text(doc.source.url.path).font(.caption).foregroundStyle(.secondary).textSelection(.enabled);Text("\(doc.parsed.objects) Datenobjekte · \(doc.parsed.fields.count) Felder · \(ByteCountFormatter.string(fromByteCount:Int64(doc.source.size),countStyle:.file))").font(.caption).foregroundStyle(.secondary)}
                     if let character=doc.character {Label("Spielfigur: \(character)",systemImage:"person.fill").font(.headline)}
                     if let difficulty=doc.difficulty {Label("Schwierigkeit: \(difficulty)",systemImage:"shield.lefthalf.filled").font(.headline)}
+                    if let header=doc.re2SaveHeader {
+                        VStack(alignment:.leading,spacing:5) {
+                            Text("RE2-Spielstandkopf").font(.headline)
+                            if let title=header.title {Text("Gespeicherter Titel: \(title)")}
+                            if let subtitle=header.subtitle {Text("Gespeicherter Untertitel: \(subtitle)")}
+                            Text("Szenariocode \(header.scenarioCode) · Bereichs-ID \(header.areaID) · Orts-ID \(header.locationID)").font(.subheadline.monospacedDigit())
+                            if let gameID=header.gameID {Text("Interne Spiel-ID: \(gameID)").font(.caption)}
+                            Text("Kennungen aus dem Save; Szenario und Ort sind noch keinem Spielnamen sicher zugeordnet.").font(.caption).foregroundStyle(.secondary)
+                        }
+                        .textSelection(.enabled)
+                    }
                     Divider()
                     let inventoryIDs=Set(doc.items.flatMap{[$0.identity,$0.quantity].compactMap{$0?.id}})
                     let fileFlagIDs=Set(doc.fileFlags.map{$0.field.id})

@@ -14,13 +14,14 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(re2FieldNames.count==319 && re2FieldNames["9d58d1c7"]==["id"] && re2FieldNames["f7ec3e63"]==["HP"] && re2FieldNames["9074a186"]==["SystemSaveDataList"],"RE2-Skalar- und Pfadfeldnamen aus installiertem Build")
     check(re2FieldNames["ad69cc16"]==["HeightExpand","LastSavedTimeStamp"],"RE2-Hashkollision wird nicht geraten")
     let re2OwnerNames=try RE2OwnerNameCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_OWNER_NAMES"]!))
-    check(re2OwnerNames.count==105 &&
+    check(re2OwnerNames.count==106 &&
           re2OwnerNames["4e4210f9"]==["app.ropeway.gamemastering.RecordManager.SystemSaveData"] &&
           re2OwnerNames["2f11c239"]==["app.ropeway.CostumeManager.SystemSaveData"] &&
           re2OwnerNames["2a3b1ae0"]==["app.ropeway.CostumeManager.CostumeData"] &&
           re2OwnerNames["00215d66"]==["via.userdata.Variable"] &&
           re2OwnerNames["2675722d"]==["app.ropeway.gamemastering.InventoryManager.PrimitiveItem"] &&
           re2OwnerNames["55d1d375"]==["app.ropeway.gamemastering.InventoryManager.ItemExData"] &&
+          re2OwnerNames["2b1634eb"]==["via.storage.saveService.SaveFileDetail"] &&
           re2OwnerNames["090ff53c"]==["app.ropeway.gamemastering.UIMapManager.SaveData"],
           "RE2-Besitzernamen aus nativen Klassen- und Namespace-Zeichenketten")
     check(re2OwnerNames["b15a035f"]?.count==2,"Mehrdeutiger RE2-Besitzerhash behält beide Kandidaten")
@@ -100,6 +101,19 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(RE2Character.name(fields:leonFields)=="Leon" && RE2Character.name(fields:claireFields)=="Claire","RE2-Charakter aus unabhängigen Header- und Spielerdaten")
     check(RE2Character.name(fields:Array(claireFields.dropLast())+[leonFields.last!])==nil,"Widersprüchlicher RE2-Savetitel wird nicht geraten")
     check(RE2Character.name(fields:[claireFields[0],leonFields[1]])==nil,"Widersprüchliche RE2-Charaktercodes werden nicht geraten")
+    let leonHeaderFields=leonFields+[
+        re2CharacterField(re2Header,"Title",15,"falscher Besitzer"),
+        re2CharacterField(re2Detail,"Title",15,"Speichern 1"),
+        re2CharacterField(re2Header,"ScenarioTypeValue",1,"0"),
+        re2CharacterField(re2Header,"AreaId",1,"127"),
+        re2CharacterField(re2Header,"LocationId",1,"3"),
+        re2CharacterField(re2Header,"GameId",8,"31")
+    ]
+    let shownHeader=RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields,character:"Leon")
+    check(shownHeader?.title=="Speichern 1" && shownHeader?.subtitle=="Speicherdaten – Platz 1 Leon" && shownHeader?.scenarioCode==0 && shownHeader?.areaID==127 && shownHeader?.locationID==3 && shownHeader?.gameID==31,"RE2-Spielstandkopf zeigt nur exakte Felder aus dem richtigen Besitzer")
+    check(RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields+[leonHeaderFields[5]],character:"Leon")==nil,"Mehrdeutiger RE2-Szenariocode wird nicht angezeigt")
+    check(RE2SaveHeaderCatalog.details(game:GameProfile.all[1],fields:leonHeaderFields,character:"Leon")==nil,"RE2-Spielstandkopf ist spielgebunden")
+    check(RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields,character:nil)==nil,"Systemsave ohne Figur hat keinen Kampagnenkopf")
     var eggList=Data()
     func eggWord(_ value:UInt32) {var bytes=Data(count:4);try! bytes.put(UInt64(value),at:0,width:4);eggList+=bytes}
     eggWord(0);eggWord(1);eggWord(RE7EasterEggCatalog.owner)
