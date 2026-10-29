@@ -143,6 +143,9 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         ("app.ropeway.gamemastering.UIMapManager.ItemLockerInfo","itemLockerData",
          "/7f9decbe.8aab887b[8]/090ff53c.00c7b7b6/b2f815e5.695a3627[",
          [("_Hash",8,"200"),("_MapId",1,"112"),("_SlotNum",8,"400")]),
+        ("app.ropeway.gamemastering.UIMapManager.GimmickInfo","gimmickData",
+         "/7f9decbe.8aab887b[8]/090ff53c.0031712c/f4f012fc.695a3627[",
+         [("_Hash",8,"250"),("_MapId",1,"118")]),
         ("app.ropeway.gamemastering.UIMapManager.TypewriterInfo","typewriterData",
          "/7f9decbe.8aab887b[8]/090ff53c.d1a4c8f8/dd9eb20d.695a3627[",
          [("_Hash",8,"300"),("_MapId",1,"120")])]
@@ -160,16 +163,37 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
         }
     }
     let markerGroups=RE2MapMarkerCatalog.groups(game:re2Game,source:re2Campaign,fields:markerFields,character:"Leon")
-    check(markerGroups.count==2 && markerGroups[0].id=="itemLockerData" &&
+    check(markerGroups.count==3 && markerGroups[0].id=="itemLockerData" &&
           markerGroups[0].markers.map(\.objectHash)==[200,201] && markerGroups[0].markers[0].slotNumber==400 &&
-          markerGroups[1].id=="typewriterData" && markerGroups[1].markers[1].mapID==120,
+          markerGroups[1].id=="gimmickData" && markerGroups[1].markers[0].mapID==118 &&
+          markerGroups[2].id=="typewriterData" && markerGroups[2].markers[1].mapID==120,
           "RE2-Kartenobjekte nur aus vollständigen, gleichnamigen Datensätzen lesen")
     check(RE2MapMarkerCatalog.groups(game:re2Game,source:re2System,fields:markerFields,character:nil).isEmpty,
           "Kartenobjekte nicht Systemdaten zuordnen")
-    check(RE2MapMarkerCatalog.groups(game:re2Game,source:re2Campaign,fields:markerFields+[markerFields[0]],character:"Leon").map(\.id)==["typewriterData"],
+    check(RE2MapMarkerCatalog.groups(game:re2Game,source:re2Campaign,fields:markerFields+[markerFields[0]],character:"Leon").map(\.id)==["gimmickData","typewriterData"],
           "Doppelte Itemschrank-Felder ausblenden")
-    check(RE2MapMarkerCatalog.groups(game:re2Game,source:re2Campaign,fields:Array(markerFields.dropLast()),character:"Leon").map(\.id)==["itemLockerData"],
+    check(RE2MapMarkerCatalog.groups(game:re2Game,source:re2Campaign,fields:Array(markerFields.dropLast()),character:"Leon").map(\.id)==["itemLockerData","gimmickData"],
           "Unvollständige Schreibmaschinen-Datensätze ausblenden")
+    let mapPartOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.UIMapManager.MapPartsChangeInfo".utf8))
+    let mapPartPrefix="/7f9decbe.8aab887b[8]/090ff53c.d584af3a/0e13127e.ef5095c4["
+    let mapPartFields=(0..<64).flatMap {index -> [SaveScalar] in
+        let parent=mapPartPrefix+"\(index)]"
+        return [("State",Int32(1),4,String(index)),("Done",Int32(2),1,index==3 ? "true":"false")].enumerated().map {offset,spec in
+            let field=SaveCrypto.murmur(Data(spec.0.utf8))
+            return SaveScalar(id:800+index*2+offset,owner:mapPartOwner,field:field,type:spec.1,
+                              offset:800+index*8+offset*4,size:spec.2,
+                              path:parent+String(format:"/%08x.%08x",mapPartOwner,field),text:spec.3)
+        }
+    }
+    let mapParts=RE2MapPartCatalog.entries(game:re2Game,source:re2Campaign,fields:mapPartFields,character:"Leon")
+    check(mapParts.count==64 && mapParts[3].done && mapParts[3].stateCode==3 && !mapParts[63].done,
+          "RE2-Kartenbauteile nur aus 64 vollständigen State/Done-Paaren lesen")
+    check(RE2MapPartCatalog.entries(game:re2Game,source:re2System,fields:mapPartFields,character:nil).isEmpty,
+          "Kartenbauteile nicht Systemdaten zuordnen")
+    check(RE2MapPartCatalog.entries(game:re2Game,source:re2Campaign,fields:Array(mapPartFields.dropLast()),character:"Leon").isEmpty,
+          "Unvollständige Kartenbauteil-Liste ausblenden")
+    check(RE2MapPartCatalog.entries(game:re2Game,source:re2Campaign,fields:mapPartFields+[mapPartFields[0]],character:"Leon").isEmpty,
+          "Doppelte Kartenbauteil-Werte ausblenden")
     func mechanism(_ ownerName:String,_ fieldName:String,_ type:Int32,_ text:String,_ parent:String,_ id:Int) -> SaveScalar {
         let owner=SaveCrypto.murmur(Data(ownerName.utf8))
         let field=SaveCrypto.murmur(Data(fieldName.utf8))

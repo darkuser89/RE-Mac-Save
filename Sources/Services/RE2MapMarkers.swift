@@ -24,6 +24,9 @@ enum RE2MapMarkerCatalog {
         Spec(id:"itemLockerData",title:"Itemschränke auf der Karte",
              owner:SaveCrypto.murmur(Data("app.ropeway.gamemastering.UIMapManager.ItemLockerInfo".utf8)),
              prefix:"/7f9decbe.8aab887b[8]/090ff53c.00c7b7b6/b2f815e5.695a3627[",hasSlot:true),
+        Spec(id:"gimmickData",title:"Mechanikobjekte auf der Karte",
+             owner:SaveCrypto.murmur(Data("app.ropeway.gamemastering.UIMapManager.GimmickInfo".utf8)),
+             prefix:"/7f9decbe.8aab887b[8]/090ff53c.0031712c/f4f012fc.695a3627[",hasSlot:false),
         Spec(id:"typewriterData",title:"Schreibmaschinen auf der Karte",
              owner:SaveCrypto.murmur(Data("app.ropeway.gamemastering.UIMapManager.TypewriterInfo".utf8)),
              prefix:"/7f9decbe.8aab887b[8]/090ff53c.d1a4c8f8/dd9eb20d.695a3627[",hasSlot:false)

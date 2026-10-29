@@ -263,7 +263,7 @@ struct EditorDetailView:View {
                     if !doc.re2MapMarkers.isEmpty {
                         Divider()
                         Text("RE2-Kartenobjekte").font(.title2.bold())
-                        Text("Gespeicherte Schreibmaschinen- und Itemschrank-Einträge mit Karten-ID und Objektkennung. Ob ein Eintrag bereits entdeckt wurde, ist nicht belegt; nur lesbar.")
+                        Text("Gespeicherte Schreibmaschinen-, Itemschrank- und Mechanikobjekt-Einträge mit Karten-ID und Objektkennung. Ob ein Eintrag bereits entdeckt wurde, ist nicht belegt; nur lesbar.")
                             .font(.caption).foregroundStyle(.secondary)
                         ForEach(doc.re2MapMarkers) {group in
                             DisclosureGroup("\(group.title) · \(group.markers.count) Einträge") {
@@ -275,6 +275,19 @@ struct EditorDetailView:View {
                                         if let slot=marker.slotNumber {Text("Platz \(slot)")}
                                     }.font(.caption.monospacedDigit()).textSelection(.enabled).padding(.vertical,2)
                                 }
+                            }
+                        }
+                    }
+                    if !doc.re2MapParts.isEmpty {
+                        DisclosureGroup("Kartenbauteile · \(doc.re2MapParts.filter(\.done).count) von \(doc.re2MapParts.count) Done-Flags gesetzt") {
+                            Text("State und Done sind gespeicherte Rohwerte. Welche sichtbaren Kartenteile sie bezeichnen und was Done auslöst, ist nicht belegt; nur lesbar.")
+                                .font(.caption).foregroundStyle(.secondary)
+                            ForEach(doc.re2MapParts) {part in
+                                HStack {
+                                    Text("Eintrag \(part.id) · State \(part.stateCode)")
+                                    Spacer()
+                                    Text(part.done ? "Done: ja" : "Done: nein")
+                                }.font(.caption.monospacedDigit()).padding(.vertical,2)
                             }
                         }
                     }

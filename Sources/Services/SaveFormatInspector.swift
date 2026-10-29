@@ -235,6 +235,11 @@ enum SaveFormatInspector {
                                     }] as [String:Any]
                                 }
                             }
+                            if !doc.re2MapParts.isEmpty {
+                                result["mapParts"]=doc.re2MapParts.map {part in
+                                    ["index":part.id,"stateCode":part.stateCode,"done":part.done] as [String:Any]
+                                }
+                            }
                         }
                         for section in ["Inventar","Itembox"] {
                             result[section.lowercased()]=doc.items.filter{$0.section==section}.map {item in
