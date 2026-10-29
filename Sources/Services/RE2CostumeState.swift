@@ -14,6 +14,13 @@ struct RE2CostumeState: Identifiable {
 }
 
 enum RE2CostumeStateCatalog {
+    private static let sources: [(String, String)] = [
+        ("UserCostumeDataList", "Benutzer-Kostümdaten"),
+        ("CheckedCostumeDataList", "Geprüfte Kostümdaten"),
+        ("ScenarioCostumeDataList", "Szenario-Kostümdaten"),
+        ("ActorContextList", "Figurenkontext"),
+        ("", "Weitere Kostümdaten")
+    ]
     private static let fields: [(String, String)] = [
         ("CostumeID", "Gespeicherte Kostüm-IDs"),
         ("CostumeType", "Gespeicherte Kostümtypen"),
@@ -26,15 +33,28 @@ enum RE2CostumeStateCatalog {
 
     static func states(game: GameProfile, fields saveFields: [SaveScalar]) -> [RE2CostumeState] {
         guard game.id == "re2" else {return []}
-        return fields.compactMap {name, title in
+        return fields.flatMap {name, title -> [RE2CostumeState] in
             let hash = SaveCrypto.murmur(Data(name.utf8))
             let matches = saveFields.filter {
                 $0.field == hash && $0.type != 15 && (1...8).contains($0.size)
             }
-            guard !matches.isEmpty else {return nil}
-            return RE2CostumeState(id: name, title: title, entries: matches.enumerated().map {index, field in
-                RE2CostumeState.Entry(id: index, path: field.path, value: field.text)
-            })
+            return sources.compactMap {source, sourceTitle in
+                let group = matches.filter {field in sourceName(for: field.path) == source}
+                guard !group.isEmpty else {return nil}
+                return RE2CostumeState(id: name + "." + source,
+                                      title: source.isEmpty ? title : "\(sourceTitle): \(title)",
+                                      entries: group.enumerated().map {index, field in
+                    RE2CostumeState.Entry(id: index, path: field.path, value: field.text)
+                })
+            }
         }
+    }
+
+    private static func sourceName(for path: String) -> String {
+        for (name, _) in sources where !name.isEmpty {
+            let hash = SaveCrypto.murmur(Data(name.utf8))
+            if path.contains(String(format: ".%08x[", hash)) {return name}
+        }
+        return ""
     }
 }

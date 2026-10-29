@@ -41,6 +41,29 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     let costumes=RE2CostumeStateCatalog.states(game:re2Game,fields:costumeFields)
     check(costumes.count==1 && costumes[0].entries.map(\.value)==["13","16"] && costumes[0].distinctValues==["13","16"],"RE2-Kostümwerte nur lesend und ohne Textfelder")
     check(RE2CostumeStateCatalog.states(game:GameProfile.all.first{$0.id=="re3"}!,fields:costumeFields).isEmpty,"RE2-Kostümwerte nur für RE2")
+    let userCostumeHash=SaveCrypto.murmur(Data("UserCostumeDataList".utf8))
+    let checkedCostumeHash=SaveCrypto.murmur(Data("CheckedCostumeDataList".utf8))
+    let separatedCostumes=[
+        SaveScalar(id:0,owner:0,field:costumeIDHash,type:1,offset:0,size:4,path:String(format:"/a.%08x[0]/b.%08x",userCostumeHash,costumeIDHash),text:"16"),
+        SaveScalar(id:1,owner:0,field:costumeIDHash,type:1,offset:4,size:4,path:String(format:"/a.%08x[0]/b.%08x",checkedCostumeHash,costumeIDHash),text:"3")
+    ]
+    let groupedCostumes=RE2CostumeStateCatalog.states(game:re2Game,fields:separatedCostumes)
+    check(groupedCostumes.count==2 && groupedCostumes[0].title.contains("Benutzer-Kostümdaten") && groupedCostumes[0].entries.map(\.value)==["16"] && groupedCostumes[1].title.contains("Geprüfte Kostümdaten") && groupedCostumes[1].entries.map(\.value)==["3"],"RE2-Kostüm-IDs nach tatsächlicher Quellliste getrennt")
+    func re2ProgressFields(_ name:String,_ count:Int,_ marked:Set<Int>) -> [SaveScalar] {
+        let hash=SaveCrypto.murmur(Data(name.utf8))
+        return (0..<count).map {index in
+            SaveScalar(id:index,owner:0x4e4210f9,field:hash,type:2,offset:index,size:1,
+                       path:String(format:"/4e4210f9.%08x[%d]",hash,index),
+                       text:marked.contains(index) ? "true":"false")
+        }
+    }
+    let progressFields=re2ProgressFields("IsClearedRecord",91,[0,30,90])
+        + re2ProgressFields("IsOpenedReward",133,[4,132])
+        + re2ProgressFields("IsClearedGame",21,[7])
+    let progress=RE2ProgressFlagCatalog.lists(game:re2Game,source:re2System,fields:progressFields)
+    check(progress.count==3 && progress[0].marked==[0,30,90] && progress[1].marked==[4,132] && progress[2].marked==[7],"RE2-Systemfortschritt liest drei vollständige indizierte Statuslisten")
+    check(RE2ProgressFlagCatalog.lists(game:re2Game,source:re2Campaign,fields:progressFields).isEmpty,"Rekordstatus wird nur in der RE2-Systemdatei angezeigt")
+    check(RE2ProgressFlagCatalog.lists(game:re2Game,source:re2System,fields:Array(progressFields.dropFirst())).count==2,"Unvollständige Rekordliste wird nicht angezeigt")
     let re2Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE2_FILE_NAMES"]!))
     check(re2Files.count==64 && re2Files[1]=="Ereignisbericht" && re2Files[89]==nil,"RE2-Dokumenttitel aus lokalen Spieltexten; interne Leer-IDs ausgeschlossen")
     let re3Files=try DocumentFlagCatalog.load(from:URL(fileURLWithPath:ProcessInfo.processInfo.environment["RESAVE_RE3_FILE_NAMES"]!))

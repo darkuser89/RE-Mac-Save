@@ -133,6 +133,19 @@ struct EditorDetailView:View {
                             }
                         }
                     }
+                    if !doc.re2ProgressFlags.isEmpty {
+                        Divider()
+                        Text("RE2-Systemfortschritt").font(.title2.bold())
+                        Text("Die internen IDs stammen aus Statuslisten der lokalen Systemdatei. Titel und Wirkung einzelner IDs sind noch nicht zugeordnet; die Anzeige ist nur lesbar.").font(.caption).foregroundStyle(.secondary)
+                        ForEach(doc.re2ProgressFlags) {list in
+                            DisclosureGroup("\(list.title) · \(list.marked.count) von \(list.total)") {
+                                if list.marked.isEmpty {Text("Kein Eintrag markiert.").foregroundStyle(.secondary)}
+                                ForEach(list.marked,id:\.self) {index in
+                                    Text("Interne ID \(index)").font(.caption.monospaced()).padding(.vertical,2)
+                                }
+                            }
+                        }
+                    }
                     if !doc.fileFlags.isEmpty {
                         Divider()
                         Text("Gefundene Dokumente").font(.title2.bold())
