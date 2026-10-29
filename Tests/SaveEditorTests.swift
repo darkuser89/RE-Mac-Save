@@ -748,6 +748,22 @@ func rejected(_ message:String,_ action:() throws -> Void) {do {try action();fat
     check(RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields+[leonHeaderFields[5]],character:"Leon")==nil,"Mehrdeutiger RE2-Szenariocode wird nicht angezeigt")
     check(RE2SaveHeaderCatalog.details(game:GameProfile.all[1],fields:leonHeaderFields,character:"Leon")==nil,"RE2-Spielstandkopf ist spielgebunden")
     check(RE2SaveHeaderCatalog.details(game:re2Game,fields:leonHeaderFields,character:nil)==nil,"Systemsave ohne Figur hat keinen Kampagnenkopf")
+    let fileManagerOwner="app.ropeway.gamemastering.UIFileManager.SaveData"
+    let knownFileField=re2CharacterField(fileManagerOwner,"readFileId",1,"66")
+    let fileHeader=RE2SaveHeaderCatalog.details(game:re2Game,fields:claireFields+[
+        re2CharacterField(re2Header,"ScenarioTypeValue",1,"1"),
+        re2CharacterField(re2Header,"AreaId",1,"257"),
+        re2CharacterField(re2Header,"LocationId",1,"16"),knownFileField
+    ],character:"Claire",fileNames:[66:"Reparaturplan"])
+    check(fileHeader?.readFileID==66 && fileHeader?.readFileTitle=="Reparaturplan",
+          "RE2-Savekopf zeigt die eindeutige gespeicherte Akten-ID mit Katalogtitel")
+    let ambiguousFileHeader=RE2SaveHeaderCatalog.details(game:re2Game,fields:claireFields+[
+        re2CharacterField(re2Header,"ScenarioTypeValue",1,"1"),
+        re2CharacterField(re2Header,"AreaId",1,"257"),
+        re2CharacterField(re2Header,"LocationId",1,"16"),knownFileField,knownFileField
+    ],character:"Claire",fileNames:[66:"Reparaturplan"])
+    check(ambiguousFileHeader?.readFileID==nil,
+          "Mehrdeutige RE2-Akten-ID wird nicht als eindeutiger Dokumentstatus gezeigt")
     let playClockOwner=SaveCrypto.murmur(Data("app.ropeway.GameClock.GameSaveData".utf8))
     func clockField(_ name:String,_ value:String) -> SaveScalar {
         SaveScalar(id:0,owner:playClockOwner,field:SaveCrypto.murmur(Data(name.utf8)),

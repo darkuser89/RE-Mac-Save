@@ -205,6 +205,11 @@ enum SaveFormatInspector {
                                     "inventoryRaw":clock.inventory,"pauseRaw":clock.pause,
                                     "displayedRaw":clock.displayed,"displayed":clock.displayedTime] as [String:Any]
                             }
+                            if let header=doc.re2SaveHeader,let fileID=header.readFileID {
+                                var row:[String:Any]=["id":fileID]
+                                if let title=header.readFileTitle {row["titleFromMacCatalog"]=title}
+                                result["re2SavedReadFileID"]=row
+                            }
                             if !doc.re2ClearRecords.isEmpty {
                                 result["clearRecords"]=doc.re2ClearRecords.map {record in
                                     var row:[String:Any]=["id":record.id,"timeRaw":record.clearTimeRaw,

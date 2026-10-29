@@ -9,6 +9,8 @@ struct RE2SaveHeader {
     let gameID:UInt32?
     let sequenceStepCode:Int?
     let dynamicRankCode:Int?
+    let readFileID:Int?
+    let readFileTitle:String?
 }
 
 enum RE2SaveHeaderCatalog {
@@ -16,8 +18,9 @@ enum RE2SaveHeaderCatalog {
     private static let detailOwner=SaveCrypto.murmur(Data("via.storage.saveService.SaveFileDetail".utf8))
     private static let sequenceOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.ScenarioSequenceManager.GameSaveData".utf8))
     private static let rankOwner=SaveCrypto.murmur(Data("app.ropeway.GameRankSystem.GameSaveData".utf8))
+    private static let fileOwner=SaveCrypto.murmur(Data("app.ropeway.gamemastering.UIFileManager.SaveData".utf8))
 
-    static func details(game:GameProfile,fields:[SaveScalar],character:String?) -> RE2SaveHeader? {
+    static func details(game:GameProfile,fields:[SaveScalar],character:String?,fileNames:[Int:String]?=nil) -> RE2SaveHeader? {
         guard game.id=="re2",character != nil else {return nil}
         func one(_ owner:UInt32,_ name:String,_ type:Int32,_ size:Int?=nil) -> SaveScalar? {
             let hash=SaveCrypto.murmur(Data(name.utf8))
@@ -31,10 +34,13 @@ enum RE2SaveHeaderCatalog {
         let gameID=one(headerOwner,"GameId",8,4).flatMap({UInt32($0.text)})
         let step=one(sequenceOwner,"ScenarioNo",1,4).flatMap({Int($0.text)}).flatMap{$0>=0 ? $0:nil}
         let rank=one(rankOwner,"GameRank",7,4).flatMap({Int($0.text)}).flatMap{$0>=0 ? $0:nil}
+        let fileID=one(fileOwner,"readFileId",1,4).flatMap({Int($0.text)}).flatMap{(1..<90).contains($0) ? $0:nil}
+        let fileTitle=fileID.flatMap{(fileNames ?? DocumentFlagCatalog.bundled["re2"] ?? [:])[$0]}
         return RE2SaveHeader(title:displayText(one(detailOwner,"Title",15)?.text),
                              subtitle:displayText(one(detailOwner,"SubTitle",15)?.text),
                              scenarioCode:scenario,areaID:area,locationID:location,gameID:gameID,
-                             sequenceStepCode:step,dynamicRankCode:rank)
+                             sequenceStepCode:step,dynamicRankCode:rank,
+                             readFileID:fileID,readFileTitle:displayText(fileTitle))
     }
 
     private static func displayText(_ text:String?) -> String? {

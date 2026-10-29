@@ -73,7 +73,7 @@ struct EditorDetailView:View {
                     if let clock=doc.re2PlayClock {
                         VStack(alignment:.leading,spacing:4) {
                             Text("RE2-Spielzeit: \(clock.displayedTime)").font(.headline.monospacedDigit())
-                            Text("Spieluhr gesamt − Inventarzeit − Pausenzeit. Im aktuellen Claire-Save mit dem Ergebnisbildschirm abgeglichen.")
+                            Text("Spieluhr gesamt − Inventarzeit − Pausenzeit. An Claires Slot 2 mit dem Ergebnisbildschirm abgeglichen.")
                                 .font(.caption).foregroundStyle(.secondary)
                         }.textSelection(.enabled)
                     }
@@ -86,6 +86,12 @@ struct EditorDetailView:View {
                             if let gameID=header.gameID {Text("Interne Spiel-ID: \(gameID)").font(.caption)}
                             if let step=header.sequenceStepCode {Text("Interner Fortschrittsschritt: \(step)").font(.caption.monospacedDigit())}
                             if let rank=header.dynamicRankCode {Text("Dynamischer Rangcode: \(rank)").font(.caption.monospacedDigit())}
+                            if let fileID=header.readFileID {
+                                Text("Gespeicherte Akten-ID: \(fileID)"+(header.readFileTitle.map{" · \($0)"} ?? ""))
+                                    .font(.caption)
+                                Text("Diese ID ist kein Fundstatus; gefundene Akten stehen in den Systemdaten.")
+                                    .font(.caption2).foregroundStyle(.secondary)
+                            }
                             Text("Kennungen aus dem Save; Szenario, Ort, Fortschrittsschritt und Rangcode sind noch keinem Spielnamen sicher zugeordnet.").font(.caption).foregroundStyle(.secondary)
                         }
                         .textSelection(.enabled)
